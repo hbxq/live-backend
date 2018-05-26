@@ -22,7 +22,7 @@ Springboot + shiro权限管理。这或许是流程最详细、代码最干净�
 
 #### SQL Model
 
-![首页](https://gitee.com/yadong.zhang/shiro/raw/master/docs/img/sql-model.png?v=1.0)
+![首页](https://gitee.com/ZhangPeng/shiro/raw/master/docs/img/sql-model.png?v=1.0)
 
 #### 使用说明
 
@@ -60,17 +60,17 @@ _链接_： `http://127.0.0.1:8080/druid/index.html`
 
 #### 图片预览
 
-![首页](https://gitee.com/yadong.zhang/shiro/raw/master/docs/img/index.png?v=1.0)
-![资源管理](https://gitee.com/yadong.zhang/shiro/raw/master/docs/img/root-resource.png?v=1.0)
-![角色管理](https://gitee.com/yadong.zhang/shiro/raw/master/docs/img/root-role.png?v=1.0)
-![角色分配资源](https://gitee.com/yadong.zhang/shiro/raw/master/docs/img/root-role[root].png?v=1.0)
-![用户管理](https://gitee.com/yadong.zhang/shiro/raw/master/docs/img/root-user.png?v=1.0)
-![用户分配角色](https://gitee.com/yadong.zhang/shiro/raw/master/docs/img/root-user[role].png?v=1.0)
+![首页](https://gitee.com/ZhangPeng/shiro/raw/master/docs/img/index.png?v=1.0)
+![资源管理](https://gitee.com/ZhangPeng/shiro/raw/master/docs/img/root-resource.png?v=1.0)
+![角色管理](https://gitee.com/ZhangPeng/shiro/raw/master/docs/img/root-role.png?v=1.0)
+![角色分配资源](https://gitee.com/ZhangPeng/shiro/raw/master/docs/img/root-role[root].png?v=1.0)
+![用户管理](https://gitee.com/ZhangPeng/shiro/raw/master/docs/img/root-user.png?v=1.0)
+![用户分配角色](https://gitee.com/ZhangPeng/shiro/raw/master/docs/img/root-user[role].png?v=1.0)
 
 _注：以上图片是以`root`用户登录，`admin`用户的界面请参考`docs/img`下的图片_
 
 #### 生命不息，折腾不止！ 更多信息，请关注：
- 1. [我的博客](https://www.zhyd.me)
+ 1. [我的博客](htts://www.xiang7.net)
  2. [我的微博](http://weibo.com/211230415)
  3. [我的头条号](http://www.toutiao.com/c/user/3286958681/)
  4. [我的imooc](http://www.imooc.com/u/1175248/articles)
@@ -81,4 +81,4 @@ _注：以上图片是以`root`用户登录，`admin`用户的界面请参考`do
 
 
 #### 开源协议
- [MIT](https://gitee.com/yadong.zhang/DBlog/blob/master/LICENSE)
+ [MIT](https://gitee.com/ZhangPeng/DBlog/blob/master/LICENSE)

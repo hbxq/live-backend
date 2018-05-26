@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xq.live.backend.persistence.mapper.ShopMapper">
+    <resultMap id="BaseResultMap" type="com.xq.live.backend.persistence.beans.Shop">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="shop_name" jdbcType="VARCHAR" property="shopName"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="index_url" jdbcType="VARCHAR" property="indexUrl"/>
+        <result column="logo_url" jdbcType="VARCHAR" property="logoUrl"/>
+        <result column="shop_info" jdbcType="VARCHAR" property="shopInfo"/>
+        <result column="location_x" jdbcType="DECIMAL" property="locationX"/>
+        <result column="location_y" jdbcType="DECIMAL" property="locationY"/>
+        <result column="is_deleted" jdbcType="TINYINT" property="isDeleted"/>
+        <result column="pop_num" jdbcType="INTEGER" property="popNum"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="shop_status" jdbcType="INTEGER" property="shopStatus"/>
+        <result column="apply_status" jdbcType="INTEGER" property="applyStatus"/>
+        <result column="business_cate" jdbcType="VARCHAR" property="businessCate"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, shop_name, address, mobile, phone, index_url, logo_url, shop_info, location_x, location_y,
+        is_deleted, pop_num, remark, create_time, update_time,shop_status,apply_status,business_cate
+    </sql>
+
+    <select id="findPageBreakByCondition" parameterType="com.xq.live.backend.business.vo.ShopConditionVO" resultMap="BaseResultMap">
+        SELECT
+        s.*
+        FROM
+        shop s
+        WHERE
+        1 = 1
+        <if test="keywords != null and keywords != '' ">
+            AND
+            (
+            s.shop_name LIKE CONCAT('%',#{keywords , jdbcType=VARCHAR},'%') or
+            s.mobile  LIKE CONCAT('%',#{keywords , jdbcType=VARCHAR},'%') or
+            s.address LIKE CONCAT('%',#{keywords , jdbcType=VARCHAR},'%') or
+            s.phone LIKE CONCAT('%',#{keywords , jdbcType=VARCHAR},'%') or
+            s.business_cate LIKE CONCAT('%',#{keywords , jdbcType=VARCHAR},'%') or
+            )
+        </if>
+        <!-- 查询用户信息 -->
+        <if test="shop != null">
+            <if test="shop.id!=null">
+                AND s.id = #{shop.id}
+            </if>
+            <if test="shop.isDeleted!=null">
+                AND s.is_deleted = #{shop.isDeleted}
+            </if>
+            <if test="shop.createTime!=null">
+                AND s.create_time = #{shop.createTime}
+            </if>
+            <if test="shop.shopStatus!=null">
+                AND s.shop_status = #{shop.shopStatus}
+            </if>
+            <if test="shop.applyStatus!=null">
+                AND s.apply_status = #{shop.applyStatus}
+            </if>
+            <if test="shop.updateTime!=null">
+                AND s.update_time = #{shop.updateTime}
+            </if>
+        </if>
+        GROUP BY
+        s.id
+        ORDER BY
+        s.create_time DESC
+    </select>
+
+    <select id="selectByShopName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from shop
+        where shop_name = #{shopName,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getShopByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    SELECT
+        s.id,
+        s.shop_name,
+        s.address,
+        s.mobile,
+        s.phone,
+        s.index_url,
+        s.logo_url,
+        s.shop_info,
+        s.location_x,
+        s.location_y,
+        s.is_deleted,
+        s.pop_num,
+        s.remark,
+        s.create_time,
+        s.update_time,
+        s.shop_status,
+        s.apply_status,
+        s.business_cate
+    FROM
+        shop s inner join user u on s.id = u.shop_id
+    where u.id = #{id,jdbcType=BIGINT}
+  </select>
+
+</mapper>

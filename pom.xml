@@ -3,16 +3,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.zyd.shiro</groupId>
-    <artifactId>shiro</artifactId>
+    <groupId>com.xq.live</groupId>
+    <artifactId>live-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
-        <module>shiro-core</module>
-        <module>shiro-admin</module>
+        <module>backend-core</module>
+        <module>backend-admin</module>
     </modules>
 
-    <name>shiro</name>
+    <name>live-backend</name>
     <description>Demo project for Spring Boot</description>
 
     <parent>
