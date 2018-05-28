@@ -2,6 +2,8 @@ package com.xq.live.backend.business.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.xq.live.backend.business.entity.ShopBo;
+import com.xq.live.backend.business.enums.ShopStatusEnum;
 import com.xq.live.backend.business.service.ShopService;
 import com.xq.live.backend.business.vo.ShopConditionVO;
 import com.xq.live.backend.persistence.beans.Shop;
@@ -12,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -29,35 +32,41 @@ public class ShopServiceImpl implements ShopService {
     private ShopMapper shopMapper;
 
     @Override
-    public PageInfo<Shop> findPageBreakByCondition(ShopConditionVO vo) {
+    public PageInfo<ShopBo> findPageBreakByCondition(ShopConditionVO vo) {
         PageHelper.startPage(vo.getPageNumber(), vo.getPageSize());
         List<Shop> shops = shopMapper.findPageBreakByCondition(vo);
         if (CollectionUtils.isEmpty(shops)) {
             return null;
         }
-        PageInfo bean = new PageInfo<Shop>(shops);
-        bean.setList(shops);
+        List<ShopBo> shopBos = new ArrayList<>();
+        for (Shop r : shops) {
+            shopBos.add(new ShopBo(r));
+        }
+        PageInfo bean = new PageInfo<ShopBo>(shopBos);
+        bean.setList(shopBos);
         return bean;
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Shop insert(Shop shop) {
-        Assert.notNull(shop, "Shop不可为空！");
-        shop.setUpdateTime(new Date());
-        shop.setCreateTime(new Date());
-        shop.setShopStatus(1);
-        shopMapper.insertSelective(shop);
-        return shop;
+    public ShopBo insert(ShopBo entity) {
+        Assert.notNull(entity, "Shop不可为空！");
+        entity.setUpdateTime(new Date());
+        entity.setCreateTime(new Date());
+        entity.setShopStatus(ShopStatusEnum.NORMAL.getCode());
+        shopMapper.insertSelective(entity.getShop());
+        return entity;
     }
 
     @Override
-    public void insertList(List<Shop> shops) {
-        Assert.notNull(shops, "Shops不可为空！");
-        for (Shop shop : shops) {
-            shop.setUpdateTime(new Date());
-            shop.setCreateTime(new Date());
-            shop.setShopStatus(1);
+    public void insertList(List<ShopBo> shopBos) {
+        Assert.notNull(shopBos, "Shops不可为空！");
+        List<Shop> shops = new ArrayList<>();
+        for (ShopBo shopBo : shopBos) {
+            shopBo.setUpdateTime(new Date());
+            shopBo.setCreateTime(new Date());
+            shopBo.setShopStatus(ShopStatusEnum.NORMAL.getCode());
+            shops.add(shopBo.getShop());
         }
         shopMapper.insertList(shops);
     }
@@ -70,45 +79,59 @@ public class ShopServiceImpl implements ShopService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean update(Shop shop) {
-        Assert.notNull(shop, "Shop不可为空！");
-        shop.setUpdateTime(new Date());
-        return shopMapper.updateByPrimaryKey(shop) > 0;
+    public boolean update(ShopBo shopBo) {
+        Assert.notNull(shopBo, "Shop不可为空！");
+        shopBo.setUpdateTime(new Date());
+        return shopMapper.updateByPrimaryKey(shopBo.getShop()) > 0;
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean updateSelective(Shop shop) {
-        Assert.notNull(shop, "shop不可为空！");
-        shop.setUpdateTime(new Date());
-        return shopMapper.updateByPrimaryKeySelective(shop) > 0;
+    public boolean updateSelective(ShopBo shopBo) {
+        Assert.notNull(shopBo, "shop不可为空！");
+        shopBo.setUpdateTime(new Date());
+        return shopMapper.updateByPrimaryKeySelective(shopBo.getShop()) > 0;
     }
 
     @Override
-    public Shop getByPrimaryKey(Long primaryKey) {
+    public ShopBo getByPrimaryKey(Long primaryKey) {
         Assert.notNull(primaryKey, "PrimaryKey不可为空！");
         Shop shop = shopMapper.selectByPrimaryKey(primaryKey);
-        return shop;
+        return null == shop ? null : new ShopBo(shop);
     }
 
     @Override
-    public Shop getOneByEntity(Shop entity) {
+    public ShopBo getOneByEntity(ShopBo entity) {
         Assert.notNull(entity, "Shop不可为空！");
-        return shopMapper.selectOne(entity);
+        Shop shop = shopMapper.selectOne(entity.getShop());
+        return null == shop ? null : new ShopBo(shop);
     }
 
     @Override
-    public List<Shop> listAll() {
-        return shopMapper.selectAll();
-    }
+    public List<ShopBo> listAll() {
+        List<Shop> shops = shopMapper.selectAll();
 
-    @Override
-    public List<Shop> listByEntity(Shop shop) {
-        Assert.notNull(shop, "Shop不可为空！");
-        List<Shop> shops = shopMapper.select(shop);
         if (CollectionUtils.isEmpty(shops)) {
             return null;
         }
-        return shops;
+        List<ShopBo> shopBos = new ArrayList<>();
+        for (Shop shop : shops) {
+            shopBos.add(new ShopBo(shop));
+        }
+        return shopBos;
+    }
+
+    @Override
+    public List<ShopBo> listByEntity(ShopBo shopBo) {
+        Assert.notNull(shopBo, "Shop不可为空！");
+        List<Shop> shops = shopMapper.select(shopBo.getShop());
+        if (CollectionUtils.isEmpty(shops)) {
+            return null;
+        }
+        List<ShopBo> shopBos = new ArrayList<>();
+        for (Shop su : shops) {
+            shopBos.add(new ShopBo(su));
+        }
+        return shopBos;
     }
 }

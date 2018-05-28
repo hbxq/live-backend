@@ -2,14 +2,13 @@ package com.xq.live.backend.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.xq.live.backend.business.entity.User;
+import com.xq.live.backend.business.entity.ShopBo;
 import com.xq.live.backend.business.enums.ResponseStatus;
 import com.xq.live.backend.business.service.ShopService;
 import com.xq.live.backend.business.vo.ShopConditionVO;
 import com.xq.live.backend.framework.object.PageResult;
 import com.xq.live.backend.framework.object.ResponseVO;
 import com.xq.live.backend.persistence.beans.Shop;
-import com.xq.live.backend.util.PasswordUtil;
 import com.xq.live.backend.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +32,7 @@ public class RestShopController {
     @PostMapping("/list")
     public PageResult list(ShopConditionVO vo) {
         PageHelper.startPage(vo.getPageNumber() - 1, vo.getPageSize());
-        PageInfo<Shop> pageInfo = shopService.findPageBreakByCondition(vo);
+        PageInfo<ShopBo> pageInfo = shopService.findPageBreakByCondition(vo);
         return ResultUtil.tablePage(pageInfo);
     }
 
@@ -50,9 +49,9 @@ public class RestShopController {
     }
 
     @PostMapping("/edit")
-    public ResponseVO edit(Shop shop) {
+    public ResponseVO edit(ShopBo shopBo) {
         try {
-            shopService.updateSelective(shop);
+            shopService.updateSelective(shopBo);
         } catch (Exception e) {
             e.printStackTrace();
             return ResultUtil.error("商家修改失败！");

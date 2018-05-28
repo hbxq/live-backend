@@ -1,5 +1,6 @@
 package com.xq.live.backend.business.vo;
 
+import com.xq.live.backend.business.entity.ShopBo;
 import com.xq.live.backend.framework.object.BaseConditionVO;
 import com.xq.live.backend.persistence.beans.Shop;
 import lombok.Data;
@@ -15,5 +16,5 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class ShopConditionVO extends BaseConditionVO {
-    private Shop shop;
+    private ShopBo shopBo;
 }

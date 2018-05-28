@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xq.live.backend.persistence.mapper.SoMapper">
+    <resultMap id="BaseResultMap" type="com.xq.live.backend.persistence.beans.So">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="so_amount" jdbcType="DECIMAL" property="soAmount"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <result column="pay_type" jdbcType="TINYINT" property="payType"/>
+        <result column="so_status" jdbcType="TINYINT" property="soStatus"/>
+        <result column="so_type" jdbcType="TINYINT" property="soType"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, so_amount, user_id, user_name, pay_type, so_status, so_type, create_time, update_time
+    </sql>
+
+    <select id="findPageBreakByCondition" parameterType="com.xq.live.backend.business.vo.SoConditionVO" resultMap="BaseResultMap">
+        SELECT
+        s.*
+        FROM
+        so s
+        WHERE
+        1 = 1
+        <if test="keywords != null and keywords != '' ">
+            AND
+            (
+            s.so_amount LIKE CONCAT('%',#{keywords , jdbcType=VARCHAR},'%') or
+            s.user_name  LIKE CONCAT('%',#{keywords , jdbcType=VARCHAR},'%') or
+            )
+        </if>
+        <!-- 查询用户信息 -->
+        <if test="so != null">
+            <if test="so.id!=null">
+                AND s.id = #{shop.id}
+            </if>
+            <if test="so.userId!=null">
+                AND s.user_id = #{so.userId}
+            </if>
+            <if test="so.createTime!=null">
+                AND s.create_time = #{shop.createTime}
+            </if>
+            <if test="so.updateTime!=null">
+                AND s.update_time = #{so.updateTime}
+            </if>
+        </if>
+        GROUP BY
+        s.id
+        ORDER BY
+        s.id DESC
+    </select>
+
+</mapper>

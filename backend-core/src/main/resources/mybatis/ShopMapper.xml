@@ -44,23 +44,23 @@
             )
         </if>
         <!-- 查询用户信息 -->
-        <if test="shop != null">
-            <if test="shop.id!=null">
+        <if test="shopBo != null">
+            <if test="shopBo.id!=null">
                 AND s.id = #{shop.id}
             </if>
-            <if test="shop.isDeleted!=null">
+            <if test="shopBo.isDeleted!=null">
                 AND s.is_deleted = #{shop.isDeleted}
             </if>
-            <if test="shop.createTime!=null">
+            <if test="shopBo.createTime!=null">
                 AND s.create_time = #{shop.createTime}
             </if>
-            <if test="shop.shopStatus!=null">
+            <if test="shopBo.shopStatus!=null">
                 AND s.shop_status = #{shop.shopStatus}
             </if>
-            <if test="shop.applyStatus!=null">
+            <if test="shopBo.applyStatus!=null">
                 AND s.apply_status = #{shop.applyStatus}
             </if>
-            <if test="shop.updateTime!=null">
+            <if test="shopBo.updateTime!=null">
                 AND s.update_time = #{shop.updateTime}
             </if>
         </if>

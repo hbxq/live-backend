@@ -76,4 +76,8 @@ public class RenderController {
         return ResultUtil.view("shop/list");
     }
 
+    @GetMapping("/orders")
+    public ModelAndView orders() {
+        return ResultUtil.view("order/list");
+    }
 }

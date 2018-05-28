@@ -1,11 +1,11 @@
 package com.xq.live.backend.persistence.beans;
 
+import com.xq.live.backend.framework.object.AbstractDO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.Table;
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * com.xq.live.backend.persistence.beans
@@ -17,8 +17,8 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Table(name = "shop")
-public class Shop {
-    private Long id;
+public class Shop extends AbstractDO {
+
     private String shopName;
 
     private String address;
@@ -42,10 +42,6 @@ public class Shop {
     private Integer popNum;
 
     private String remark;
-
-    private Date createTime;
-
-    private Date updateTime;
 
     private Long userId;       //店铺关联的账号id
 
