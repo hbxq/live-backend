@@ -1,6 +1,7 @@
+package com.xq.live.backend.framework.config;
 /**
  * MIT License
- * Copyright (c) 2018 ZhangPeng
+ * Copyright (c) 2018 yadong.zhang
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
@@ -17,7 +18,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.xq.live.backend.framework.config;
 
 import com.xq.live.backend.business.service.ShiroService;
 import com.xq.live.backend.business.shiro.credentials.RetryLimitCredentialsMatcher;
@@ -38,20 +38,20 @@ import org.crazycake.shiro.RedisSessionDAO;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.config.MethodInvokingFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.annotation.Order;
 
-import javax.annotation.Resource;
 import java.util.Map;
 
 /**
  * Shiro配置类
  *
- * @author ZhangPeng (rocky8023@163.com)
+ * @author yadong.zhang (yadong.zhang0415(a)gmail.com)
  * @version 1.0
- * @website htts://www.xiang7.net
+ * @website https://www.zhyd.me
  * @date 2018/4/24 14:37
  * @since 1.0
  */
@@ -63,6 +63,14 @@ public class ShiroConfig {
     private ShiroService shiroService;
     @Autowired
     private RedisProperties redisProperties;
+
+    @Bean
+    public MethodInvokingFactoryBean methodInvokingFactoryBean(SecurityManager securityManager){
+        MethodInvokingFactoryBean bean = new MethodInvokingFactoryBean();
+        bean.setStaticMethod("org.apache.shiro.SecurityUtils.setSecurityManager");
+        bean.setArguments(new Object[]{securityManager});
+        return bean;
+    }
 
     @Bean(name = "lifecycleBeanPostProcessor")
     public static LifecycleBeanPostProcessor getLifecycleBeanPostProcessor() {

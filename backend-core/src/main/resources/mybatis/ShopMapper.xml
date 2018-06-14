@@ -39,7 +39,7 @@
             s.mobile  LIKE CONCAT('%',#{keywords , jdbcType=VARCHAR},'%') or
             s.address LIKE CONCAT('%',#{keywords , jdbcType=VARCHAR},'%') or
             s.phone LIKE CONCAT('%',#{keywords , jdbcType=VARCHAR},'%') or
-            s.business_cate LIKE CONCAT('%',#{keywords , jdbcType=VARCHAR},'%') or
+            s.business_cate LIKE CONCAT('%',#{keywords , jdbcType=VARCHAR},'%')
             )
         </if>
         <!-- 查询用户信息 -->

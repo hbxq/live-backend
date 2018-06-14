@@ -45,12 +45,6 @@ public class RestSoShopBIll {
     @Autowired
     private SoWriteOffService soWriteOffService;
 
-    @Autowired
-    HttpServletRequest request;
-
-    @Autowired
-    HttpServletResponse response;
-
     /**
      * 查询每个商家核销的票卷的信息
      * @param inVo
@@ -74,9 +68,9 @@ public class RestSoShopBIll {
     @SuppressWarnings("unchecked")
     @ResponseBody
     @RequestMapping(value = "/shopSoByBill",method = RequestMethod.POST)
-    public ResponseVO shopSoByBill(HttpServletRequest reuq){
+    public ResponseVO shopSoByBill(HttpServletRequest request){
         HttpSession session = request.getSession();
-        String list="{\"shopBill\":"+reuq.getParameter("shopBill")+"}";
+        String list="{\"shopBill\":"+request.getParameter("shopBill")+"}";
         List<SoWriteOffInVo> inVo = new ArrayList<SoWriteOffInVo>();
         JSONObject jso=JSON.parseObject(list);
         //System.out.println("初始jsonObject:\n"+jso+"\n");

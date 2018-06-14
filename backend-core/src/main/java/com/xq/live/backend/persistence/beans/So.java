@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -28,4 +29,6 @@ public class So extends AbstractDO {
     private Date paidTime;
     private Date hxTime;
 
+    @Transient
+    private SoDetail soDetail;
 }

@@ -94,6 +94,8 @@
             },
             queryParams: function (params) {
                 params = $.extend({}, params);
+                params.keywords = params.searchText;
+                console.log(params);
                 return params;
             },
             refresh: function () {

@@ -80,4 +80,9 @@ public class RenderController {
     public ModelAndView orders() {
         return ResultUtil.view("order/list");
     }
+
+    @GetMapping("/bills")
+    public ModelAndView bills() {
+        return ResultUtil.view("bill/list");
+    }
 }

@@ -4,22 +4,12 @@
     <div class="col-md-12 col-sm-12 col-xs-12">
         <ol class="breadcrumb">
             <li><a href="/">首页</a></li>
-            <li class="active">商家管理</li>
+            <li class="active">对账管理</li>
         </ol>
         <div class="x_panel">
             <div class="x_content">
                 <div class="<#--table-responsive-->">
                     <div class="btn-group hidden-xs" id="toolbar">
-                        <@shiro.hasPermission name="shop:add">
-                        <button id="btn_add" type="button" class="btn btn-default" title="新增商家">
-                            <i class="fa fa-plus"></i> 新增商家
-                        </button>
-                        </@shiro.hasPermission>
-                        <@shiro.hasPermission name="shop:batchDelete">
-                            <button id="btn_delete_ids" type="button" class="btn btn-default" title="删除选中">
-                                <i class="fa fa-trash-o"></i> 批量删除
-                            </button>
-                        </@shiro.hasPermission>
                     </div>
                     <table id="tablelist">
                     </table>
@@ -120,23 +110,21 @@
         var currentShopId = '${shop.id}';
         var trShopId = row.id;
         var operateBtn = [
-            '<@shiro.hasPermission name="shop:edit"><a class="btn btn-xs btn-primary btn-update" data-id="' + trShopId + '"><i class="fa fa-edit"></i>编辑</a></@shiro.hasPermission>',
+            '<@shiro.hasPermission name="bill:detail"><a class="btn btn-xs btn-info btn-allot" data-id="' + trShopId + '"><i class="fa fa-trash-o"></i>查看明细</a></@shiro.hasPermission>',
         ];
         if (currentShopId != trShopId) {
-            operateBtn.push('<@shiro.hasPermission name="shop:delete"><a class="btn btn-xs btn-danger btn-remove" data-id="' + trShopId + '"><i class="fa fa-trash-o"></i>删除</a></@shiro.hasPermission>');
-            operateBtn.push('<@shiro.hasPermission name="shop:allotRole"><a class="btn btn-xs btn-info btn-allot" data-id="' + trShopId + '"><i class="fa fa-circle-thin"></i>分配角色</a></@shiro.hasPermission>')
+            operateBtn.push('<@shiro.hasPermission name="shop:edit"><a class="btn btn-xs btn-primary btn-update" data-id="' + trShopId + '"><i class="fa fa-edit"></i>编辑</a></@shiro.hasPermission>');
         }
         return operateBtn.join('');
     }
 
     $(function () {
         var options = {
-            url: "/shop/list",
-            getInfoUrl: "/shop/get/{id}",
+            url: "/bill/list",
+            getInfoUrl: "/bill/get/{id}",
             updateUrl: "/shop/edit",
             removeUrl: "/shop/remove",
             createUrl: "/shop/add",
-            saveRolesUrl: "/shop/saveUserRoles",
             columns: [
                 {
                     checkbox: true
@@ -153,23 +141,12 @@
                     title: '地址',
                     editable: true
                 }, {
-                    field: 'logoUrl',
-                    title: '主图URL',
-                    editable: false
-                }, {
-                    field: 'createTime',
-                    title: '创建时间',
-                    editable: false,
-                    formatter: function (code) {
-                        return new Date(code).format("yyyy-MM-dd hh:mm:ss")
-                    }
-                }, {
                     field: 'operate',
                     title: '操作',
                     formatter: operateFormatter //自定义方法，添加操作按钮
                 }
             ],
-            modalName: "用户"
+            modalName: "对账"
         };
 
         //1.初始化Table
@@ -179,13 +156,13 @@
 
         /* 分配用户角色 */
         $('#tablelist').on('click', '.btn-allot', function () {
-            console.log("分配权限");
+            console.log("查看明细");
             var $this = $(this);
-            var userId = $this.attr("data-id");
+            var shopId = $this.attr("data-id");
             $.ajax({
                 async: false,
                 type: "POST",
-                data: {uid: userId},
+                data: {shopId: shopId},
                 url: '/roles/rolesWithSelected',
                 dataType: 'json',
                 success: function (json) {
