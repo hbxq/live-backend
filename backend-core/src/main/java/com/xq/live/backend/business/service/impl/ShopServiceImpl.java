@@ -41,6 +41,69 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
+    public Shop findBreakByName(String shopName) {
+        Shop shop=shopMapper.selectByShopName(shopName);
+        if (shop==null){
+            return null;
+        }
+        return shop;
+    }
+
+    @Override
+    public List<Shop> findfuzzyByName(String shopName) {
+        List<Shop> shop=shopMapper.fuzzyByShopName(shopName);
+        if (shop==null){
+            return null;
+        }
+        return shop;
+    }
+
+    @Override
+    public Shop findBreakByUserId(Long id) {
+        Shop shop=shopMapper.getShopByUserId(id);
+        if (shop == null){
+            return null;
+        }
+        return shop;
+    }
+
+    @Override
+    public Shop findBreakByShopId(Long id) {
+        Shop shop=shopMapper.getShopByShopId(id);
+        if (shop == null){
+            return null;
+        }
+        return shop;
+    }
+
+    @Override
+    public int insertShopInfo(Shop vo) {
+        int i=shopMapper.insertShopInfo(vo);
+        if (i>0){
+            return 1;
+        }
+        return 0;
+    }
+
+    @Override
+    public int changeShopInfo(Shop vo) {
+        int i=shopMapper.updateshop(vo);
+        if (i>0){
+            return 1;
+        }
+        return 0;
+    }
+
+    @Override
+    public int deleteShopByID(List<Shop> id) {
+        int i=shopMapper.deleteshop(id);
+        if (i>0){
+            return 1;
+        }
+        return 0;
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public Shop insert(Shop shop) {
         Assert.notNull(shop, "Shop不可为空！");
