@@ -1,22 +1,25 @@
 package com.xq.live.backend.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.xq.live.backend.business.entity.User;
 import com.xq.live.backend.business.enums.ResponseStatus;
 import com.xq.live.backend.business.service.ShopService;
 import com.xq.live.backend.business.vo.ShopConditionVO;
 import com.xq.live.backend.framework.object.PageResult;
 import com.xq.live.backend.framework.object.ResponseVO;
 import com.xq.live.backend.persistence.beans.Shop;
-import com.xq.live.backend.util.PasswordUtil;
 import com.xq.live.backend.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * com.xq.live.backend.controller
@@ -30,6 +33,11 @@ import java.util.Locale;
 public class RestShopController {
     @Autowired
     private ShopService shopService;
+    @Autowired
+    HttpServletRequest request;
+
+    @Autowired
+    HttpServletResponse response;
 
     @PostMapping("/list")
     public PageResult list(ShopConditionVO vo) {
@@ -139,8 +147,19 @@ public class RestShopController {
      * @param
      * @return
      */
+    @SuppressWarnings("unchecked")
+    @ResponseBody
     @PostMapping(value = "/rmInfoById")
-    public ResponseVO deShopById(List<Shop> id) {
+    public ResponseVO deShopById(HttpServletRequest reuq) {
+        HttpSession session = request.getSession();
+        String list="{\"shopid\":"+reuq.getParameter("shopid")+"}";
+        List<Shop> id= new ArrayList<Shop>();
+        JSONObject jso= JSON.parseObject(list);
+        JSONArray jsarr=jso.getJSONArray("shopid");
+        for(int i=0;i<jsarr.size();i++){
+            JSONObject ao = jsarr.getJSONObject(i);
+            id.get(i).setId(ao.getLong("id"));
+        }
         int i=shopService.deleteShopByID(id);
         if (i==1){
             return ResultUtil.success("删除成功");
