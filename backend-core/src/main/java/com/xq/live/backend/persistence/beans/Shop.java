@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.math.BigDecimal;
 
 /**
@@ -43,6 +44,7 @@ public class Shop extends AbstractDO {
 
     private String remark;
 
+    @Transient
     private Long userId;       //店铺关联的账号id
 
     private Integer shopStatus;//店铺状态
@@ -50,4 +52,6 @@ public class Shop extends AbstractDO {
     private Integer applyStatus;//审批状态
 
     private String businessCate;//经营品类
+
+    private String city;
 }

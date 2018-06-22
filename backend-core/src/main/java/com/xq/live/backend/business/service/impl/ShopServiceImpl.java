@@ -42,7 +42,7 @@ public class ShopServiceImpl implements ShopService {
         for (Shop r : shops) {
             shopBos.add(new ShopBo(r));
         }
-        PageInfo bean = new PageInfo<ShopBo>(shopBos);
+        PageInfo bean = new PageInfo<Shop>(shops);
         bean.setList(shopBos);
         return bean;
     }

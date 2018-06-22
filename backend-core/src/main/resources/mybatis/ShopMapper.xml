@@ -8,6 +8,7 @@
         <result column="phone" jdbcType="VARCHAR" property="phone"/>
         <result column="index_url" jdbcType="VARCHAR" property="indexUrl"/>
         <result column="logo_url" jdbcType="VARCHAR" property="logoUrl"/>
+        <result column="city" jdbcType="VARCHAR" property="city"/>
         <result column="shop_info" jdbcType="VARCHAR" property="shopInfo"/>
         <result column="location_x" jdbcType="DECIMAL" property="locationX"/>
         <result column="location_y" jdbcType="DECIMAL" property="locationY"/>
@@ -19,10 +20,11 @@
         <result column="shop_status" jdbcType="INTEGER" property="shopStatus"/>
         <result column="apply_status" jdbcType="INTEGER" property="applyStatus"/>
         <result column="business_cate" jdbcType="VARCHAR" property="businessCate"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, shop_name, address, mobile, phone, index_url, logo_url, shop_info, location_x, location_y,
-        is_deleted, pop_num, remark, create_time, update_time,shop_status,apply_status,business_cate
+        id, shop_name, address, mobile, phone, index_url, logo_url,city, shop_info, location_x, location_y,
+        is_deleted, pop_num, remark, create_time, update_time,shop_status,apply_status,business_cate,user_id
     </sql>
     <!--查询商家信息-->
     <select id="findPageBreakByCondition" parameterType="com.xq.live.backend.business.vo.ShopConditionVO" resultMap="BaseResultMap">
@@ -92,6 +94,7 @@
         s.phone,
         s.index_url,
         s.logo_url,
+        s.city,
         s.shop_info,
         s.location_x,
         s.location_y,
@@ -117,12 +120,12 @@
     <!--添加商家信息-->
     <insert id="insertShopInfo" parameterType="com.xq.live.backend.persistence.beans.Shop">
         insert into shop (shop_name, address,
-        mobile, phone, index_url,logo_url,
+        mobile, phone, index_url,logo_url,city,
         shop_info, location_x, location_y,
         remark, create_time,
         update_time,business_cate)
         values (#{shopName,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
-        #{mobile,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{indexUrl,jdbcType=VARCHAR}, #{logoUrl,jdbcType=VARCHAR},
+        #{mobile,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{indexUrl,jdbcType=VARCHAR}, #{logoUrl,jdbcType=VARCHAR},#{city,jdbcType=VARCHAR},
         #{shopInfo,jdbcType=VARCHAR}, #{locationX,jdbcType=DECIMAL}, #{locationY,jdbcType=DECIMAL},
         #{remark,jdbcType=VARCHAR}, now(), now(), #{businessCate,jdbcType=VARCHAR})
     </insert>
@@ -148,6 +151,9 @@
             </if>
             <if test="logoUrl != null">
                 logo_url = #{logoUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                city = #{city,jdbcType=VARCHAR},
             </if>
             <if test="shopInfo != null">
                 shop_info = #{shopInfo,jdbcType=VARCHAR},

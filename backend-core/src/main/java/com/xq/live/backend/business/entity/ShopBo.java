@@ -110,4 +110,12 @@ public class ShopBo{
     public void setLogoUrl(String logoUrl){
         this.shop.setLogoUrl(logoUrl);
     }
+
+    public String getCity() {return this.shop.getCity();}
+
+    public void setCity(String city) {this.shop.setCity(city);}
+
+    public String getShopInfo() {return this.shop.getShopInfo();}
+
+    public void setShopInfo(String shopInfo) {this.shop.setShopInfo(shopInfo);}
 }
