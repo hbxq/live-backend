@@ -5,7 +5,7 @@
 
 	<artifactId>backend-admin</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>backend-admin</name>
 	<description>Demo project for Spring Boot</description>
@@ -26,6 +26,12 @@
 			<artifactId>backend-core</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -33,10 +39,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<mainClass>com.xq.live.backend.ShiroAdminApplication</mainClass>
-					<layout>JAR</layout>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>

@@ -21,6 +21,8 @@ package com.xq.live.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
 
 /**
  * 程序启动类
@@ -32,7 +34,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @since 1.0
  */
 @SpringBootApplication
-public class ShiroAdminApplication {
+public class ShiroAdminApplication extends SpringBootServletInitializer {
+
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(ShiroAdminApplication.class);
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(ShiroAdminApplication.class, args);
