@@ -1028,7 +1028,7 @@ footer {
 }
 
 .degrees:after, .x_content, .x_panel {
-    position: relative
+    position: relative;
 }
 
 @media (min-width: 768px) {
@@ -1184,7 +1184,7 @@ h2 {
     -moz-column-break-inside: avoid;
     column-break-inside: avoid;
     opacity: 1;
-    transition: all .2s ease
+    transition: all .2s ease;
 }
 
 .x_title {
@@ -4983,6 +4983,60 @@ ul, menu, dir {
 .ztree li span.button {
     box-shadow: none !important;
     border-radius: 0 !important
+}
+
+
+/*查看明细弹窗*/
+/*.Wbutton {*/
+    /*height: 100%;*/
+    /*width: 100%;*/
+    /*position: absolute;*/
+    /*/!*top: 0px;*!/*/
+    /*bottom: 0px;*/
+    /*/!*z-index: 0;*!/*/
+    /*overflow: hidden;*/
+    /*word-break: break-all;*/
+/*}*/
+/*.Wbutton .listbox table,table tr th, table tr td {*/
+    /*border:1px solid black;*/
+/*}*/
+.listbox table tr td{
+    border:1px solid black;
+}
+.headline{
+    text-align: center;
+    height: 40px;
+    border-bottom: 1px solid black;
+    line-height: 40px;
+    font-size: 18px;
+}
+.Wbutton button {
+    background-color: red;
+}
+.listbox{
+    width: 67.2%;
+    border: 1px solid black;
+    margin: 0 auto;
+    display: none;
+    z-index: 999;
+    position: absolute;
+    top: 195px;
+    left: 5px;
+    right: 0;
+    bottom: 58px;
+    background: #FFFFFF;
+}
+.listbox table{
+    width: 96%;
+    margin: 20px auto;
+    min-height: 25px;
+    line-height: 25px;
+    text-align: center;
+    border-collapse: collapse;
+}
+.total{
+    text-align: center;
+    font-weight: 600;
 }
 
 /* 重写ztree样式，修复选择框上出现阴影的问题 */

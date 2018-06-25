@@ -51,11 +51,27 @@ public class RestShopController {
 
     @PostMapping(value = "/add")
     public ResponseVO add(Shop shop) {
-        shop.setIsDeleted(0);
-        shop.setShopStatus(1);
+        shopService.insert(new ShopBo(shop));
         return ResultUtil.success("成功");
     }
 
+    /**
+     * 逻辑删除商家信息
+     * @param ids
+     * @return
+     */
+    @PostMapping(value = "/remove")
+    public ResponseVO remove(Long[] ids){
+        if (null == ids) {
+            return ResultUtil.error(500, "请至少选择一条记录");
+        }
+        for (Long id : ids) {
+            ShopBo byPrimaryKey = shopService.getByPrimaryKey(id);
+            byPrimaryKey.setIsDeleted(Shop.IS_DELETED);
+            boolean b = shopService.updateSelective(byPrimaryKey);
+        }
+        return ResultUtil.success("成功删除 [" + ids.length + "] 个商家");
+    }
     /**
      * 根据商家名查询
      * @param
@@ -150,7 +166,7 @@ public class RestShopController {
      * @return
      */
     @SuppressWarnings("unchecked")
-    @ResponseBody
+    //@ResponseBody
     @PostMapping(value = "/rmInfoById")
     public ResponseVO deShopById(HttpServletRequest reuq) {
         HttpSession session = request.getSession();

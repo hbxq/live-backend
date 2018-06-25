@@ -19,6 +19,12 @@ import java.math.BigDecimal;
 @EqualsAndHashCode(callSuper = false)
 @Table(name = "shop")
 public class Shop extends AbstractDO {
+    /**
+     * 是否删除 0未删除 1删除
+     */
+    public static final int NO_DELETED = 0;
+
+    public static final int IS_DELETED = 1;
 
     private String shopName;
 

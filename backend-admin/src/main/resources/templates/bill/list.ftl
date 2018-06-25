@@ -38,6 +38,50 @@
     </div>
 </div>
 <!--/弹框-->
+
+<#--查看明细弹窗-->
+<#--<div class="Wbutton">-->
+    <div class="listbox">
+        <div class="headline">详情订单量</div>
+        <table border="1" cellspacing="0">
+            <thead>
+            <th>订单号</th>
+            <th>下单人</th>
+            <th>时间</th>
+            <th>服务费</th>
+            <th>对账状态</th>
+            <th>金额</th>
+            </thead>
+            <tfoot>
+            <tr>
+                <td class="total" colspan="6">合计:888</td>
+            </tr>
+            </tfoot>
+            <tfoot>
+            <tr>
+                <td>8882323</td>
+                <td>李四</td>
+                <td>2018/6/91</td>
+                <td>1</td>
+                <td>未对账</td>
+                <td>80</td>
+            </tr>
+            </tfoot>
+            <tfoot>
+            <tr>
+                <td>8882323</td>
+                <td>李四</td>
+                <td>2018/6/91</td>
+                <td>1</td>
+                <td>未对账</td>
+                <td>80</td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+<#--</div>-->
+<#--查看明细弹窗-->
+
 <script>
     /**
      * 操作按钮
@@ -94,35 +138,18 @@
         //2.初始化Button的点击事件
         $.buttonUtil.init(options);
 
-        /* 分配用户角色 */
+//        $('.btn-info').click(function (event) {
+//            event.stopPropagation();
+//            $('.listbox').toggle('slow');
+//        });
+//        $('.btn-info').click(function () { $('.listbox').fadeOut(200) });
+
+        /* 分配用户角色  --查看明细弹窗 */
         $('#tablelist').on('click', '.btn-allot', function () {
-            console.log("查看明细");
-            var $this = $(this);
-            var shopId = $this.attr("data-id");
-            $.ajax({
-                async: false,
-                type: "POST",
-                data: {shopId: shopId},
-                url: '/shop/list',
-                dataType: 'json',
-                success: function (json) {
-                    var data = json.data;
-                    console.log(data);
-                    $('#ordertablelist').bootstrapTable({
-                        url: 'data1.json',
-                        columns: [{
-                            field: 'id',
-                            title: 'Item ID'
-                        }, {
-                            field: 'name',
-                            title: 'Item Name'
-                        }, {
-                            field: 'price',
-                            title: 'Item Price'
-                        }, ]
-                    });
-                }
-            });
+//            event.stopPropagation();
+            $('.listbox').toggle();
         });
+            $('.btn-allot').click(function () { $('.listbox').fadeOut() });
+    // 查看明细弹窗
     });
 </script>

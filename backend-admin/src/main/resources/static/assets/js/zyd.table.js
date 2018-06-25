@@ -226,6 +226,7 @@ function clearText($this, type, info){
         } else if (type == 'checkbox') {
             $this.iCheck((thisValue || thisValue == 1) ? 'check' : 'uncheck');
         } else {
+            $this.val('');//解决弹出的时候，没有删除上次点击获取的数据
             if (thisValue && thisName != 'password') {
                 $this.val(thisValue);
             }
