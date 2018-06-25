@@ -42,7 +42,18 @@ public enum ResponseStatus {
     INVALID_AUTHCODE(500, "手机验证码无效！"),
     INVALID_TOKEN(500, "无效的TOKEN，您没有操作权限！"),
     INVALID_ACCESS(500, "无效的请求，该请求已过期！"),
-    DELETE_ERROR(500, "删除失败！");
+    DELETE_ERROR(500, "删除失败！"),
+
+
+    /**
+     * 自定义返回状态码
+     */
+    error_para_user_empty(200001, "用户信息为空"),
+    error_file_upload_empty(200002, "上传文件为空"),
+    error_file_upload_error(200003, "文件上传失败"),
+
+
+    ;
 
     private Integer code;
     private String message;

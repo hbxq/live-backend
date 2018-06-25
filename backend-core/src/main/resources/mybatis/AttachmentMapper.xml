@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xq.live.backend.persistence.mapper.AttachmentMapper">
+  <resultMap id="BaseResultMap" type="com.xq.live.backend.persistence.beans.Attachment">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="small_pic_url" jdbcType="VARCHAR" property="smallPicUrl" />
+    <result column="pic_url" jdbcType="VARCHAR" property="picUrl" />
+    <result column="sort_num" jdbcType="INTEGER" property="sortNum" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, small_pic_url, pic_url, sort_num, create_time
+  </sql>
+  <insert id="insertForId" parameterType="com.xq.live.backend.persistence.beans.Attachment">
+    insert into attachment (id, small_pic_url, pic_url, 
+      sort_num, create_time)
+    values (#{id,jdbcType=BIGINT}, #{smallPicUrl,jdbcType=VARCHAR}, #{picUrl,jdbcType=VARCHAR}, 
+      0, now())
+      <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+        select last_insert_id() as id
+      </selectKey>
+  </insert>
+  <select id="selectByIds" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from attachment
+    where id in
+    <foreach item="item" collection="ids" separator="," open="(" close=")" index="">
+      #{item, jdbcType=BIGINT}
+    </foreach>
+  </select>
+</mapper>

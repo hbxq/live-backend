@@ -120,3 +120,11 @@ xq:
         allowIps[0]:
         # 黑名单(非必填)， list
         denyIps[0]:
+##################################
+#常量配置
+##################################
+##正式服务器域名常量
+constants:
+       domainXqUrl : https://www.hbxq001.cn
+##测试服务器域名常量
+      #domainXqUrl = https://www.xq0036.top
