@@ -10,6 +10,8 @@
         <result column="so_status" jdbcType="TINYINT" property="soStatus"/>
         <result column="so_type" jdbcType="TINYINT" property="soType"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="paid_time" jdbcType="TIMESTAMP" property="paidTime"/>
+        <result column="hx_time" jdbcType="TIMESTAMP" property="hxTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">

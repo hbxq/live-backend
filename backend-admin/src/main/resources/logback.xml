@@ -8,6 +8,7 @@
     </appender>
     <logger name="org.springframework.core.env" level="ERROR"/>
     <logger name="com.xq.live.backend" level="INFO"/>
+    <logger name="com.xq.live.backend.persistence.mapper" level="DEBUG"/>
 
     <!--控制台打印资源加载信息 -->
     <root level="ERROR">

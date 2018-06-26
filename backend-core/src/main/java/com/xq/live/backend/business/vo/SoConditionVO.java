@@ -1,5 +1,6 @@
 package com.xq.live.backend.business.vo;
 
+import com.xq.live.backend.framework.object.BaseConditionVO;
 import com.xq.live.backend.persistence.beans.So;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,6 +14,6 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class SoConditionVO {
+public class SoConditionVO extends BaseConditionVO {
     private So so;
 }
