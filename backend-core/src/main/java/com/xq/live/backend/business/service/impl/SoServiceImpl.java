@@ -7,7 +7,11 @@ import com.xq.live.backend.business.entity.SoBo;
 import com.xq.live.backend.business.service.SoService;
 import com.xq.live.backend.business.vo.SoConditionVO;
 import com.xq.live.backend.persistence.beans.So;
+import com.xq.live.backend.persistence.beans.SoDetail;
+import com.xq.live.backend.persistence.beans.SoShopLog;
+import com.xq.live.backend.persistence.mapper.SoDetailMapper;
 import com.xq.live.backend.persistence.mapper.SoMapper;
+import com.xq.live.backend.persistence.mapper.SoShopLogMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +30,12 @@ public class SoServiceImpl implements SoService{
     @Autowired
     private SoMapper soMapper;
 
+    @Autowired
+    private SoDetailMapper soDetailMapper;
+
+    @Autowired
+    private SoShopLogMapper soShopLogMapper;
+
     @Override
     public PageInfo<SoBo> findPageBreakByCondition(SoConditionVO vo) {
         PageHelper.startPage(vo.getPageNumber(), vo.getPageSize());
@@ -35,7 +45,12 @@ public class SoServiceImpl implements SoService{
         }
         List<SoBo> SoBos = new ArrayList<>();
         for (So r : sos) {
-            SoBos.add(new SoBo(r));
+                /*SoDetail soDetail = new SoDetail();
+                soDetail.setSoId(r.getId());
+                soDetail = soDetailMapper.selectOne(soDetail);
+                r.setSoDetail(soDetail);*/
+                SoBos.add(new SoBo(r));
+
         }
         PageInfo bean = new PageInfo<So>(sos);
         bean.setList(SoBos);

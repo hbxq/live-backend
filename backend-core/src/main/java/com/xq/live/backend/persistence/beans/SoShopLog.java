@@ -5,16 +5,22 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.Table;
-import java.math.BigDecimal;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-@Table(name = "so_detail")
-public class SoDetail extends AbstractDO {
+@Table(name = "so_shop_log")
+public class SoShopLog extends AbstractDO{
     private Long soId;
+
+    private Long shopId;
+
     private Long skuId;
-    private String skuCode;
-    private String skuName;
-    private Integer skuNum;
-    private BigDecimal unitPrice;
+
+    private Long userId;
+
+    private String userName;
+
+    private Integer operateType;
+
+    private String userIp;
 }
