@@ -195,6 +195,10 @@
                         }
                     }
                 }, {
+                    field: 'shopName',
+                    title: '商家店铺',
+                    editable: true
+                },{
                     field: 'createTime',
                     title: '创建时间',
                     editable: false,

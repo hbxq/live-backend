@@ -15,6 +15,7 @@
         <result column="hx_time" jdbcType="TIMESTAMP" property="hxTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="is_dui" jdbcType="TINYINT" property="isDui"/>
+        <result column="shop_name" jdbcType="VARCHAR" property="shopName"/>
     </resultMap>
     <sql id="Base_Column_List">
     id, so_amount, user_id, user_name, shop_id,pay_type, so_status, so_type, create_time, update_time,is_dui
@@ -22,9 +23,11 @@
 
     <select id="findPageBreakByCondition" parameterType="com.xq.live.backend.business.vo.SoConditionVO" resultMap="BaseResultMap">
         SELECT
-        s.*
+        s.*,
+        sp.shop_name
         FROM
         so s
+        left join shop sp on s.shop_id = sp.id
         WHERE
         1 = 1
         <if test="keywords != null and keywords != '' ">
@@ -37,17 +40,32 @@
         <!-- 查询用户信息 -->
         <if test="so != null">
             <if test="so.id!=null">
-                AND s.id = #{shop.id}
+                AND s.id = #{so.id}
             </if>
             <if test="so.userId!=null">
                 AND s.user_id = #{so.userId}
             </if>
             <if test="so.createTime!=null">
-                AND s.create_time = #{shop.createTime}
+                AND s.create_time = #{so.createTime}
             </if>
             <if test="so.updateTime!=null">
                 AND s.update_time = #{so.updateTime}
             </if>
+            <if test="so.shopId!=null">
+                and s.shop_id = #{so.shopId}
+            </if>
+            <if test="so.soStatus!=null">
+                and s.so_status = #{so.soStatus}
+            </if>
+            <if test="so.soType!=null">
+                and s.so_Type = #{so.soType}
+            </if>
+            <if test="so.isDui!=null">
+                and s.is_dui = #{so.isDui}
+            </if>
+        </if>
+        <if test="beginTime !=null and endTime != null">
+            and (s.create_time BETWEEN #{beginTime} and #{endTime})
         </if>
         GROUP BY
         s.id

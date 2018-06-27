@@ -135,4 +135,12 @@ public class SoBo extends AbstractBO {
     public void setIsDui(Integer isDui) {
         this.so.setIsDui(isDui);
     }
+
+    public String getShopName() {
+        return this.so.getShopName();
+    }
+
+    public void setShopName(String shopName) {
+        this.so.setShopName(shopName);
+    }
 }

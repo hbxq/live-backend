@@ -56,8 +56,8 @@ public class SoServiceImpl implements SoService{
                 soDetail.setSoId(r.getId());
                 soDetail = soDetailMapper.selectOne(soDetail);
                 r.setSoDetail(soDetail);
-                SoBos.add(new SoBo(r));
             }
+            SoBos.add(new SoBo(r));
         }
         PageInfo bean = new PageInfo<So>(sos);
         bean.setList(SoBos);

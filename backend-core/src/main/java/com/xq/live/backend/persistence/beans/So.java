@@ -49,4 +49,6 @@ public class So extends AbstractDO {
 
     @Transient
     private SoDetail soDetail;
+    @Transient
+    private String shopName;
 }
