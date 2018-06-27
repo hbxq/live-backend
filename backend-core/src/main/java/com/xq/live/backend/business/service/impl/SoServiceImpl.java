@@ -45,12 +45,19 @@ public class SoServiceImpl implements SoService{
         }
         List<SoBo> SoBos = new ArrayList<>();
         for (So r : sos) {
-                /*SoDetail soDetail = new SoDetail();
+            if(r.getSoType()==So.SO_TYPE_SJ){
+                SoShopLog soShopLog = new SoShopLog();
+                soShopLog.setSoId(r.getId());
+                soShopLog.setOperateType(r.getSoStatus());
+                soShopLog = soShopLogMapper.selectOne(soShopLog);
+                int i =0 ;
+            }else {
+                SoDetail soDetail = new SoDetail();
                 soDetail.setSoId(r.getId());
                 soDetail = soDetailMapper.selectOne(soDetail);
-                r.setSoDetail(soDetail);*/
+                r.setSoDetail(soDetail);
                 SoBos.add(new SoBo(r));
-
+            }
         }
         PageInfo bean = new PageInfo<So>(sos);
         bean.setList(SoBos);

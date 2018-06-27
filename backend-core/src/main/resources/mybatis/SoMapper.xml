@@ -14,9 +14,10 @@
         <result column="paid_time" jdbcType="TIMESTAMP" property="paidTime"/>
         <result column="hx_time" jdbcType="TIMESTAMP" property="hxTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="is_dui" jdbcType="TINYINT" property="isDui"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, so_amount, user_id, user_name, shop_id,pay_type, so_status, so_type, create_time, update_time
+    id, so_amount, user_id, user_name, shop_id,pay_type, so_status, so_type, create_time, update_time,is_dui
     </sql>
 
     <select id="findPageBreakByCondition" parameterType="com.xq.live.backend.business.vo.SoConditionVO" resultMap="BaseResultMap">

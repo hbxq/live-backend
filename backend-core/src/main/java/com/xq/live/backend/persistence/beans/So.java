@@ -45,6 +45,7 @@ public class So extends AbstractDO {
     private Integer soType;
     private Date paidTime;
     private Date hxTime;
+    private Integer isDui;
 
     @Transient
     private SoDetail soDetail;

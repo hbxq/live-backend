@@ -64,6 +64,14 @@ public class SoBo extends AbstractBO {
         this.so.setUserName(userName);
     }
 
+    public Long getShopId() {
+        return this.so.getShopId();
+    }
+
+    public void setShopId(Long shopId) {
+        this.so.setShopId(shopId);
+    }
+
     public Integer getPayType() {
         return this.so.getPayType();
     }
@@ -118,5 +126,13 @@ public class SoBo extends AbstractBO {
 
     public void setUpdateTime(Date updateTime) {
         this.so.setUpdateTime(updateTime);
+    }
+
+    public Integer getIsDui() {
+        return this.so.getIsDui();
+    }
+
+    public void setIsDui(Integer isDui) {
+        this.so.setIsDui(isDui);
     }
 }
