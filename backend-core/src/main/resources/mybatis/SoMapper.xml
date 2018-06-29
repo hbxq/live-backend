@@ -16,6 +16,10 @@
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="is_dui" jdbcType="TINYINT" property="isDui"/>
         <result column="shop_name" jdbcType="VARCHAR" property="shopName"/>
+
+        <result column="sku_id" jdbcType="BIGINT" property="skuId"/>
+        <result column="sell_price" jdbcType="DECIMAL" property="sellPrice"/>
+        <result column="payment_method" jdbcType="INTEGER" property="paymentMethod"/>
     </resultMap>
     <sql id="Base_Column_List">
     id, so_amount, user_id, user_name, shop_id,pay_type, so_status, so_type, create_time, update_time,is_dui
@@ -30,47 +34,88 @@
         left join shop sp on s.shop_id = sp.id
         WHERE
         1 = 1
-        <if test="keywords != null and keywords != '' ">
-            AND
-            (
-            s.so_amount LIKE CONCAT('%',#{keywords , jdbcType=VARCHAR},'%') or
-            s.user_name  LIKE CONCAT('%',#{keywords , jdbcType=VARCHAR},'%') or
-            )
-        </if>
         <!-- 查询用户信息 -->
-        <if test="so != null">
-            <if test="so.id!=null">
-                AND s.id = #{so.id}
+            <if test="keywords != null and keywords != '' ">
+                AND
+                (
+                s.so_amount LIKE CONCAT('%',#{keywords , jdbcType=VARCHAR},'%') or
+                s.user_name  LIKE CONCAT('%',#{keywords , jdbcType=VARCHAR},'%') or
+                )
             </if>
-            <if test="so.userId!=null">
-                AND s.user_id = #{so.userId}
+            <if test="id!=null">
+                AND s.id = #{id}
             </if>
-            <if test="so.createTime!=null">
-                AND s.create_time = #{so.createTime}
+            <if test="userId!=null">
+                AND s.user_id = #{userId}
             </if>
-            <if test="so.updateTime!=null">
-                AND s.update_time = #{so.updateTime}
+            <if test="createTime!=null">
+                AND s.create_time = #{createTime}
             </if>
-            <if test="so.shopId!=null">
-                and s.shop_id = #{so.shopId}
+            <if test="updateTime!=null">
+                AND s.update_time = #{updateTime}
             </if>
-            <if test="so.soStatus!=null">
-                and s.so_status = #{so.soStatus}
+            <if test="shopId!=null">
+                and s.shop_id = #{shopId}
             </if>
-            <if test="so.soType!=null">
-                and s.so_Type = #{so.soType}
+            <if test="soStatus!=null">
+                and s.so_status = #{soStatus}
             </if>
-            <if test="so.isDui!=null">
-                and s.is_dui = #{so.isDui}
+            <if test="soType!=null">
+                and s.so_Type = #{soType}
             </if>
-        </if>
-        <if test="beginTime !=null and endTime != null">
-            and (s.create_time BETWEEN #{beginTime} and #{endTime})
-        </if>
+            <if test="isDui!=null">
+                and s.is_dui = #{isDui}
+            </if>
+            <if test="beginTime !=null and endTime != null">
+                and (s.create_time BETWEEN #{beginTime} and #{endTime})
+            </if>
         GROUP BY
         s.id
         ORDER BY
         s.id DESC
     </select>
+
+    <!--查询商家一段时间内的订单和服务费信息-->
+    <select id="findSoForShop" parameterType="com.xq.live.backend.business.vo.SoConditionVO" resultMap="BaseResultMap">
+        SELECT
+        s.id ,
+        s.so_amount,
+        s.user_name ,
+        s.so_status ,
+        s.so_type ,
+        s.paid_time ,
+        s.is_dui ,
+        s.shop_id ,
+        sd.sku_id ,
+        sk.sell_price,
+        al.payment_method
+        FROM
+        so s
+        LEFT JOIN so_shop_log sd ON s.id = sd.so_id
+        LEFT JOIN sku sk ON sd.sku_id = sk.id
+        LEFT JOIN shop_allocation al ON  sd.shop_id = al.shop_id
+        WHERE
+        sd.operate_type = 2
+        AND
+        sd.shop_id=#{shopId,jdbcType=BIGINT}
+        <if test="beginTime !=null and endTime != null">
+            and (s.create_time BETWEEN #{beginTime} and #{endTime})
+        </if>
+        ORDER BY
+        s.id DESC
+    </select>
+
+    <!--批量修改符合条件订单的对账状态-->
+    <update id="updateBySO" parameterType="java.util.List">
+        update so
+        set
+        is_dui =1
+        WHERE
+        id IN
+        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+            #{item.id,jdbcType=BIGINT}
+        </foreach>
+    </update>
+
 
 </mapper>

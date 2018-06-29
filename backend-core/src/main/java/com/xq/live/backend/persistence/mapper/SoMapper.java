@@ -1,5 +1,7 @@
 package com.xq.live.backend.persistence.mapper;
 
+import com.github.pagehelper.PageInfo;
+import com.xq.live.backend.business.entity.SoBo;
 import com.xq.live.backend.business.vo.SoConditionVO;
 import com.xq.live.backend.persistence.beans.So;
 import com.xq.live.backend.plugin.BaseMapper;
@@ -21,4 +23,18 @@ public interface SoMapper extends BaseMapper<So> {
      * @return
      */
     List<So> findPageBreakByCondition(SoConditionVO vo);
+
+    /**
+     * 分页查询商家訂單
+     * @param vo
+     * @return
+     */
+    List<So> findSoForShop(SoConditionVO vo);
+
+    /**
+     * 批量更改商家訂單
+     * @param list
+     * @return
+     */
+    Integer updateBySO( List<SoConditionVO> list);
 }

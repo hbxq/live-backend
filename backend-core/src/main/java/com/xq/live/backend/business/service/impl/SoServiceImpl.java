@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,6 +64,53 @@ public class SoServiceImpl implements SoService{
         bean.setList(SoBos);
         return bean;
     }
+    @Override
+    public PageInfo<SoBo> findSoForShop(SoConditionVO vo) {
+
+        PageHelper.startPage(vo.getPageNumber(), vo.getPageSize());
+        List<So> sos = soMapper.findSoForShop(vo);
+        if (CollectionUtils.isEmpty(sos)) {
+            return null;
+        }
+        List<SoBo> SoBos = new ArrayList<>();
+        BigDecimal a = new BigDecimal(1);
+        BigDecimal allPrice = new BigDecimal(0);
+        for (int i=0;i<sos.size();i++) {
+            if (sos.get(i).getPaymentMethod()==2){//平臺代收
+                if(sos.get(i).getShopId()!=null&&sos.get(i).getSoType()==1){//食典券訂單
+                    sos.get(i).setSellPrice(a);
+                    sos.get(i).setSoPrice(sos.get(i).getSoAmount().subtract(a));
+                }else if (sos.get(i).getShopId()!=null&&sos.get(i).getSoType()==2){//商家訂單
+                    if (sos.get(i).getSkuId()!=null){
+                        sos.get(i).setSoPrice(sos.get(i).getSoAmount().subtract(sos.get(i).getSellPrice()));
+                    }else {
+                        sos.get(i).setSoPrice(sos.get(i).getSoAmount());
+                    }
+                }else if (sos.get(i).getShopId()==null&&sos.get(i).getSoType()==1){//平臺訂單
+                    if (sos.get(i).getSkuId()!=null){
+                        sos.get(i).setSoPrice(sos.get(i).getSoAmount().subtract(sos.get(i).getSellPrice()));
+                    }else {
+                        sos.get(i).setSoPrice(sos.get(i).getSoAmount());
+                    }
+                }
+            }else if (sos.get(i).getPaymentMethod()==1){//商家自收
+            }
+            allPrice.add(sos.get(i).getSoPrice());
+            SoBos.add(new SoBo(sos.get(i)));
+        }
+        PageInfo bean = new PageInfo<So>(sos);
+        bean.setList(SoBos);
+        return bean;
+    }
+
+    @Override
+    public Integer updateBySO(List<SoConditionVO> list) {
+        Integer i=soMapper.updateBySO(list);
+        if (i<1){
+            return 0;
+        }
+        return i;
+    }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -87,6 +135,7 @@ public class SoServiceImpl implements SoService{
 
     @Override
     public boolean updateSelective(SoBo entity) {
+
         return false;
     }
 

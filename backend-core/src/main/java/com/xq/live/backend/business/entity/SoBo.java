@@ -16,7 +16,7 @@ import java.util.Date;
  * Created on 2018/5/26 下午5:53
  * @Description:
  */
-public class SoBo extends AbstractBO {
+public class SoBo {
     private So so;
 
     public SoBo() {
@@ -143,4 +143,44 @@ public class SoBo extends AbstractBO {
     public void setShopName(String shopName) {
         this.so.setShopName(shopName);
     }
+
+    public Long getSkuId() {
+        return this.so.getSkuId();
+    }
+
+    public void setSkuId(Long skuId) {
+        this.setSkuId(skuId);
+    }
+
+    public BigDecimal getSellPrice() {
+        return this.so.getSellPrice();
+    }
+
+    public void setSellPrice(BigDecimal sellPrice) {
+        this.setSellPrice(sellPrice);
+    }
+    public BigDecimal getSoPrice() {
+        return this.so.getSoPrice();
+    }
+
+    public void setSoPrice(BigDecimal soPrice) {
+        this.setSoPrice(soPrice);
+    }
+
+    public Integer getPaymentMethod() {
+        return this.so.getPaymentMethod();
+    }
+
+    public void setPaymentMethod(Integer paymentMethod) {
+        this.setPaymentMethod(paymentMethod);
+    }
+
+    public BigDecimal getSoAllPrice() {
+        return this.so.getSoAllPrice();
+    }
+
+    public void setSoAllPrice(BigDecimal soAllPrice) {
+        this.setSoAllPrice(soAllPrice);
+    }
+
 }

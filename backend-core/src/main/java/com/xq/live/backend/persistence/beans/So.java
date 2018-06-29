@@ -48,7 +48,23 @@ public class So extends AbstractDO {
     private Integer isDui;
 
     @Transient
-    private SoDetail soDetail;
+    private SoDetail soDetail;//订单详情-针对详情
+
+    @Transient
+    private Long skuId;
+
+    @Transient
+    private BigDecimal sellPrice;//平臺服務費
+
+    @Transient
+    private BigDecimal soPrice;//單筆訂單服務費//扣除服务费后的金额
+
+    @Transient
+    private BigDecimal soAllPrice;//所有訂單服務費
+
     @Transient
     private String shopName;
+
+    private Integer paymentMethod;//商家是否自收
+
 }
