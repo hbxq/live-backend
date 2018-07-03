@@ -8,6 +8,68 @@
         </ol>
         <div class="x_panel">
             <div class="x_content">
+
+
+                <div class="row">
+
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">开始时间</span>
+                            <input type="text" id="calendar" placeholder="test" class="form-control">
+                            <#--<input type="text" id="calendar1" placeholder="test" class="form-control">-->
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">结束时间</span>
+                            <input type="text" id="calendar2" placeholder="test" class="form-control">
+                            <#--<input type="text" id="calendar3" placeholder="test" class="form-control">-->
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="input-group dropdown col-lg-3  pull-left">
+                    <span class="input-group-addon">输入店铺名称搜索</span>
+                    <input type="text" class="form-control" id="shop_name">
+                </div>
+
+                <div class="dropdown pull-left">
+                    <button type="button" class="btn dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown">订单类型
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" id="order_type">
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" id="-1" href="#">Java</a>
+                        </li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="1" id="1" href="#">数据挖掘</a>
+                        </li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="2" id="2" href="#">数据通信/网络</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="dropdown pull-left">
+                    <button type="button" class="btn dropdown-toggle" id="dropdownMenu12" data-toggle="dropdown">订单状态
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu12" id="order_status">
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" id="-1" href="#">订单状态1</a>
+                        </li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="1" id="1" href="#">订单状态2</a>
+                        </li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="2" id="2" href="#">订单状态3</a>
+                        </li>
+                    </ul>
+                </div>
+
+
+                <button type="button" class="btn btn-primary" id="search">搜索</button>
                 <div class="<#--table-responsive-->">
                     <table id="tablelist">
                     </table>
@@ -121,6 +183,47 @@
      * @param index
      * @returns {string}
      */
+    var _status='', _type='',shop_name=''
+    $("#order_type li").click(function(event){
+        //获取选择的订单类型
+        _type =  event.target.id;
+        var newname =$(this).find("a").eq(0).text();
+        $("#dropdownMenu1").text(newname);
+        $("<span class='caret'></span>").appendTo("#dropdownMenu1");
+    });
+    $("#order_status li").click(function(event){
+        //获取选择的订单状态
+        console.log( event.target)
+        _status =  event.target.id;
+        var newname =$(this).find("a").eq(0).text();
+        $("#dropdownMenu12").text(newname);
+        $("<span class='caret'></span>").appendTo("#dropdownMenu12");
+    });
+
+    $('#shop_name').bind('input propertychange', function() {
+        //实时监听input框中输入的值
+        console.log($(this).val());
+        shop_name=$("#shop_name").val();
+    });
+    $("#search").click(function(){
+        //点击搜索按钮，执行搜索事件
+        var start=$("#calendar").val();
+        var end=$("#calendar2").val();
+
+        console.log("start:",start);
+        console.log("end:",end);
+        console.log("shop_name:",shop_name);
+        console.log("_type:",_type)
+        console.log("_status:",_status)
+
+
+    });
+    $(document).ready(function() {
+        $("#calendar").bootstrapDatepickr({date_format: "Y-m-d"});
+        $("#calendar1").bootstrapDatepickr({date_format: "h:m:s"});
+        $("#calendar2").bootstrapDatepickr({date_format: "Y-m-d"});
+        $("#calendar3").bootstrapDatepickr({date_format: "hh:ii:ss"});
+    });
     function operateFormatter(code, row, index) {
         var trId = row.id;
         var operateBtn = [
