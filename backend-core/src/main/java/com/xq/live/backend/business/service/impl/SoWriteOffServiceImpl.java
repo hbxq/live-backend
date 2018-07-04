@@ -1,82 +1,166 @@
 package com.xq.live.backend.business.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.xq.live.backend.business.out.SoWriteOffOut;
+import com.xq.live.backend.business.entity.WriteBo;
 import com.xq.live.backend.business.service.SoWriteOffService;
 import com.xq.live.backend.business.vo.SoWriteOffInVo;
 import com.xq.live.backend.persistence.beans.SoWriteOff;
 import com.xq.live.backend.persistence.mapper.SoWriteOffMapper;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
-import java.util.Date;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * ${DESCRIPTION}
  *
- * @author zhangpeng32
- * @date 2018-02-21 18:37
+ * @author
+ * @date
  * @copyright:hbxq
  **/
 @Service
 public class SoWriteOffServiceImpl implements SoWriteOffService {
 
-    private Logger logger = Logger.getLogger(SoWriteOffServiceImpl.class);
-
     @Autowired
     private SoWriteOffMapper soWriteOffMapper;
 
     @Override
-    public PageInfo<SoWriteOffOut> list(SoWriteOffInVo inVo) {
-        PageInfo<SoWriteOffOut> ret = new PageInfo<SoWriteOffOut>();
-        int total = soWriteOffMapper.listTotal(inVo);
-        List<SoWriteOffOut> totalOut = soWriteOffMapper.total(inVo);
-        if(total > 0){
-            List<SoWriteOffOut> list = soWriteOffMapper.list(inVo);
-            list.addAll(0,totalOut);//把总销售额和总服务费放到list的第一个数据里面
-            ret.setList(list);
-        }
-        ret.setTotal(total);
-        ret.setEndRow(inVo.getRows());
-        ret.setPageNum(inVo.getPage());
-        return ret;
+    public WriteBo insert(WriteBo entity) {
+        return null;
     }
 
-    //根据shopId查询指定时间内的总金额的应缴金额
     @Override
-    public List<SoWriteOffOut> listAmount(SoWriteOffInVo inVo) {
-        List<SoWriteOffOut> list=soWriteOffMapper.total(inVo);
-        if (list==null||list.size()<=0){
+    public void insertList(List<WriteBo> entities) {
+
+    }
+
+    @Override
+    public boolean removeByPrimaryKey(Long primaryKey) {
+        return false;
+    }
+
+    @Override
+    public boolean update(WriteBo entity) {
+        return false;
+    }
+
+    @Override
+    public boolean updateSelective(WriteBo entity) {
+        return false;
+    }
+
+    @Override
+    public WriteBo getByPrimaryKey(Long primaryKey) {
+        return null;
+    }
+
+    @Override
+    public WriteBo getOneByEntity(WriteBo entity) {
+        return null;
+    }
+
+    @Override
+    public List<WriteBo> listAll() {
+        return null;
+    }
+
+    @Override
+    public List<WriteBo> listByEntity(WriteBo entity) {
+        return null;
+    }
+
+    @Override
+    public PageInfo<WriteBo> findSoForShop(SoWriteOffInVo vo) {
+        PageHelper.startPage(vo.getPageNumber(), vo.getPageSize());
+        List<SoWriteOff> soWriteOffs=soWriteOffMapper.selectofflist(vo);
+        if (CollectionUtils.isEmpty(soWriteOffs)) {
             return null;
         }
-        return list;
-    }
-
-    @Override
-    public List<SoWriteOffOut> top(SoWriteOffInVo inVo) {
-        return soWriteOffMapper.list(inVo);
-    }
-
-    @Override
-    public SoWriteOff get(Long id) {
-        return soWriteOffMapper.selectByPrimaryKey(id);
-    }
-
-    @Override
-    public int listTotal(SoWriteOffInVo inVo) {
-        return soWriteOffMapper.listTotal(inVo);
-    }
-
-    @Override
-    public Integer shopSoByBill(List<SoWriteOffInVo> inVo) {
-        Integer i=soWriteOffMapper.shopSoByBill(inVo);
-        if (i>0){
-            return 1;
+        List<WriteBo> writeBos =new ArrayList<WriteBo>();
+        BigDecimal a = new BigDecimal(1);
+        BigDecimal allPrice = new BigDecimal(0);
+        for (int i=0;i<soWriteOffs.size();i++){
+            soWriteOffs.get(i).setSoType(soWriteOffs.get(i).getSo().getSoType());
+            if (soWriteOffs.get(i).getSo().getShopId()!=null&&soWriteOffs.get(i).getSo().getSoType()==1){//食典券訂單
+                soWriteOffs.get(i).getSo().setSellPrice(a);
+                soWriteOffs.get(i).setSellPrice(soWriteOffs.get(i).getSo().getSellPrice());
+                soWriteOffs.get(i).setSoPrice(soWriteOffs.get(i).getSo().getSoPrice());
+            }else {//商家訂單和平台訂單
+                if (soWriteOffs.get(i).getSo().getSellPrice()==null){
+                    soWriteOffs.get(i).getSo().setSellPrice(new BigDecimal(0));
+                    soWriteOffs.get(i).setSellPrice(soWriteOffs.get(i).getSo().getSellPrice());
+                }
+                soWriteOffs.get(i).setSellPrice(soWriteOffs.get(i).getSo().getSellPrice());
+                soWriteOffs.get(i).getSo().setSoPrice(soWriteOffs.get(i).getSo().getSellPrice());
+                soWriteOffs.get(i).setSoPrice(soWriteOffs.get(i).getSo().getSoPrice());
+            }
+            if (soWriteOffs.get(i).getSo().getSoPrice()==null){
+                soWriteOffs.get(i).getSo().setSoPrice(new BigDecimal(0));
+                soWriteOffs.get(i).setSoPrice(soWriteOffs.get(i).getSo().getSoPrice());
+            }
+            /*System.out.println("getSoPrice" + soWriteOffs.get(i).getSoPrice());
+            allPrice.add(soWriteOffs.get(i).getSoPrice());
+            System.out.println("allPrice" + allPrice);
+            allPrice.add(new BigDecimal(10));
+            System.out.println("allPrice" + allPrice);*/
+            writeBos.add(new WriteBo(soWriteOffs.get(i)));
         }
-        return null;
+        PageInfo bean = new PageInfo<SoWriteOff>(soWriteOffs);
+        bean.setList(writeBos);
+        return bean;
+    }
+
+    @Override
+    public WriteBo findSoShop(SoWriteOffInVo vo) {
+        List<SoWriteOff> soWriteOffs=soWriteOffMapper.selectofflist(vo);
+        if (CollectionUtils.isEmpty(soWriteOffs)) {
+            return null;
+        }
+        BigDecimal a = new BigDecimal(1);
+        BigDecimal allPrice = new BigDecimal(0);
+        for (int i=0;i<soWriteOffs.size();i++){
+            soWriteOffs.get(i).setSoType(soWriteOffs.get(i).getSo().getSoType());
+            if (soWriteOffs.get(i).getSo().getShopId()!=null&&soWriteOffs.get(i).getSo().getSoType()==1){//食典券訂單
+                soWriteOffs.get(i).getSo().setSellPrice(a);
+                soWriteOffs.get(i).setSellPrice(soWriteOffs.get(i).getSo().getSellPrice());
+                soWriteOffs.get(i).setSoPrice(soWriteOffs.get(i).getSo().getSoPrice());
+            }else {//商家訂單和平台訂單
+                if (soWriteOffs.get(i).getSo().getSellPrice()==null){
+                    soWriteOffs.get(i).getSo().setSellPrice(new BigDecimal(0));
+                    soWriteOffs.get(i).setSellPrice(soWriteOffs.get(i).getSo().getSellPrice());
+                }
+                soWriteOffs.get(i).setSellPrice(soWriteOffs.get(i).getSo().getSellPrice());
+                soWriteOffs.get(i).getSo().setSoPrice(soWriteOffs.get(i).getSo().getSellPrice());
+                soWriteOffs.get(i).setSoPrice(soWriteOffs.get(i).getSo().getSoPrice());
+            }
+            if (soWriteOffs.get(i).getSo().getSoPrice()==null){
+                soWriteOffs.get(i).getSo().setSoPrice(new BigDecimal(0));
+                soWriteOffs.get(i).setSoPrice(soWriteOffs.get(i).getSo().getSoPrice());
+            }
+            //System.out.println("getSoPrice" + soWriteOffs.get(i).getSoPrice());
+            allPrice=allPrice.add(soWriteOffs.get(i).getSoPrice());
+            //System.out.println("allPrice" + allPrice);
+        }
+        System.out.println("allPrice" + allPrice);
+        SoWriteOff soWriteOff = new SoWriteOff();
+        soWriteOff.setTotalService(allPrice);
+
+        WriteBo bo= new WriteBo(soWriteOff);
+        return bo;
+    }
+
+    @Override
+    @Transactional
+    public Integer updateByShopId(SoWriteOffInVo vo) {
+        Integer i=soWriteOffMapper.updateByShopId(vo);
+        if (i<1){
+            return 0;
+        }
+        return i;
     }
 }

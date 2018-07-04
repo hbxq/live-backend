@@ -32,9 +32,16 @@ public interface SoMapper extends BaseMapper<So> {
     List<So> findSoForShop(SoConditionVO vo);
 
     /**
-     * 批量更改商家訂單
+     * 根据soid批量更改商家訂單
      * @param list
      * @return
      */
     Integer updateBySO( List<SoConditionVO> list);
+    /**
+     * 根据shopid和时间批量更改商家訂單
+     * @param list
+     * @return
+     */
+    Integer updateByShopId(SoConditionVO list);
+
 }

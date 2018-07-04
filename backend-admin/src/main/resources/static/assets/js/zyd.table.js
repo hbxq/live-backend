@@ -46,7 +46,7 @@
                     sortable: false,                     //是否启用排序
                     sortOrder: "asc",                   //排序方式
                     sortStable: true,                   // 设置为 true 将获得稳定的排序
-                    queryParams: $.tableUtil.queryParams,//传递参数（*）
+                    queryParams: options.queryParams,//传递参数（*）
                     queryParamsType: '',
                     pagination: true,                   //是否显示分页（*）
                     sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
@@ -93,10 +93,15 @@
                 });
             },
             queryParams: function (params) {
-                params = $.extend({}, params);
+               /* params = $.extend({}, params);
                 params.keywords = params.searchText;
+                ///!*var start=$("#calendar").val();
+                //var end=$("#calendar2").val();*!/
+                console.log("start:",start,"end:",end);
+
+               // alert(params.keywords);*!/
                 console.log(params);
-                return params;
+                return params;*/
             },
             refresh: function () {
                 $("#tablelist").bootstrapTable('refresh', {url: $.tableUtil._option.url});

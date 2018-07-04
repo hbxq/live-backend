@@ -25,7 +25,8 @@
     id, so_amount, user_id, user_name, shop_id,pay_type, so_status, so_type, create_time, update_time,is_dui
     </sql>
 
-    <select id="findPageBreakByCondition" parameterType="com.xq.live.backend.business.vo.SoConditionVO" resultMap="BaseResultMap">
+    <select id="findPageBreakByCondition" parameterType="com.xq.live.backend.business.vo.SoConditionVO"
+            resultMap="BaseResultMap">
         SELECT
         s.*,
         sp.shop_name
@@ -35,40 +36,40 @@
         WHERE
         1 = 1
         <!-- 查询用户信息 -->
-            <if test="keywords != null and keywords != '' ">
-                AND
-                (
-                s.so_amount LIKE CONCAT('%',#{keywords , jdbcType=VARCHAR},'%') or
-                s.user_name  LIKE CONCAT('%',#{keywords , jdbcType=VARCHAR},'%') or
-                )
-            </if>
-            <if test="id!=null">
-                AND s.id = #{id}
-            </if>
-            <if test="userId!=null">
-                AND s.user_id = #{userId}
-            </if>
-            <if test="createTime!=null">
-                AND s.create_time = #{createTime}
-            </if>
-            <if test="updateTime!=null">
-                AND s.update_time = #{updateTime}
-            </if>
-            <if test="shopId!=null">
-                and s.shop_id = #{shopId}
-            </if>
-            <if test="soStatus!=null">
-                and s.so_status = #{soStatus}
-            </if>
-            <if test="soType!=null">
-                and s.so_Type = #{soType}
-            </if>
-            <if test="isDui!=null">
-                and s.is_dui = #{isDui}
-            </if>
-            <if test="beginTime !=null and endTime != null">
-                and (s.create_time BETWEEN #{beginTime} and #{endTime})
-            </if>
+        <if test="keywords != null and keywords != '' ">
+            AND
+            (
+            s.so_amount LIKE CONCAT('%',#{keywords , jdbcType=VARCHAR},'%') or
+            s.user_name LIKE CONCAT('%',#{keywords , jdbcType=VARCHAR},'%') or
+            )
+        </if>
+        <if test="id!=null">
+            AND s.id = #{id}
+        </if>
+        <if test="userId!=null">
+            AND s.user_id = #{userId}
+        </if>
+        <if test="createTime!=null">
+            AND s.create_time = #{createTime}
+        </if>
+        <if test="updateTime!=null">
+            AND s.update_time = #{updateTime}
+        </if>
+        <if test="shopId!=null">
+            and s.shop_id = #{shopId}
+        </if>
+        <if test="soStatus!=null">
+            and s.so_status = #{soStatus}
+        </if>
+        <if test="soType!=null">
+            and s.so_Type = #{soType}
+        </if>
+        <if test="isDui!=null">
+            and s.is_dui = #{isDui}
+        </if>
+        <if test="beginTime !=null and endTime != null">
+            and (s.create_time BETWEEN #{beginTime} and #{endTime})
+        </if>
         GROUP BY
         s.id
         ORDER BY
@@ -93,7 +94,7 @@
         so s
         LEFT JOIN so_shop_log sd ON s.id = sd.so_id
         LEFT JOIN sku sk ON sd.sku_id = sk.id
-        LEFT JOIN shop_allocation al ON  sd.shop_id = al.shop_id
+        LEFT JOIN shop_allocation al ON sd.shop_id = al.shop_id
         WHERE
         sd.operate_type = 2
         AND
@@ -101,11 +102,12 @@
         <if test="beginTime !=null and endTime != null">
             and (s.create_time BETWEEN #{beginTime} and #{endTime})
         </if>
+        AND s.so_status != 1
         ORDER BY
         s.id DESC
     </select>
 
-    <!--批量修改符合条件订单的对账状态-->
+    <!--批量修改符合条件订单的对账状态(暂时不用，通过id批量修改)-->
     <update id="updateBySO" parameterType="java.util.List">
         update so
         set
@@ -117,5 +119,20 @@
         </foreach>
     </update>
 
+    <!--批量修改符合条件订单的对账状态(适用版，通过shopid和时间段批量修改)-->
+    <update id="updateByShopId" parameterType="com.xq.live.backend.business.vo.SoConditionVO">
+       UPDATE so s
+        LEFT JOIN so_shop_log sd ON s.id = sd.so_id
+        LEFT JOIN sku sk ON sd.sku_id = sk.id
+        LEFT JOIN shop_allocation al ON  sd.shop_id = al.shop_id
+        SET s.is_dui=1
+        WHERE
+        sd.operate_type = 2
+        AND
+        sd.shop_id=#{shopId,jdbcType=BIGINT}
+        <if test="beginTime !=null and endTime != null">
+            and (s.create_time BETWEEN #{beginTime} and #{endTime})
+        </if>
+    </update>
 
 </mapper>

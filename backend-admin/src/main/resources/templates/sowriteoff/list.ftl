@@ -9,20 +9,20 @@
         <div class="x_panel">
             <div class="x_content">
 
-                    <div class="col-md-3">
-                        <div class="input-group">
-                            <span class="input-group-addon" id="basic-addon1">开始时间</span>
-                            <input type="text" id="calendar" placeholder="test" class="form-control">
-                        <#--<input type="text" id="calendar1" placeholder="test" class="form-control">-->
-                        </div>
+                <div class="col-md-3">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">开始时间</span>
+                        <input type="text" id="calendar" placeholder="test" class="form-control">
+                    <#--<input type="text" id="calendar1" placeholder="test" class="form-control">-->
                     </div>
-                    <div class="col-md-3">
-                        <div class="input-group">
-                            <span class="input-group-addon" id="basic-addon1">结束时间</span>
-                            <input type="text" id="calendar2" placeholder="test" class="form-control">
-                        <#--<input type="text" id="calendar3" placeholder="test" class="form-control">-->
-                        </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">结束时间</span>
+                        <input type="text" id="calendar2" placeholder="test" class="form-control">
+                    <#--<input type="text" id="calendar3" placeholder="test" class="form-control">-->
                     </div>
+                </div>
 
                 <div class="<#--table-responsive-->">
                     <div class="btn-group hidden-xs" id="toolbar">
@@ -50,7 +50,7 @@
 <#--查看明细弹窗-->
 <#--<div class="Wbutton">-->
 <div class="listbox">
-    <div class="headline">详情订单量<input id="guanbi" type="button" value="关闭"/><span id="dztotal"></span></div>
+    <div class="headline">详情核销票量<input id="guanbi" type="button" value="关闭"/><span id="dztotal"></span></div>
 
     <table id="tablest">
 
@@ -87,7 +87,7 @@
             '<@shiro.hasPermission name="bill:detail"><a class="btn btn-xs btn-info btn-allot" data-id="' + trShopId + '"><i class="fa fa-trash-o"></i>查看明细</a></@shiro.hasPermission>',
         ];
         if (currentShopId != trShopId) {
-            operateBtn.push('<@shiro.hasPermission name="shop:edit"><a class="btn btn-xs btn-primary btn-update" data-id="' + trShopId + '"><i class="fa fa-edit"></i>对账</a></@shiro.hasPermission>');
+            operateBtn.push('<@shiro.hasPermission name="shop:edit"><a class="btn btn-xs btn-primary btn-update" data-id="' + trShopId + '"><i class="fa fa-edit"></i>结算</a></@shiro.hasPermission>');
         }
         return operateBtn.join('');
     }
@@ -98,21 +98,16 @@
             url: "/bill/list",//
             getInfoUrl: "/bill/get/{id}",
             updateUrl: "/bill/updateSoList",
-            removeUrl: "/shop/remove",
-            createUrl: "/shop/add",
             queryParams :function queryParams(params) { // 请求服务器数据时发送的参数，可以在这里添加额外的查询参数，返回false则终止请求
-//                    console.log("params:",params);
-                //var _offset = params.offset/10+1;
                 var tamp =  {
                     pageSize: params.limit, // 每页要显示的数据条数
                     offset: params.offset, // 每页显示数据的开始行号
-                    //pageNumber:_offset,
                     /*keywords:params.searchText?params.searchText:"",*/
                     keywords:params.searchText?params.searchText:"",
                     beginTime:$("#calendar").val()?$("#calendar").val():"",
                     endTime:$("#calendar2").val()?$("#calendar2").val():""
                 };
-                    console.log("tamp:",tamp);
+                console.log("tamp:",tamp);
                 return tamp;
             },
             columns: [
@@ -140,7 +135,7 @@
                     formatter: operateFormatter //自定义方法，添加操作按钮
                 }
             ],
-            modalName: "对账"
+            modalName: "结算"
         };
 
         //1.初始化Table
@@ -155,9 +150,6 @@
         });
         /* 分配用户角色  --查看明细弹窗 */
         $('#tablelist').on('click', '.btn-allot', function (e) {
-            /*console.log(e);
-            console.log(e.target);
-            console.log(e.target.dataset.id);*/
             var start=$("#calendar").val();
             var end=$("#calendar2").val();
             console.log(new Date(start).getTime())
@@ -174,13 +166,13 @@
 
             $.ajax({
                 type: "post",
-                url: "/bill/soPrice",
+                url: "/bill/writePrice",
                 data:{shopId:thshopId, beginTime:thbegainTime,endTime:thendTime},
                 dataType: "json",
                 success: function (data) {
                     console.log("data:",data);
-                    data.soAllPrice?data.soAllPrice:"0"
-                    $("#dztotal").html("合计￥"+data.soAllPrice);
+                    data.totalService?data.totalService:"0"
+                    $("#dztotal").html("合计￥"+data.totalService);
                 },
                 //error: $.tool.ajaxError
             });
@@ -195,7 +187,7 @@
             $("#tablest").bootstrapTable({ // 对应table标签的id
                 method: "post",//请求方式
                 contentType : "application/x-www-form-urlencoded; charset=UTF-8",
-                url: "/bill/sotimeList", // 获取表格数据的url
+                url: "/bill/getSoWriteOfflist", // 获取表格数据的url
                 cache: false, // 设置为 false 禁用 AJAX 数据缓存， 默认为true
                 striped: true,  //表格显示条纹，默认为false
                 pagination: true, // 在表格底部显示分页组件，默认false
@@ -223,8 +215,8 @@
                 sortName: 'id', // 要排序的字段
                 sortOrder: 'desc', // 排序规则
                 columns: [
-                     {
-                        field: 'id', // 返回json数据中的name
+                    {
+                        field: 'soId', // 返回json数据中的name
                         title: '订单号', // 表格表头显示文字
                         align: 'center', // 左右居中
                         valign: 'middle' // 上下居中
@@ -234,17 +226,13 @@
                         align: 'center',
                         valign: 'middle'
                     }, {
-                        field: 'paidTime',
-                        title: '支付时间',
+                        field: 'shopName',
+                        title: '商家名',
                         align: 'center',
-                        valign: 'middle',
-                        editable: false,
-                        formatter: function (code) {
-                            return new Date(code).format("yyyy-MM-dd hh:mm:ss")
-                        }
+                        valign: 'middle'
                     }, {
-                        field: 'sellPrice',
-                        title: '服务费',
+                        field: 'soPrice',
+                        title: '单笔服务费',
                         align: 'center',
                         valign: 'middle',
                         editable: true
@@ -260,22 +248,26 @@
                             }
                         }
                     }, {
-                        field: 'isDui',
-                        title: '对账状态(0未对账,1已对账)',
+                        field: 'isBill',
+                        title: '结清状态(0未结清,1已结清)',
                         align: 'center',
                         valign: 'middle'
                     }, {
                         //paidAmount
-                        field: 'soAmount',
+                        field: 'paidAmount',
                         title: '支付金额',
                         align: 'center',
                         valign: 'middle'
                     }, {
-                        field: 'soPrice',
-                        title: '扣除服务费后的金额',
+                        field: 'couponAmount',
+                        title: '卷面值',
                         align: 'center',
-                        valign: 'middle',
-                        editable: true
+                        valign: 'middle'
+                    }, {
+                        field: 'couponCode',
+                        title: '电子券编码',
+                        align: 'center',
+                        valign: 'middle'
                     }
                 ],
                 onLoadSuccess: function(){  //加载成功时执行
@@ -288,12 +280,12 @@
             })
         };
 
-        /* 对账 */
+        /* 结算 */
         $('#tablelist').on('click', '.btn-update', function (e) {
 
             var truthBeTold = window.confirm("单击“确定”继续。单击“取消”停止。")
             if (truthBeTold) {
-               /* window.alert("欢迎访问我们的 Web 页！");*/
+                /*window.alert("欢迎访问我们的 Web 页！");*/
             } else{
                 window.alert("再见啦！");
                 return;
@@ -303,7 +295,7 @@
             console.log("userid:",userId);
             $.ajax({
                 type: "post",
-                url: "/bill/updateSoList",
+                url: "/bill/updateWriteList",
                 data:{shopId:userId, beginTime:$("#calendar").val(),endTime:$("#calendar2").val()},
                 dataType: "json",
                 success: function (data) {

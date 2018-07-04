@@ -26,9 +26,24 @@ public interface SoService extends AbstractService<SoBo, Long> {
     PageInfo<SoBo> findSoForShop(SoConditionVO vo);
 
     /**
-     * 批量更改商家訂單
+     * 不分页查询商家訂單
+     * @param vo
+     * @return
+     */
+    SoBo findSoShop(SoConditionVO vo);
+
+    /**
+     * 根据soid批量更改商家訂單
      * @param list
      * @return
      */
     Integer updateBySO( List<SoConditionVO> list);
+
+    /**
+     * 根据shopid和时间批量更改商家訂單
+     * @param list
+     * @return
+     */
+    Integer updateByShopId(SoConditionVO list);
+
 }

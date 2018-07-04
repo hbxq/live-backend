@@ -7,6 +7,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.xq.live.backend.business.entity.ShopBo;
 import com.xq.live.backend.business.entity.SoBo;
+import com.xq.live.backend.business.entity.WriteBo;
 import com.xq.live.backend.business.service.SoService;
 import com.xq.live.backend.business.vo.SoConditionVO;
 import com.xq.live.backend.persistence.beans.SoWriteOff;
@@ -53,15 +54,14 @@ public class RestBillController {
 
     /**
      * 查询每个商家核销的票卷的信息
-     * @param inVo
+     * @param vo
      * @return
      */
-    @RequestMapping(value = "/getlist",method = RequestMethod.POST)
-    public  PageResult list(SoWriteOffInVo inVo){
-        if(inVo==null||inVo.getSoWrite().getShopId()==null){
-            return null;
-        }
-        return null;
+    @PostMapping(value = "/getSoWriteOfflist")
+    public  PageResult list(SoWriteOffInVo vo){
+        PageHelper.startPage(vo.getPageNumber() - 1, vo.getPageSize());
+        PageInfo<WriteBo> pageInfo=soWriteOffService.findSoForShop(vo);
+        return ResultUtil.tablePage(pageInfo);
     }
 
     /**
@@ -72,23 +72,67 @@ public class RestBillController {
     @PostMapping("/sotimeList")
     public PageResult soList(SoConditionVO vo) {
         PageHelper.startPage(vo.getPageNumber() - 1, vo.getPageSize());
+       /* System.out.println("------------");
+        System.out.println(vo.getShopId());*/
         PageInfo<SoBo> pageInfo = soService.findSoForShop(vo);
-        System.out.println(pageInfo);
+        //System.out.println(pageInfo.getList().toString());
         return ResultUtil.tablePage(pageInfo);
     }
 
     /**
-     * 批量修改一个商家符合条件的的订单信息
-     * @param list
+     * 查询一个商家一段时间内的订单信息
+     * @param vo
      * @return
      */
-    @PostMapping("/slsl")
-    public ResponseVO soList(List<SoConditionVO> list) {
-        Integer i=soService.updateBySO(list);
+    @PostMapping("/soPrice")
+    public SoBo soPrice(SoConditionVO vo) {
+        SoBo pageInfo = soService.findSoShop(vo);
+        //System.out.println(pageInfo.getSoAllPrice());
+        return pageInfo;
+    }
+
+    /**
+     * 查询一个商家一段时间内的核销票券信息
+     * @param vo
+     * @return
+     */
+    @PostMapping("/writePrice")
+    public WriteBo writePrice(SoWriteOffInVo vo) {
+        WriteBo writeBo = soWriteOffService.findSoShop(vo);
+        //System.out.println(pageInfo.getSoAllPrice());
+        return writeBo;
+    }
+
+    /**
+     * 批量修改一个商家时间段内符合条件的的订单信息
+     * @param inVo
+     * @return
+     */
+    @PostMapping("/updateSoList")
+    public ResponseVO updateList(SoConditionVO inVo) {
+
+        //List<SoConditionVO> list = new ArrayList<SoConditionVO>();
+        //List<SoBo> soBoList = soService.findSoShop(inVo);
+        //for (int index=0;index)
+        Integer i=soService.updateByShopId(inVo);
         if (i>0){
-         return  ResultUtil.success("修改成功",i);
+         return  ResultUtil.success("成功修改"+i+"条数据",i);
         }
-        return ResultUtil.error(0,"修改失败");
+        return ResultUtil.error(0,"修改失败!");
+    }
+
+    /**
+     * 批量修改一个商家时间段内符合条件的的核销信息
+     * @param inVo
+     * @return
+     */
+    @PostMapping("/updateWriteList")
+    public ResponseVO updateWrite(SoWriteOffInVo inVo) {
+        Integer i=soWriteOffService.updateByShopId(inVo);
+        if (i>0){
+            return  ResultUtil.success("成功修改"+i+"条数据",i);
+        }
+        return ResultUtil.error(0,"修改失败!");
     }
 
     @PostMapping("/detail")

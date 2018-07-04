@@ -1,208 +1,239 @@
 package com.xq.live.backend.business.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.xq.live.backend.framework.object.BaseConditionVO;
+import com.xq.live.backend.persistence.beans.SoWriteOff;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
-/**
- * ${DESCRIPTION}
- *
- * @author zhangpeng32
- * @date 2018-02-21 18:33
- * @copyright:hbxq
- **/
-public class SoWriteOffInVo extends BaseInVo {
-    private Long id;
+//@Data
+@EqualsAndHashCode(callSuper = false)
+public class SoWriteOffInVo extends BaseConditionVO {
+   //private SoWriteOff soWrite;
 
-    private Long soId;
+   @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
+   private Date beginTime;
+   @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
+   private Date endTime;
 
-    private Long shopId;
 
-    private String shopName;
+   private Long id;
+   private Date createTime;//等同于核销时间
+   private Date updateTime;
 
-    private BigDecimal shopAmount;
+   private Long soId;
+   private Long shopId;
+   private String shopName;
+   private BigDecimal shopAmount;
+   private Long couponId;
+   private String couponCode;
+   private Long skuId;
+   private BigDecimal couponAmount;//卷面值
+   private Long userId;//卷所属订单的userId
+   private String userName;//卷所属订单的userId
+   private Long cashierId;//收银员的id---当前操作的用户id
+   private String cashierName;
+   private BigDecimal paidAmount;//支付金额(已经减去了卷面值的)
+   private Integer isBill;//是否对账 0未对账 1对账
 
-    private Long couponId;
+   private BigDecimal totalPrice;//总营业额
+   private BigDecimal totalService;//总服务费
+   private BigDecimal soPrice;//單筆訂單服務費
+   private BigDecimal sellPrice;//平臺服務費
+   private Integer soType;//订单类型
 
-    private String couponCode;
+   public Date getBeginTime() {
+      return beginTime;
+   }
 
-    private Long skuId;
+   public void setBeginTime(Date beginTime) {
+      this.beginTime = beginTime;
+   }
 
-    private BigDecimal couponAmount;
+   public Date getEndTime() {
+      return endTime;
+   }
 
-    private Long userId;
+   public void setEndTime(Date endTime) {
+      this.endTime = endTime;
+   }
 
-    private String userName;
+   public Long getId() {
+      return id;
+   }
 
-    private Long cashierId;
+   public void setId(Long id) {
+      this.id = id;
+   }
 
-    private String cashierName;
+   public Date getUpdateTime() {
+      return updateTime;
+   }
 
-    private BigDecimal paidAmount;
+   public void setUpdateTime(Date updateTime) {
+      this.updateTime = updateTime;
+   }
 
-    private Date createTime;//在这个地方相当于核销时间
+   public Date getCreateTime() {
+      return createTime;
+   }
 
-    private Date updateTime;
+   public void setCreateTime(Date createTime) {
+      this.createTime = createTime;
+   }
 
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
-    private Date begainTime;//开始时间
+   public Long getSoId() {
+      return soId;
+   }
 
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
-    private Date endTime;//截止时间
+   public void setSoId(Long soId) {
+      this.soId = soId;
+   }
 
-    private Integer isBill;//是否对账 0未对账 1对账
+   public Long getShopId() {
+      return shopId;
+   }
 
-    public Long getId() {
-        return id;
-    }
+   public void setShopId(Long shopId) {
+      this.shopId = shopId;
+   }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+   public String getShopName() {
+      return shopName;
+   }
 
-    public Long getSoId() {
-        return soId;
-    }
+   public void setShopName(String shopName) {
+      this.shopName = shopName;
+   }
 
-    public void setSoId(Long soId) {
-        this.soId = soId;
-    }
+   public BigDecimal getShopAmount() {
+      return shopAmount;
+   }
 
-    public Long getShopId() {
-        return shopId;
-    }
+   public void setShopAmount(BigDecimal shopAmount) {
+      this.shopAmount = shopAmount;
+   }
 
-    public void setShopId(Long shopId) {
-        this.shopId = shopId;
-    }
+   public Long getCouponId() {
+      return couponId;
+   }
 
-    public String getShopName() {
-        return shopName;
-    }
+   public void setCouponId(Long couponId) {
+      this.couponId = couponId;
+   }
 
-    public void setShopName(String shopName) {
-        this.shopName = shopName;
-    }
+   public String getCouponCode() {
+      return couponCode;
+   }
 
-    public BigDecimal getShopAmount() {
-        return shopAmount;
-    }
+   public void setCouponCode(String couponCode) {
+      this.couponCode = couponCode;
+   }
 
-    public void setShopAmount(BigDecimal shopAmount) {
-        this.shopAmount = shopAmount;
-    }
+   public Long getSkuId() {
+      return skuId;
+   }
 
-    public Long getCouponId() {
-        return couponId;
-    }
+   public void setSkuId(Long skuId) {
+      this.skuId = skuId;
+   }
 
-    public void setCouponId(Long couponId) {
-        this.couponId = couponId;
-    }
+   public BigDecimal getCouponAmount() {
+      return couponAmount;
+   }
 
-    public String getCouponCode() {
-        return couponCode;
-    }
+   public void setCouponAmount(BigDecimal couponAmount) {
+      this.couponAmount = couponAmount;
+   }
 
-    public void setCouponCode(String couponCode) {
-        this.couponCode = couponCode;
-    }
+   public Long getUserId() {
+      return userId;
+   }
 
-    public Long getSkuId() {
-        return skuId;
-    }
+   public void setUserId(Long userId) {
+      this.userId = userId;
+   }
 
-    public void setSkuId(Long skuId) {
-        this.skuId = skuId;
-    }
+   public String getUserName() {
+      return userName;
+   }
 
-    public BigDecimal getCouponAmount() {
-        return couponAmount;
-    }
+   public void setUserName(String userName) {
+      this.userName = userName;
+   }
 
-    public void setCouponAmount(BigDecimal couponAmount) {
-        this.couponAmount = couponAmount;
-    }
+   public Long getCashierId() {
+      return cashierId;
+   }
 
-    public Long getUserId() {
-        return userId;
-    }
+   public void setCashierId(Long cashierId) {
+      this.cashierId = cashierId;
+   }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
+   public String getCashierName() {
+      return cashierName;
+   }
 
-    public String getUserName() {
-        return userName;
-    }
+   public void setCashierName(String cashierName) {
+      this.cashierName = cashierName;
+   }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
+   public BigDecimal getPaidAmount() {
+      return paidAmount;
+   }
 
-    public Long getCashierId() {
-        return cashierId;
-    }
+   public void setPaidAmount(BigDecimal paidAmount) {
+      this.paidAmount = paidAmount;
+   }
 
-    public void setCashierId(Long cashierId) {
-        this.cashierId = cashierId;
-    }
+   public Integer getIsBill() {
+      return isBill;
+   }
 
-    public String getCashierName() {
-        return cashierName;
-    }
+   public void setIsBill(Integer isBill) {
+      this.isBill = isBill;
+   }
 
-    public void setCashierName(String cashierName) {
-        this.cashierName = cashierName;
-    }
+   public BigDecimal getTotalService() {
+      return totalService;
+   }
 
-    public BigDecimal getPaidAmount() {
-        return paidAmount;
-    }
+   public void setTotalService(BigDecimal totalService) {
+      this.totalService = totalService;
+   }
 
-    public void setPaidAmount(BigDecimal paidAmount) {
-        this.paidAmount = paidAmount;
-    }
+   public BigDecimal getSoPrice() {
+      return soPrice;
+   }
 
-    public Date getCreateTime() {
-        return createTime;
-    }
+   public void setSoPrice(BigDecimal soPrice) {
+      this.soPrice = soPrice;
+   }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
+   public Integer getSo_type() {
+      return soType;
+   }
 
-    public Date getUpdateTime() {
-        return updateTime;
-    }
+   public void setSo_type(Integer so_type) {
+      this.soType = so_type;
+   }
 
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
+   public BigDecimal getSellPrice() {
+      return sellPrice;
+   }
 
-    public Date getBegainTime() {
-        return begainTime;
-    }
+   public void setSellPrice(BigDecimal sellPrice) {
+      this.sellPrice = sellPrice;
+   }
 
-    public void setBegainTime(Date begainTime) {
-        this.begainTime = begainTime;
-    }
+   public BigDecimal getTotalPrice() {
+      return totalPrice;
+   }
 
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
-
-    public Integer getIsBill() {
-        return isBill;
-    }
-
-    public void setIsBill(Integer isBill) {
-        this.isBill = isBill;
-    }
+   public void setTotalPrice(BigDecimal totalPrice) {
+      this.totalPrice = totalPrice;
+   }
 }

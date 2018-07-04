@@ -85,4 +85,14 @@ public class RenderController {
     public ModelAndView bills() {
         return ResultUtil.view("bill/list");
     }
+
+    @GetMapping("/sowriteoffs")
+    public ModelAndView sowriteoff() {
+        return ResultUtil.view("sowriteoff/list");
+    }
+
+    @GetMapping("/shopenters")
+    public ModelAndView shopenters() {
+        return ResultUtil.view("shopenter/list");
+    }
 }

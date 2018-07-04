@@ -95,7 +95,10 @@ public class SoServiceImpl implements SoService{
                 }
             }else if (sos.get(i).getPaymentMethod()==1){//商家自收
             }
-            allPrice.add(sos.get(i).getSoPrice());
+            if (sos.get(i).getSoPrice()==null){
+                sos.get(i).setSoPrice(new BigDecimal(0));
+            }
+            allPrice=allPrice.add(allPrice.add(sos.get(i).getSoPrice()));
             SoBos.add(new SoBo(sos.get(i)));
         }
         PageInfo bean = new PageInfo<So>(sos);
@@ -104,8 +107,65 @@ public class SoServiceImpl implements SoService{
     }
 
     @Override
+    public SoBo findSoShop(SoConditionVO vo) {
+        List<So> sos = soMapper.findSoForShop(vo);
+
+        BigDecimal a = new BigDecimal(1);
+        BigDecimal allPrice = new BigDecimal(0);
+
+        if (CollectionUtils.isEmpty(sos)) {
+            return null;
+        }
+
+        for (int i=0;i<sos.size();i++){
+            if (sos.get(i).getPaymentMethod()==2){//平臺代收
+                if(sos.get(i).getShopId()!=null&&sos.get(i).getSoType()==1){//食典券訂單
+                    sos.get(i).setSellPrice(a);
+                    sos.get(i).setSoPrice(sos.get(i).getSoAmount().subtract(a));
+                }else if (sos.get(i).getShopId()!=null&&sos.get(i).getSoType()==2){//商家訂單
+                    if (sos.get(i).getSkuId()!=null){
+                        sos.get(i).setSoPrice(sos.get(i).getSoAmount().subtract(sos.get(i).getSellPrice()));
+                    }else {
+                        sos.get(i).setSoPrice(sos.get(i).getSoAmount());
+                    }
+                }else if (sos.get(i).getShopId()==null&&sos.get(i).getSoType()==1){//平臺訂單
+                    if (sos.get(i).getSkuId()!=null){
+                        sos.get(i).setSoPrice(sos.get(i).getSoAmount().subtract(sos.get(i).getSellPrice()));
+                    }else {
+                        sos.get(i).setSoPrice(sos.get(i).getSoAmount());
+                    }
+                }
+            }else if (sos.get(i).getPaymentMethod()==1){//商家自收
+            }
+            if (sos.get(i).getSoPrice()==null){
+                sos.get(i).setSoPrice(new BigDecimal(0));
+            }
+
+            allPrice=allPrice.add(sos.get(i).getSoPrice());
+            //System.out.println(allPrice);
+        }
+        So so = new So();
+
+        so.setSoAllPrice(allPrice);
+        SoBo soprice=new SoBo(so);
+        //System.out.println(soprice.getSo().getSoAllPrice());
+        return soprice;
+    }
+
+    @Override
+    @Transactional
     public Integer updateBySO(List<SoConditionVO> list) {
         Integer i=soMapper.updateBySO(list);
+        if (i<1){
+            return 0;
+        }
+        return i;
+    }
+
+    @Override
+    @Transactional
+    public Integer updateByShopId(SoConditionVO list) {
+        Integer i=soMapper.updateByShopId(list);
         if (i<1){
             return 0;
         }
