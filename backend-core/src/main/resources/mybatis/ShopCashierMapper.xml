@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xq.live.backend.persistence.mapper.ShopCashierMapper">
+  <resultMap id="BaseResultMap" type="com.xq.live.backend.persistence.beans.ShopCashier">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="cashier_id" jdbcType="BIGINT" property="cashierId" />
+    <result column="cashier_name" jdbcType="VARCHAR" property="cashierName" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="shop_id" jdbcType="BIGINT" property="shopId" />
+    <result column="parent_id" jdbcType="BIGINT" property="parentId" />
+    <result column="is_admin" jdbcType="TINYINT" property="isAdmin" />
+    <result column="is_deleted" jdbcType="TINYINT" property="isDeleted" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="creator_id" jdbcType="BIGINT" property="creatorId" />
+    <result column="updator_id" jdbcType="BIGINT" property="updatorId" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, cashier_id,cashier_name, password, shop_id, parent_id, is_admin, is_deleted, create_time,
+    creator_id, updator_id, update_time
+  </sql>
+
+  <insert id="insertCashier" parameterType="com.xq.live.backend.business.vo.ShopCashierVO">
+    insert into shop_cashier (id, cashier_id,cashier_name, password,
+    shop_id, parent_id, is_admin,
+    is_deleted, create_time, creator_id,
+    updator_id, update_time)
+    values (#{id,jdbcType=BIGINT},#{cashierId,jdbcType=BIGINT}, #{cashierName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+    #{shopId,jdbcType=BIGINT}, #{parentId,jdbcType=BIGINT}, #{isAdmin,jdbcType=TINYINT},
+    0, now(), #{creatorId,jdbcType=BIGINT},
+    #{updatorId,jdbcType=BIGINT}, now())
+    <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+      SELECT LAST_INSERT_ID() AS id
+    </selectKey>
+  </insert>
+
+
+</mapper>

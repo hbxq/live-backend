@@ -83,4 +83,7 @@ public interface ShopMapper extends BaseMapper<Shop> {
      */
     int deleteshop(List<Shop> id);
 
+
+    int insertShop(Shop record);
+
 }

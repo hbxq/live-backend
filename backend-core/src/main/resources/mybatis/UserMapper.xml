@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xq.live.backend.persistence.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="com.xq.live.backend.persistence.beans.User">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+    <result column="icon_url" jdbcType="VARCHAR" property="iconUrl" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="location_x" jdbcType="DECIMAL" property="locationX" />
+    <result column="location_y" jdbcType="DECIMAL" property="locationY" />
+    <result column="location_y" jdbcType="DECIMAL" property="locationY" />
+    <result column="user_type" jdbcType="TINYINT" property="userType" />
+    <result column="shop_id" jdbcType="BIGINT" property="shopId" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime" />
+    <result column="login_times" jdbcType="INTEGER" property="loginTimes" />
+    <result column="user_ip" jdbcType="VARCHAR" property="userIp" />
+    <result column="source_type" jdbcType="TINYINT" property="sourceType" />
+    <result column="open_id" jdbcType="VARCHAR" property="openId" />
+    <result column="union_id" jdbcType="VARCHAR" property="unionId" />
+    <result column="age" jdbcType="INTEGER" property="age" />
+    <result column="height" jdbcType="INTEGER" property="height" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_name, password, nick_name, icon_url, mobile, location_x, location_y, user_type, shop_id, create_time,
+    update_time, last_login_time, login_times, user_ip, source_type, open_id,union_id,age,height
+  </sql>
+
+  <select id="selectByid" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <update id="updateUserType" parameterType="com.xq.live.backend.business.vo.UserVO">
+    update user
+    set user_type = #{userType,jdbcType=TINYINT},
+    shop_id = #{shopId, jdbcType=VARCHAR},
+    update_time = now()
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+
+</mapper>

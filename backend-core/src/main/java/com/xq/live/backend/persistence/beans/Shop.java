@@ -60,4 +60,9 @@ public class Shop extends AbstractDO {
     private String businessCate;//经营品类
 
     private String city;
+
+    private Integer locationPoint;//坐标
+    private String shopHours;//营业时间
+    private String otherService;//其他服务
+
 }

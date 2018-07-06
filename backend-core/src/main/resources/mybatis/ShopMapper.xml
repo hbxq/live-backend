@@ -21,10 +21,14 @@
         <result column="apply_status" jdbcType="INTEGER" property="applyStatus"/>
         <result column="business_cate" jdbcType="VARCHAR" property="businessCate"/>
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
+
+        <result column="shop_hours" jdbcType="VARCHAR" property="shopHours"/>
+        <result column="other_service" jdbcType="VARCHAR" property="otherService"/>
     </resultMap>
     <sql id="Base_Column_List">
         id, shop_name, address, mobile, phone, index_url, logo_url,city, shop_info, location_x, location_y,
         is_deleted, pop_num, remark, create_time, update_time,shop_status,apply_status,business_cate,user_id
+        ,shop_hours ,other_service
     </sql>
     <!--查询商家信息-->
     <select id="findPageBreakByCondition" parameterType="com.xq.live.backend.business.vo.ShopConditionVO" resultMap="BaseResultMap">
@@ -189,5 +193,21 @@
             #{item.id,jdbcType=BIGINT}
         </foreach>
     </delete>
+
+    <insert id="insertShop" parameterType="com.xq.live.backend.persistence.beans.Shop">
+        insert into shop (shop_name, address,
+        mobile, phone, index_url,logo_url,
+        shop_info, location_x, location_y,
+        remark, create_time,
+        update_time,business_cate,shop_code,shop_hours,other_service,city)
+        values (#{shopName,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
+        #{mobile,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{indexUrl,jdbcType=VARCHAR}, #{logoUrl,jdbcType=VARCHAR},
+        #{shopInfo,jdbcType=VARCHAR}, #{locationX,jdbcType=DECIMAL}, #{locationY,jdbcType=DECIMAL},
+        #{remark,jdbcType=VARCHAR}, now(), now(), #{businessCate,jdbcType=VARCHAR},#{shopCode,jdbcType=VARCHAR},#{shopHours,jdbcType=VARCHAR},#{otherService,jdbcType=VARCHAR}
+        ,#{city,jdbcType=VARCHAR})
+        <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
     <!--END-->
 </mapper>

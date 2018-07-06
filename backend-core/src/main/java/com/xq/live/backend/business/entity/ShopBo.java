@@ -118,4 +118,28 @@ public class ShopBo{
     public String getShopInfo() {return this.shop.getShopInfo();}
 
     public void setShopInfo(String shopInfo) {this.shop.setShopInfo(shopInfo);}
+
+    public Integer getLocationPoint() {
+        return this.shop.getLocationPoint();
+    }
+
+    public void setLocationPoint(Integer locationPoint) {
+        this.shop.setLocationPoint(locationPoint);
+    }
+
+    public String getShopHours() {
+        return this.shop.getShopHours();
+    }
+
+    public void setShopHours(String shopHours) {
+        this.shop.setShopHours(shopHours);
+    }
+
+    public String getOtherService() {
+        return this.shop.getShopHours();
+    }
+
+    public void setOtherService(String otherService) {
+        this.shop.setOtherService(otherService);
+    }
 }

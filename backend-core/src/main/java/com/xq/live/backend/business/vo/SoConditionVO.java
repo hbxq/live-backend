@@ -22,10 +22,10 @@ import java.util.Date;
 public class SoConditionVO extends BaseConditionVO {
     //private So so;
 
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
+    /*@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     private Date beginTime;
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
-    private Date endTime;
+    private Date endTime;*/
 
 
 
@@ -44,7 +44,7 @@ public class SoConditionVO extends BaseConditionVO {
     private Date createTime;
     private Date updateTime;
 
-    public Date getBeginTime() {
+    /*public Date getBeginTime() {
         return beginTime;
     }
 
@@ -58,7 +58,7 @@ public class SoConditionVO extends BaseConditionVO {
 
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
-    }
+    }*/
 
     public BigDecimal getSoAmount() {
         return soAmount;

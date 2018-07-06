@@ -47,9 +47,9 @@ public class BaseConditionVO {
     private String orderDirection;
     private String keywords;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date startDate;
+    private Date beginTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date endDate;
+    private Date endTime;
 
     public int getPageSize() {
         return pageSize > 0 ? pageSize : DEFAULT_PAGE_SIZE;
@@ -58,4 +58,6 @@ public class BaseConditionVO {
     public int getPageStart() {
         return pageNumber > 0 ? (pageNumber - 1) * getPageSize() : 0;
     }
+
+
 }

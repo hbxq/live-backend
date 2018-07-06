@@ -14,10 +14,10 @@ import java.util.Date;
 public class SoWriteOffInVo extends BaseConditionVO {
    //private SoWriteOff soWrite;
 
-   @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
+  /* @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
    private Date beginTime;
    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
-   private Date endTime;
+   private Date endTime;*/
 
 
    private Long id;
@@ -45,7 +45,7 @@ public class SoWriteOffInVo extends BaseConditionVO {
    private BigDecimal sellPrice;//平臺服務費
    private Integer soType;//订单类型
 
-   public Date getBeginTime() {
+  /* public Date getBeginTime() {
       return beginTime;
    }
 
@@ -59,7 +59,7 @@ public class SoWriteOffInVo extends BaseConditionVO {
 
    public void setEndTime(Date endTime) {
       this.endTime = endTime;
-   }
+   }*/
 
    public Long getId() {
       return id;
