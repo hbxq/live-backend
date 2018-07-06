@@ -17,15 +17,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/enter")
 public class RestShopEnterController {
 
-    @Autowired
+  /*  @Autowired
     private ShopEnterService shopEnterService;
 
 
-    /**
+    *//**
      *   审批通过后，插入shop表,更改user状态
      * @param shopEnter
      * @return
-     */
+     *//*
     @PostMapping(value = "/addShop")
     public ResponseVO add(ShopEnterVO shopEnter) {
         if(shopEnter==null||shopEnter.getUserId()==null||shopEnter.getShopName()==null){
@@ -38,11 +38,11 @@ public class RestShopEnterController {
         return ResultUtil.success("审核通过-成功入驻");
     }
 
-    /**
+    *//**
      *   审批通过后，插入shop表,更改user状态
      * @param shopEnter
      * @return
-     */
+     *//*
     @PostMapping(value = "/list")
     public ResponseVO seelist(ShopEnterVO shopEnter) {
 
@@ -52,6 +52,6 @@ public class RestShopEnterController {
         }
         return ResultUtil.success("审核通过-成功入驻");
     }
-
+*/
 
 }

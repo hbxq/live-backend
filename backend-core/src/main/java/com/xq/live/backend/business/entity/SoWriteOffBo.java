@@ -11,15 +11,15 @@ import java.util.Date;
 /**
  * Created by ss on 2018/6/26.
  */
-public class WriteBo extends AbstractBO {
+public class SoWriteOffBo extends AbstractBO {
 
     private SoWriteOff soWrite;
 
-    public WriteBo() {
+    public SoWriteOffBo() {
         this.soWrite = new SoWriteOff();
     }
 
-    public WriteBo(SoWriteOff soWrite) {
+    public SoWriteOffBo(SoWriteOff soWrite) {
         this.soWrite = soWrite;
     }
 

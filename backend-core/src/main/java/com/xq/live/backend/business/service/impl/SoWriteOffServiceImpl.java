@@ -2,7 +2,7 @@ package com.xq.live.backend.business.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.xq.live.backend.business.entity.WriteBo;
+import com.xq.live.backend.business.entity.SoWriteOffBo;
 import com.xq.live.backend.business.service.SoWriteOffService;
 import com.xq.live.backend.business.vo.SoWriteOffInVo;
 import com.xq.live.backend.persistence.beans.SoWriteOff;
@@ -30,12 +30,12 @@ public class SoWriteOffServiceImpl implements SoWriteOffService {
     private SoWriteOffMapper soWriteOffMapper;
 
     @Override
-    public WriteBo insert(WriteBo entity) {
+    public SoWriteOffBo insert(SoWriteOffBo entity) {
         return null;
     }
 
     @Override
-    public void insertList(List<WriteBo> entities) {
+    public void insertList(List<SoWriteOffBo> entities) {
 
     }
 
@@ -45,43 +45,43 @@ public class SoWriteOffServiceImpl implements SoWriteOffService {
     }
 
     @Override
-    public boolean update(WriteBo entity) {
+    public boolean update(SoWriteOffBo entity) {
         return false;
     }
 
     @Override
-    public boolean updateSelective(WriteBo entity) {
+    public boolean updateSelective(SoWriteOffBo entity) {
         return false;
     }
 
     @Override
-    public WriteBo getByPrimaryKey(Long primaryKey) {
+    public SoWriteOffBo getByPrimaryKey(Long primaryKey) {
         return null;
     }
 
     @Override
-    public WriteBo getOneByEntity(WriteBo entity) {
+    public SoWriteOffBo getOneByEntity(SoWriteOffBo entity) {
         return null;
     }
 
     @Override
-    public List<WriteBo> listAll() {
+    public List<SoWriteOffBo> listAll() {
         return null;
     }
 
     @Override
-    public List<WriteBo> listByEntity(WriteBo entity) {
+    public List<SoWriteOffBo> listByEntity(SoWriteOffBo entity) {
         return null;
     }
 
     @Override
-    public PageInfo<WriteBo> findSoForShop(SoWriteOffInVo vo) {
+    public PageInfo<SoWriteOffBo> findSoForShop(SoWriteOffInVo vo) {
         PageHelper.startPage(vo.getPageNumber(), vo.getPageSize());
         List<SoWriteOff> soWriteOffs=soWriteOffMapper.selectofflist(vo);
         if (CollectionUtils.isEmpty(soWriteOffs)) {
             return null;
         }
-        List<WriteBo> writeBos =new ArrayList<WriteBo>();
+        List<SoWriteOffBo> soWriteOffBos =new ArrayList<SoWriteOffBo>();
         BigDecimal a = new BigDecimal(1);
         BigDecimal allPrice = new BigDecimal(0);
         for (int i=0;i<soWriteOffs.size();i++){
@@ -108,15 +108,15 @@ public class SoWriteOffServiceImpl implements SoWriteOffService {
             System.out.println("allPrice" + allPrice);
             allPrice.add(new BigDecimal(10));
             System.out.println("allPrice" + allPrice);*/
-            writeBos.add(new WriteBo(soWriteOffs.get(i)));
+            soWriteOffBos.add(new SoWriteOffBo(soWriteOffs.get(i)));
         }
         PageInfo bean = new PageInfo<SoWriteOff>(soWriteOffs);
-        bean.setList(writeBos);
+        bean.setList(soWriteOffBos);
         return bean;
     }
 
     @Override
-    public WriteBo findSoShop(SoWriteOffInVo vo) {
+    public SoWriteOffBo findSoShop(SoWriteOffInVo vo) {
         List<SoWriteOff> soWriteOffs=soWriteOffMapper.selectofflist(vo);
         if (CollectionUtils.isEmpty(soWriteOffs)) {
             return null;
@@ -150,7 +150,7 @@ public class SoWriteOffServiceImpl implements SoWriteOffService {
         SoWriteOff soWriteOff = new SoWriteOff();
         soWriteOff.setTotalService(allPrice);
 
-        WriteBo bo= new WriteBo(soWriteOff);
+        SoWriteOffBo bo= new SoWriteOffBo(soWriteOff);
         return bo;
     }
 
