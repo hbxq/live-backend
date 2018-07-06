@@ -55,10 +55,31 @@
     var thshopId;
     var thbegainTime;
     var thendTime;
-    $(document).ready(function() {
+
+    var today = new Date();
+    var tomorrow = new Date().getTime() + 86400000;
+    tomorrow=new Date(tomorrow);
+    tomorrow=this.dateConv(tomorrow);
+    today = this.dateConv(today);
+
+
+
+
+
+    /*$(document).ready(function() {
         $("#startDate").bootstrapDatepickr({date_format: "Y-m-d"});
         $("#endDate").bootstrapDatepickr({date_format: "Y-m-d"});
-    });
+        $("#startDate").val(today);
+        $("#endDate").val(tomorrow);
+    });*/
+    function  dateConv(dateStr,type) { // yyyy/mm/dd
+        let year = dateStr.getFullYear(),
+                month = dateStr.getMonth() + 1,
+                today = dateStr.getDate();
+        month = month > 9 ? month : "0" + month;
+        today = today > 9 ? today : "0" + today;
+        return year + "-" + month + "-" + today;
+    }
     /**
      * 操作按钮
      * @param code
@@ -78,6 +99,10 @@
         return operateBtn.join('');
     }
     $(function () {
+        $("#startDate").bootstrapDatepickr({date_format: "Y-m-d"});
+        $("#endDate").bootstrapDatepickr({date_format: "Y-m-d"});
+        $("#startDate").val(today);
+        $("#endDate").val(tomorrow);
         var options = {
             url: "/bill/list",//
             getInfoUrl: "/bill/get/{id}",
@@ -85,12 +110,15 @@
             removeUrl: "/shop/remove",
             createUrl: "/shop/add",
             queryParams :function queryParams(params) { // 请求服务器数据时发送的参数，可以在这里添加额外的查询参数，返回false则终止请求
+                var start=$("#startDate").val();
+                var end=$("#endDate").val();
+
                 var tamp =  {
                     pageSize: params.limit, // 每页要显示的数据条数
                     offset: params.offset, // 每页显示数据的开始行号
                     keywords:params.searchText?params.searchText:"",
-                    beginTime:$("#startDate").val()?$("#startDate").val():"",
-                    endTime:$("#endDate").val()?$("#endDate").val():""
+                    beginTime:start?start:today,
+                    endTime:end?end:tomorrow
                 };
                 return tamp;
             },
