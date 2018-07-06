@@ -6,6 +6,10 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.Table;
 import java.math.BigDecimal;
+/*
+* 订单明细
+* */
+
 
 @Data
 @EqualsAndHashCode(callSuper = false)

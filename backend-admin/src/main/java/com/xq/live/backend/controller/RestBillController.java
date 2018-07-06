@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * com.xq.live.backend.controller
- *
+ *订单对账，核销结算
  * @author zhangpeng32
  * Created on 2018/6/14 下午9:00
  * @Description:

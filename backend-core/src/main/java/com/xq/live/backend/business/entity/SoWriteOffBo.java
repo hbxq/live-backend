@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
+ *核销出参
  * Created by ss on 2018/6/26.
  */
 public class SoWriteOffBo extends AbstractBO {

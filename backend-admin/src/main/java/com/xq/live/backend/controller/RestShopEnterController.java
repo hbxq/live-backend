@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
+ *
+ * 商家入驻审核业务
  * Created by ss on 2018/7/6.
  */
 @RestController

@@ -9,6 +9,11 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
+
+/*
+*
+* 商家入驻
+* */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Table(name = "shop_enter")

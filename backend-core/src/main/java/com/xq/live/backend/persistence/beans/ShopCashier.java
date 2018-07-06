@@ -6,7 +6,10 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.Table;
 import java.util.Date;
-
+/*
+*
+* 商家管理员配置
+* */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Table(name = "shop_cashier")

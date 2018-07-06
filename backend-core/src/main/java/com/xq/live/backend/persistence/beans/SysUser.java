@@ -26,6 +26,7 @@ import lombok.EqualsAndHashCode;
 import java.util.Date;
 
 /**
+ * 管理员
  * @author ZhangPeng (rocky8023@163.com)
  * @website htts://www.xiang7.net
  * @version 1.0

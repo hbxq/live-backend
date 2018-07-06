@@ -7,6 +7,7 @@ import com.xq.live.backend.persistence.beans.ShopCashier;
 import java.util.Date;
 
 /**
+ * 商家设置管理员
  * Created by ss on 2018/7/2.
  */
 public class ShopCashierBo extends AbstractBO {

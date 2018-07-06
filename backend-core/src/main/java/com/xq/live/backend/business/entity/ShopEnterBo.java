@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
+ * 商家入驻出参
  * Created by ss on 2018/7/2.
  */
 public class ShopEnterBo extends AbstractBO {

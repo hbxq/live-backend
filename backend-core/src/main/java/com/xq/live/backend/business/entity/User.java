@@ -31,6 +31,7 @@ import org.springframework.util.StringUtils;
 import java.util.Date;
 
 /**
+ * 管理员表
  * @author ZhangPeng (rocky8023@163.com)
  * @website htts://www.xiang7.net
  * @version 1.0

@@ -5,7 +5,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.Table;
-
+/*
+* 商家订单关联
+* */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Table(name = "so_shop_log")

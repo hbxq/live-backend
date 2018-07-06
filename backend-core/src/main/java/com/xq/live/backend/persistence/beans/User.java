@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
+ * 用户
  * Created by ss on 2018/7/5.
  */
 @Data

@@ -25,6 +25,7 @@ import com.xq.live.backend.persistence.beans.SysUserRole;
 import java.util.Date;
 
 /**
+ * 管理员权限
  * @author ZhangPeng (rocky8023@163.com)
  * @website htts://www.xiang7.net
  * @version 1.0

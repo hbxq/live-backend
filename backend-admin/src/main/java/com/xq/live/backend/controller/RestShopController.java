@@ -25,7 +25,7 @@ import java.util.Locale;
 
 /**
  * com.xq.live.backend.controller
- *
+ *商家管理
  * @author zhangpeng32
  * Created on 2018/5/24 上午10:53
  * @Description:

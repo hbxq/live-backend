@@ -11,7 +11,7 @@ import java.util.Date;
 
 /**
  * com.xq.live.backend.persistence.beans
- *
+ *订单
  * @author zhangpeng32
  * Created on 2018/5/26 下午4:07
  * @Description:

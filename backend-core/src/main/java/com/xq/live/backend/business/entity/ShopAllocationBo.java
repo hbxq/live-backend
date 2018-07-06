@@ -7,6 +7,7 @@ import com.xq.live.backend.persistence.beans.ShopAllocation;
 import java.util.Date;
 
 /**
+ * 商家配置
  * Created by ss on 2018/7/2.
  */
 public class ShopAllocationBo extends AbstractBO {

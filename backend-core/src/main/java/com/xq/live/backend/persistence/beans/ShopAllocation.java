@@ -5,7 +5,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import javax.persistence.Table;
 import java.util.Date;
-
+/*
+*商家配置（是否平台代收）
+* */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Table(name = "shop_allocation")
