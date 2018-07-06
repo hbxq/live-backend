@@ -12,10 +12,10 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = false)
 public class ShopCashierVO extends BaseConditionVO {
 
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
+  /*  @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     private Date beginTime;
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
-    private Date endTime;
+    private Date endTime;*/
 
 
     private Long id;
@@ -33,7 +33,7 @@ public class ShopCashierVO extends BaseConditionVO {
     private Long updatorId;
 
 
-    public Date getBeginTime() {
+   /* public Date getBeginTime() {
         return beginTime;
     }
 
@@ -47,7 +47,7 @@ public class ShopCashierVO extends BaseConditionVO {
 
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
-    }
+    }*/
 
     public Long getId() {
         return id;

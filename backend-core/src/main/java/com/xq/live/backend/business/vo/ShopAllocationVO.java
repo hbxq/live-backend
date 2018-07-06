@@ -10,10 +10,10 @@ import java.util.Date;
  */
 public class ShopAllocationVO  extends BaseConditionVO {
 
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
+   /* @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     private Date beginTime;
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
-    private Date endTime;
+    private Date endTime;*/
 
     private Long id;
     private Date createTime;
@@ -24,7 +24,7 @@ public class ShopAllocationVO  extends BaseConditionVO {
     private Integer isDelete;
     private Integer paymentMethod;
 
-    public Date getBeginTime() {
+   /* public Date getBeginTime() {
         return beginTime;
     }
 
@@ -46,7 +46,7 @@ public class ShopAllocationVO  extends BaseConditionVO {
 
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
-    }
+    }*/
 
     public Date getCreateTime() {
         return createTime;

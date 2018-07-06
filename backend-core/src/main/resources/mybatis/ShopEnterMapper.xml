@@ -31,6 +31,21 @@
     shop_hours,other_service
   </sql>
 
+  <select id="selectBytemp" parameterType="com.xq.live.backend.business.vo.ShopEnterVO" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from shop_enter
+    <where>
+      1=1
+      <if test="id != null">
+      AND  id = #{id,jdbcType=BIGINT}
+      </if>
+
+    </where>
+
+  </select>
+
+
   <select id="selectByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

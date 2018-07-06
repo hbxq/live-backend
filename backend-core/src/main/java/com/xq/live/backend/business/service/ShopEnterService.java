@@ -16,5 +16,7 @@ public interface ShopEnterService extends AbstractService<ShopEnterBo, Long> {
      */
     Integer addShop(ShopEnterVO shopEnter);
 
+
+
     
 }

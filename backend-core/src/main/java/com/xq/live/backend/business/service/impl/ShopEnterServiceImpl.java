@@ -9,6 +9,7 @@ import com.xq.live.backend.persistence.beans.ShopEnter;
 import com.xq.live.backend.persistence.beans.User;
 import com.xq.live.backend.persistence.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -82,6 +83,7 @@ public class ShopEnterServiceImpl implements ShopEnterService{
     }
 
     @Override
+    @Transactional
     public Integer addShop(ShopEnterVO shopEnter) {
 
        /* List<ShopEnter> list = shopEnterMapper.selectByUserId(shopEnter.getUserId());
@@ -167,6 +169,8 @@ public class ShopEnterServiceImpl implements ShopEnterService{
         }*/
         return 0;
     }
+
+
 
     /**
      * 判断是否是手机号

@@ -10,10 +10,10 @@ import java.util.Date;
  * Created by ss on 2018/7/2.
  */
 public class ShopEnterVO extends BaseConditionVO {
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
+  /*  @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     private Date beginTime;
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
-    private Date endTime;
+    private Date endTime;*/
 
     private Long id;
     private Date createTime;
@@ -33,7 +33,7 @@ public class ShopEnterVO extends BaseConditionVO {
     private BigDecimal locationY;//维度
     private String city;//城市
 
-    public Date getBeginTime() {
+    /*public Date getBeginTime() {
         return beginTime;
     }
 
@@ -47,7 +47,7 @@ public class ShopEnterVO extends BaseConditionVO {
 
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
-    }
+    }*/
 
     public Long getId() {
         return id;
