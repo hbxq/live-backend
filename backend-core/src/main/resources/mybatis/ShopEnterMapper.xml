@@ -41,13 +41,22 @@
       <if test="id != null">
       AND  ent.id = #{id,jdbcType=BIGINT}
       </if>
-      <if test="shopName != null">
-        AND  ent.shop_name LIKE CONCAT('%',#{shopName , jdbcType=VARCHAR},'%')
+      <if test="keywords != null and keywords != '' ">
+        AND
+        (
+        ent.shop_name LIKE CONCAT('%',#{keywords , jdbcType=VARCHAR},'%') or
+        ent.mobile  LIKE CONCAT('%',#{keywords , jdbcType=VARCHAR},'%')
+        )
+      </if>
+      <if test="city != null">
+        AND  ent.city LIKE CONCAT('%',#{city , jdbcType=VARCHAR},'%')
       </if>
       <if test="beginTime !=null and endTime != null">
         and (ent.create_time BETWEEN #{beginTime} and #{endTime})
       </if>
     </where>
+    ORDER BY
+    ent.create_time DESC
   </select>
 
 

@@ -50,7 +50,6 @@
 </div>
 <#--查看明细弹窗-->
 <script>
-    var thshopId;
     var thbegainTime;
     var thendTime;
 
@@ -97,7 +96,7 @@
     }
 
     // 查看明细弹窗
-    function newtable(){
+    function newtable(shopId){
         $("#tablest").bootstrapTable({ // 对应table标签的id
             method: "post",//请求方式
             contentType : "application/x-www-form-urlencoded; charset=UTF-8",
@@ -115,7 +114,7 @@
                     pageSize: params.limit, // 每页要显示的数据条数
                     offset: params.offset, // 每页显示数据的开始行号
                     pageNumber:_offset,
-                    shopId:thshopId,
+                    shopId:shopId,
                     beginTime:thbegainTime,
                     endTime:thendTime
                 };
@@ -193,11 +192,11 @@
         } else{
             return;
         }
-        var shopid = e.target.dataset.id;
+        var shopId = e.target.dataset.id;
         $.ajax({
             type: "post",
             url: "/bill/updateWriteList",
-            data:{shopId:shopid, beginTime:$("#startDate").val(),endTime:$("#endDate").val()},
+            data:{shopId:shopId, beginTime:$("#startDate").val(),endTime:$("#endDate").val()},
             dataType: "json",
             success: function (data) {
                 console.log("data:",data);
@@ -219,13 +218,13 @@
             $("#endDate").val("");
             return;
         }
-        thshopId=e.target.dataset.id;
+        var shopId=e.target.dataset.id;
         thbegainTime=$("#startDate").val();
         thendTime=$("#endDate").val();
         $.ajax({
             type: "post",
             url: "/bill/writePrice",
-            data:{shopId:thshopId, beginTime:thbegainTime,endTime:thendTime},
+            data:{shopId:shopId, beginTime:thbegainTime,endTime:thendTime},
             dataType: "json",
             success: function (data) {
                 console.log("data:",data);
@@ -233,7 +232,7 @@
                 $("#dztotal").html("合计￥"+data.totalService);
             },
         });
-        newtable();
+        newtable(shopId);
     });
 
     /*初始化加载表格*/

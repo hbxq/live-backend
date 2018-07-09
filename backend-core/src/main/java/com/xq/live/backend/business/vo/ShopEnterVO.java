@@ -42,22 +42,6 @@ public class ShopEnterVO extends BaseConditionVO {
         this.remark = remark;
     }
 
-    /*public Date getBeginTime() {
-        return beginTime;
-    }
-
-    public void setBeginTime(Date beginTime) {
-        this.beginTime = beginTime;
-    }
-
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }*/
-
     public Long getId() {
         return id;
     }

@@ -1,5 +1,7 @@
 package com.xq.live.backend.business.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.xq.live.backend.business.entity.ShopEnterBo;
 import com.xq.live.backend.business.service.ShopEnterService;
 import com.xq.live.backend.business.vo.ShopEnterVO;
@@ -9,9 +11,11 @@ import com.xq.live.backend.persistence.beans.ShopEnter;
 import com.xq.live.backend.persistence.beans.User;
 import com.xq.live.backend.persistence.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,6 +23,7 @@ import java.util.regex.Pattern;
 /**
  * Created by ss on 2018/7/4.
  */
+@Service
 public class ShopEnterServiceImpl implements ShopEnterService{
 
     @Autowired
@@ -178,6 +183,22 @@ public class ShopEnterServiceImpl implements ShopEnterService{
     @Override
     public int updateById(ShopEnterVO record) {
         return 0;
+    }
+
+    @Override
+    public PageInfo<ShopEnterBo> selectBytemp(ShopEnterVO vo) {
+        PageHelper.startPage(vo.getPageNumber(), vo.getPageSize());
+        List<ShopEnter> list=shopEnterMapper.selectBytemp(vo);
+        if (list.size()<1||list==null){
+            return null;
+        }
+        List<ShopEnterBo> shopEnterBos=new ArrayList<ShopEnterBo>();
+        for (ShopEnter r : list) {
+            shopEnterBos.add(new ShopEnterBo(r));
+        }
+        PageInfo bean = new PageInfo<ShopEnter>(list);
+        bean.setList(shopEnterBos);
+        return bean;
     }
 
 

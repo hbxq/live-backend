@@ -247,7 +247,7 @@
         $("#startDate").val(today);
         $("#endDate").val(tomorrow);
         var options = {
-            url: "/bill/list",//
+            url: "/enter/seelist",//
             getInfoUrl: "/bill/get/{id}",
             updateUrl: "/bill/updateSoList",
             removeUrl: "/shop/remove",
@@ -269,31 +269,93 @@
                 {
                     checkbox: true
                 }, {
-                    field: 'id',
-                    title: '商家id',
-                    editable: false,
-                }, {
-                    field: 'shopName',
-                    title: '商家名称',
+                    field: 'userName',
+                    title: '用户名称',
                     editable: false,
                 }, {
                     field: 'mobile',
-                    title: '手机',
+                    title: '联系方式',
+                    editable: false,
+                }, {
+                    field: 'shopName',
+                    title: '店铺名称',
                     editable: true
                 }, {
                     field: 'address',
-                    title: '地址',
+                    title: '店铺地址',
                     editable: true
+                }, {
+                    field: 'logoPic',
+                    title: 'logo',
+                    editable: true
+                }, {
+                    field: 'businessCate',
+                    title: '经营品类',
+                    editable: true
+                }, {
+                    field: 'licensePic',
+                    title: '营业执照',
+                    editable: true
+                }, {
+                    field: 'healthPic',
+                    title: '卫生许可证',
+                    editable: true
+                }, {
+                    field: 'doorPic',
+                    title: '门头照',
+                    editable: true
+                }, {
+                    field: 'shopHours',
+                    title: '营业时间',
+                    editable: true,
+
+                }, {
+                    field: 'otherService',
+                    title: '其他服务',
+                    editable: true
+                }, {
+                    field: 'status',
+                    title: '审核状态 0待审批 2审批不通过',
+                    editable: true
+                }, {
+                    field: 'createTime',
+                    title: '创建时间',
+                    editable: true,
+                    sortable: true,
+                    //——修改——获取日期列的值进行转换
+                    formatter: function (value, row, index) {
+                        return changeDateFormat(value)
+                    }
                 }, {
                     field: 'operate',
                     title: '操作',
                     formatter: operateFormatter //自定义方法，添加操作按钮
+                }, {
+                    field: 'remark',
+                    title: '备注',
+                    editable: true
                 }
             ],
-            modalName: "对账"
+            modalName: "商家入驻"
         };
         //1.初始化Table
         $.tableUtil.init(options);
     });
+
+    //修改——转换日期格式(时间戳转换为datetime格式)
+    function changeDateFormat(cellval) {
+        var dateVal = cellval + "";
+        if (cellval != null) {
+            var date = new Date(parseInt(dateVal.replace("/Date(", "").replace(")/", ""), 10));
+            var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+            var currentDate = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+
+            var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+            var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+            var seconds = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+
+            return date.getFullYear() + "-" + month + "-" + currentDate + " " + hours + ":" + minutes + ":" + seconds;
+        }
+    }
 
 </script>

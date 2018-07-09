@@ -164,4 +164,28 @@ public class ShopEnterBo extends AbstractBO {
     public void setRemark(String remark) {
         this.shopEnter.setRemark(remark);
     }
+
+    public String getLogoPic() {
+        return this.shopEnter.getLogoPic();
+    }
+
+    public void setLogoPic(String logoPic) {
+        this.shopEnter.setLogoPic(logoPic);
+    }
+
+    public String getShopHours() {
+        return this.shopEnter.getShopHours();
+    }
+
+    public void setShopHours(String shopHours) {
+        this.shopEnter.setShopHours(shopHours);
+    }
+
+    public String getOtherService() {
+        return this.shopEnter.getOtherService();
+    }
+
+    public void setOtherService(String otherService) {
+        this.shopEnter.setShopHours(otherService);
+    }
 }

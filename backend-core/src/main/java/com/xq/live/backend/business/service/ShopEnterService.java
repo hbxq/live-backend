@@ -1,5 +1,6 @@
 package com.xq.live.backend.business.service;
 
+import com.github.pagehelper.PageInfo;
 import com.xq.live.backend.business.entity.ShopEnterBo;
 import com.xq.live.backend.business.vo.ShopEnterVO;
 import com.xq.live.backend.framework.object.AbstractService;
@@ -22,6 +23,8 @@ public interface ShopEnterService extends AbstractService<ShopEnterBo, Long> {
     List<ShopEnter> selectByUserId(Long id);
 
     int updateById(ShopEnterVO record);
+
+    PageInfo<ShopEnterBo> selectBytemp(ShopEnterVO record);
 
     
 }

@@ -52,7 +52,7 @@
                     sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
                     pageNumber: 1,                       //初始化加载第一页，默认第一页
                     pageSize: 10,                       //每页的记录行数（*）
-                    pageList: [10, 20, 30, 50, 100],        //可供选择的每页的行数（*）
+                    pageList: [5, 10, 20, 30, 50, 100],        //可供选择的每页的行数（*）
                     search: true,                       //是否启用搜索框 根据sidePagination选择从前后台搜索
                     strictSearch: true,                 //设置为 true启用 全匹配搜索，否则为模糊搜索
                     searchOnEnterKey: true,            // 设置为 true时，按回车触发搜索方法，否则自动触发搜索方法
