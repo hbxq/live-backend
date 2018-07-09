@@ -141,6 +141,7 @@
                 var tamp =  {
                     pageSize: params.limit, // 每页要显示的数据条数
                     offset: params.offset, // 每页显示数据的开始行号
+                    pageNumber:params.pageNumber,
                     keywords:params.searchText?params.searchText:"",
                    /* beginTime:$("#startDate").val()?$("#startDate").val():"",
                     endTime:$("#endDate").val()?$("#endDate").val():""*/

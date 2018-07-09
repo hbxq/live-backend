@@ -93,15 +93,15 @@
                 });
             },
             queryParams: function (params) {
-                /*params = $.extend({}, params);
+                params = $.extend({}, params);
                 params.keywords = params.searchText;
-                ///!*var start=$("#calendar").val();
+                ///*var start=$("#calendar").val();
                 //var end=$("#calendar2").val();*!/
                 console.log("start:",start,"end:",end);
 
-               // alert(params.keywords);*!/
+               // alert(params.keywords);*/
                 console.log(params);
-                return params;*/
+                return params;
             },
             refresh: function () {
                 $("#tablelist").bootstrapTable('refresh', {url: $.tableUtil._option.url});
