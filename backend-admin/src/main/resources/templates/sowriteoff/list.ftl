@@ -44,7 +44,7 @@
 <!--/弹框-->
 <#--查看明细弹窗-->
 <div class="listbox">
-    <div class="headline">详情详情<input id="guanbi" type="button" value="关闭"/><span id="dztotal"></span></div>
+    <div class="headline">详情详情<input id="guanbi" class="closebtn_bill" type="button" value="关闭"/><span id="dztotal"></span></div>
     <table id="tablest">
     </table>
 </div>
@@ -64,6 +64,15 @@
         $("#startDate").bootstrapDatepickr({date_format: "Y-m-d"});
         $("#endDate").bootstrapDatepickr({date_format: "Y-m-d"});
     });*/
+    function  dateConv(dateStr,type) { // yyyy/mm/dd
+        let year = dateStr.getFullYear(),
+                month = dateStr.getMonth() + 1,
+                today = dateStr.getDate();
+        month = month > 9 ? month : "0" + month;
+        today = today > 9 ? today : "0" + today;
+        return year + "-" + month + "-" + today;
+    }
+
     /**
      * 操作按钮
      * @param code
@@ -74,6 +83,8 @@
     function operateFormatter(code, row, index) {
         var currentShopId = '${shop.id}';
         var trShopId = row.id;
+        $("#startDate").val(today);
+        $("#endDate").val(tomorrow);
         var operateBtn = [
             '<@shiro.hasPermission name="bill:writePrice"><a class="btn btn-xs btn-info btn-allot" data-id="' + trShopId + '"><i class="fa fa-trash-o"></i>查看明细</a></@shiro.hasPermission>',
         ];
