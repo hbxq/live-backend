@@ -216,7 +216,7 @@
                 console.log("data:",data);
                 alert(data.message);
             },
-            error: $.tool.ajaxError;
+            error: $.tool.ajaxError
         });
     });
 
@@ -277,7 +277,7 @@
                     editable: false
                 }, {
                     field: 'mobile',
-                    title: '手机'
+                    title: '手机',
                     editable: true
                 }, {
                     field: 'address',
