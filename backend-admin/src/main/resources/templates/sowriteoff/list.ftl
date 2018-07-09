@@ -60,10 +60,6 @@
     tomorrow=this.dateConv(tomorrow);
     today = this.dateConv(today);
 
-    /*$(document).ready(function() {
-        $("#startDate").bootstrapDatepickr({date_format: "Y-m-d"});
-        $("#endDate").bootstrapDatepickr({date_format: "Y-m-d"});
-    });*/
     function  dateConv(dateStr,type) { // yyyy/mm/dd
         let year = dateStr.getFullYear(),
                 month = dateStr.getMonth() + 1,
@@ -192,13 +188,12 @@
 
     /* 结算 */
     $('#tablelist').on('click', '.btn-bill', function (e) {
-        var truthBeTold = window.confirm("单击“确定”继续。单击“取消”停止。")
+        var truthBeTold = window.confirm("单击“确定”继续。单击“取消”停止。");
         if (truthBeTold) {
         } else{
             return;
         }
         var shopid = e.target.dataset.id;
-        //console.log("userid:",userId);
         $.ajax({
             type: "post",
             url: "/bill/updateWriteList",
@@ -206,7 +201,7 @@
             dataType: "json",
             success: function (data) {
                 console.log("data:",data);
-                alert(data.message)
+                alert(data.message);
             },
             error: $.tool.ajaxError
         });
@@ -234,7 +229,7 @@
             dataType: "json",
             success: function (data) {
                 console.log("data:",data);
-                data.totalService?data.totalService:"0"
+                data.totalService?data.totalService:"0";
                 $("#dztotal").html("合计￥"+data.totalService);
             },
         });
@@ -270,11 +265,11 @@
                 }, {
                     field: 'id',
                     title: '商家id',
-                    editable: false,
+                    editable: false
                 }, {
                     field: 'shopName',
                     title: '商家名称',
-                    editable: false,
+                    editable: false
                 }, {
                     field: 'mobile',
                     title: '手机',
@@ -288,8 +283,7 @@
                     title: '操作',
                     formatter: operateFormatter //自定义方法，添加操作按钮
                 }
-            ],
-            modalName: "结算"
+            ]
         };
         //1.初始化Table
         $.tableUtil.init(options);

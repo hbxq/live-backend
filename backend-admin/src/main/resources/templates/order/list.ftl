@@ -246,7 +246,7 @@
                 }, {
                     field: 'id',
                     title: '订单号',
-                    editable: false,
+                    editable: false
                 }, {
                     field: 'soAmount',
                     title: '订单金额',

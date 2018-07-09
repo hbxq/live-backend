@@ -64,7 +64,7 @@
 
 
     function  dateConv(dateStr,type) { // yyyy/mm/dd
-        let year = dateStr.getFullYear(),
+        var year = dateStr.getFullYear(),
                 month = dateStr.getMonth() + 1,
                 today = dateStr.getDate();
         month = month > 9 ? month : "0" + month;
@@ -201,13 +201,12 @@
 
     /* 对账 */
     $('#tablelist').on('click', '.btn-isdui', function (e) {
-        var truthBeTold = window.confirm("单击“确定”继续。单击“取消”停止。")
+        var truthBeTold = window.confirm("单击“确定”继续。单击“取消”停止。");
         if (truthBeTold) {
         } else{
             return;
         }
         var shopid = e.target.dataset.id;
-        //console.log("userid:",userId);
         $.ajax({
             type: "post",
             url: "/bill/updateSoList",
@@ -215,9 +214,9 @@
             dataType: "json",
             success: function (data) {
                 console.log("data:",data);
-                alert(data.message)
+                alert(data.message);
             },
-            error: $.tool.ajaxError
+            error: $.tool.ajaxError;
         });
     });
 
@@ -271,14 +270,14 @@
                 }, {
                     field: 'id',
                     title: '商家id',
-                    editable: false,
+                    editable: false
                 }, {
                     field: 'shopName',
                     title: '商家名称',
-                    editable: false,
+                    editable: false
                 }, {
                     field: 'mobile',
-                    title: '手机',
+                    title: '手机'
                     editable: true
                 }, {
                     field: 'address',
@@ -289,8 +288,7 @@
                     title: '操作',
                     formatter: operateFormatter //自定义方法，添加操作按钮
                 }
-            ],
-            modalName: "对账"
+            ]
         };
         //1.初始化Table
         $.tableUtil.init(options);

@@ -153,7 +153,7 @@
                 }, {
                     field: 'shopName',
                     title: '商家名称',
-                    editable: false,
+                    editable: false
                 }, {
                     field: 'mobile',
                     title: '手机',
@@ -178,8 +178,7 @@
                     title: '操作',
                     formatter: operateFormatter //自定义方法，添加操作按钮
                 }
-            ],
-            modalName: "用户"
+            ]
         };
 
         //1.初始化Table

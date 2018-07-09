@@ -143,7 +143,7 @@
                 }, {
                     field: 'username',
                     title: '用户名',
-                    editable: false,
+                    editable: false
                 }, {
                     field: 'nickname',
                     title: '昵称',

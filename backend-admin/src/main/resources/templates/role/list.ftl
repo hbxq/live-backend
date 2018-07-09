@@ -119,7 +119,7 @@
             }, {
                 field: 'name',
                 title: '角色名',
-                editable: false,
+                editable: false
             }, {
                 field: 'description',
                 title: '角色描述',
