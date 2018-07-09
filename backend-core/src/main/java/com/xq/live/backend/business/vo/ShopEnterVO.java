@@ -32,6 +32,15 @@ public class ShopEnterVO extends BaseConditionVO {
     private BigDecimal locationX;//经度
     private BigDecimal locationY;//维度
     private String city;//城市
+    private String remark;//备注
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 
     /*public Date getBeginTime() {
         return beginTime;

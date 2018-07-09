@@ -54,13 +54,13 @@ public class So extends AbstractDO {
     private Long skuId;
 
     @Transient
-    private BigDecimal sellPrice;//平臺服務費
+    private BigDecimal sellPrice;//平臺服務費/平台服务费
 
     @Transient
-    private BigDecimal soPrice;//單筆訂單服務費//扣除服务费后的金额
+    private BigDecimal soPrice;//单笔订单服务费//扣除服务费后的金额
 
     @Transient
-    private BigDecimal soAllPrice;//所有訂單服務費
+    private BigDecimal soAllPrice;//所有订单服务费
 
     @Transient
     private String shopName;

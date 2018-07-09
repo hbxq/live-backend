@@ -16,4 +16,6 @@ public interface ShopEnterMapper  extends BaseMapper<ShopEnter> {
     int updateById(ShopEnterVO record);
 
     ShopEnter selectById(Long id);
+
+    List<ShopEnter> selectBytemp(ShopEnterVO record);
 }

@@ -3,6 +3,9 @@ package com.xq.live.backend.business.service;
 import com.xq.live.backend.business.entity.ShopEnterBo;
 import com.xq.live.backend.business.vo.ShopEnterVO;
 import com.xq.live.backend.framework.object.AbstractService;
+import com.xq.live.backend.persistence.beans.ShopEnter;
+
+import java.util.List;
 
 /**
  * Created by ss on 2018/7/4.
@@ -16,7 +19,9 @@ public interface ShopEnterService extends AbstractService<ShopEnterBo, Long> {
      */
     Integer addShop(ShopEnterVO shopEnter);
 
+    List<ShopEnter> selectByUserId(Long id);
 
+    int updateById(ShopEnterVO record);
 
     
 }

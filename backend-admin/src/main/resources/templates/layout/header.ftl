@@ -24,8 +24,27 @@
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
 
-    <link href="/assets/css/zhyd.core.css" rel="stylesheet">
+
     <link href="/assets/css/bootstrapDatepickr-1.0.0.min.css" rel="stylesheet">
+    <link href="/assets/css/zhyd.core.css" rel="stylesheet">
+    <style>
+        .modal-dialog {
+            z-index: 2000
+        }
+        .modal-backdrop{
+            z-index: 0;
+        }
+        .closebtn_bill{
+            float: right;
+            height: 40px;
+            font-size: 18px;
+        }
+        .listbox{
+            max-height: 70%;
+            overflow: hidden;
+            overflow-y: auto;
+        }
+    </style>
 </head>
 <body class="nav-md">
 <div class="container body">

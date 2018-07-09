@@ -156,4 +156,12 @@ public class ShopEnterBo extends AbstractBO {
     public void setCity(String city) {
         this.shopEnter.setCity(city);
     }
+
+    public String getRemark() {
+        return this.shopEnter.getRemark();
+    }
+
+    public void setRemark(String remark) {
+        this.shopEnter.setRemark(remark);
+    }
 }

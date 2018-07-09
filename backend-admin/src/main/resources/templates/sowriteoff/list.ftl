@@ -248,12 +248,12 @@
             } else{
                 return;
             }
-            var userId = e.target.dataset.id;
-            console.log("userid:",userId);
+            var shopid = e.target.dataset.id;
+            //console.log("userid:",userId);
             $.ajax({
                 type: "post",
                 url: "/bill/updateWriteList",
-                data:{shopId:userId, beginTime:$("#startDate").val(),endTime:$("#endDate").val()},
+                data:{shopId:shopid, beginTime:$("#startDate").val(),endTime:$("#endDate").val()},
                 dataType: "json",
                 success: function (data) {
                     console.log("data:",data);

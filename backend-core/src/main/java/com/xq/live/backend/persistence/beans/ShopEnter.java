@@ -35,4 +35,5 @@ public class ShopEnter  extends AbstractDO {
     private String logoPic;//logo
     private String shopHours;//营业时间
     private String otherService;//其他服务
+    private String remark;//备注
 }

@@ -44,7 +44,7 @@
 <!--/弹框-->
 <#--查看明细弹窗-->
 <div class="listbox">
-    <div class="headline">详情订单量<input id="guanbi" type="button" value="关闭"/><span id="dztotal"></span></div>
+    <div class="headline">详情订单量<input id="guanbi" class="closebtn_bill" type="button" value="关闭"/><span id="dztotal"></span></div>
     <table id="tablest">
     </table>
 </div>
@@ -94,7 +94,7 @@
             '<@shiro.hasPermission name="bill:detail"><a class="btn btn-xs btn-info btn-allot" data-id="' + trShopId + '"><i class="fa fa-trash-o"></i>查看明细</a></@shiro.hasPermission>',
         ];
         if (currentShopId != trShopId) {
-            operateBtn.push('<@shiro.hasPermission name="shop:edit"><a class="btn btn-xs btn-primary btn-update" data-id="' + trShopId + '"><i class="fa fa-edit"></i>对账</a></@shiro.hasPermission>');
+            operateBtn.push('<@shiro.hasPermission name="shop:edit"><a class="btn btn-xs btn-primary btn-isdui" data-id="' + trShopId + '"><i class="fa fa-edit"></i>对账</a></@shiro.hasPermission>');
         }
         return operateBtn.join('');
     }
@@ -277,18 +277,18 @@
         };
 
         /* 对账 */
-        $('#tablelist').on('click', '.btn-update', function (e) {
+        $('#tablelist').on('click', '.btn-isdui', function (e) {
             var truthBeTold = window.confirm("单击“确定”继续。单击“取消”停止。")
             if (truthBeTold) {
             } else{
                 return;
             }
-            var userId = e.target.dataset.id;
-            console.log("userid:",userId);
+            var shopid = e.target.dataset.id;
+            //console.log("userid:",userId);
             $.ajax({
                 type: "post",
                 url: "/bill/updateSoList",
-                data:{shopId:userId, beginTime:$("#startDate").val(),endTime:$("#endDate").val()},
+                data:{shopId:shopid, beginTime:$("#startDate").val(),endTime:$("#endDate").val()},
                 dataType: "json",
                 success: function (data) {
                     console.log("data:",data);

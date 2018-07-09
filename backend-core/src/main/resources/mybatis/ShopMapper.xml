@@ -38,6 +38,7 @@
         shop s
         WHERE
         1 = 1
+        AND s.is_deleted !=1
         <if test="keywords != null and keywords != '' ">
             AND
             (
@@ -74,125 +75,6 @@
         ORDER BY
         s.create_time DESC
     </select>
-    <!--根据shopName查询商家信息-->
-    <select id="selectByShopName" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from shop
-        where shop_name = #{shopName,jdbcType=VARCHAR}
-    </select>
-    <!--根据商家名模糊查询商家信息-->
-    <select id="fuzzyByShopName" parameterType="java.lang.String" resultMap="BaseResultMap">
-        SELECT
-        <include refid="Base_Column_List"/>
-        from shop
-        where shop_name LIKE concat('%',#{shopName,jdbcType=VARCHAR},'%')
-    </select>
-    <!--根据UserId查询商家信息-->
-    <select id="getShopByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    SELECT
-        s.id,
-        s.shop_name,
-        s.address,
-        s.mobile,
-        s.phone,
-        s.index_url,
-        s.logo_url,
-        s.city,
-        s.shop_info,
-        s.location_x,
-        s.location_y,
-        s.is_deleted,
-        s.pop_num,
-        s.remark,
-        s.create_time,
-        s.update_time,
-        s.shop_status,
-        s.apply_status,
-        s.business_cate
-    FROM
-        shop s inner join user u on s.id = u.shop_id
-    where u.id = #{id,jdbcType=BIGINT}
-    </select>
-    <!--根据ShopId查询商家信息-->
-    <select id="getShopByShopId" parameterType="java.lang.Long" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from shop
-        where id = #{id,jdbcType=BIGINT}
-    </select>
-    <!--添加商家信息-->
-    <insert id="insertShopInfo" parameterType="com.xq.live.backend.persistence.beans.Shop">
-        insert into shop (shop_name, address,
-        mobile, phone, index_url,logo_url,city,
-        shop_info, location_x, location_y,
-        remark, create_time,
-        update_time,business_cate)
-        values (#{shopName,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
-        #{mobile,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{indexUrl,jdbcType=VARCHAR}, #{logoUrl,jdbcType=VARCHAR},#{city,jdbcType=VARCHAR},
-        #{shopInfo,jdbcType=VARCHAR}, #{locationX,jdbcType=DECIMAL}, #{locationY,jdbcType=DECIMAL},
-        #{remark,jdbcType=VARCHAR}, now(), now(), #{businessCate,jdbcType=VARCHAR})
-    </insert>
-    <!--修改商家信息-->
-    <update id="updateshop" parameterType="com.xq.live.backend.persistence.beans.Shop">
-        update shop
-        <set>
-            update_time = now(),
-            <if test="shopName != null">
-                shop_name = #{shopName,jdbcType=VARCHAR},
-            </if>
-            <if test="address != null">
-                address = #{address,jdbcType=VARCHAR},
-            </if>
-            <if test="mobile != null">
-                mobile = #{mobile,jdbcType=VARCHAR},
-            </if>
-            <if test="phone != null">
-                phone = #{phone,jdbcType=VARCHAR},
-            </if>
-            <if test="indexUrl != null">
-                index_url = #{indexUrl,jdbcType=VARCHAR},
-            </if>
-            <if test="logoUrl != null">
-                logo_url = #{logoUrl,jdbcType=VARCHAR},
-            </if>
-            <if test="city != null">
-                city = #{city,jdbcType=VARCHAR},
-            </if>
-            <if test="shopInfo != null">
-                shop_info = #{shopInfo,jdbcType=VARCHAR},
-            </if>
-            <if test="locationX != null">
-                location_x = #{locationX,jdbcType=DECIMAL},
-            </if>
-            <if test="locationY != null">
-                location_y = #{locationY,jdbcType=DECIMAL},
-            </if>
-            <if test="isDeleted != null">
-                is_deleted = #{isDeleted,jdbcType=TINYINT},
-            </if>
-            <if test="remark != null">
-                remark = #{remark,jdbcType=VARCHAR},
-            </if>
-            <if test="shopStatus != null">
-                shop_status = #{shopStatus,jdbcType=INTEGER},
-            </if>
-            <if test="applyStatus != null">
-                apply_status = #{applyStatus,jdbcType=INTEGER},
-            </if>
-            <if test="businessCate != null">
-                business_cate = #{businessCate,jdbcType=VARCHAR},
-            </if>
-        </set>
-        where id = #{id,jdbcType=BIGINT}
-    </update>
-    <!--批量删除商家信息-->
-    <delete id="deleteshop" parameterType="java.util.List">
-        DELETE FROM shop WHERE id IN
-        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
-            #{item.id,jdbcType=BIGINT}
-        </foreach>
-    </delete>
 
     <insert id="insertShop" parameterType="com.xq.live.backend.persistence.beans.Shop">
         insert into shop (shop_name, address,

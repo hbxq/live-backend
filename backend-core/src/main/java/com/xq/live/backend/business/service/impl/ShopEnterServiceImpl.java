@@ -170,6 +170,15 @@ public class ShopEnterServiceImpl implements ShopEnterService{
         return 0;
     }
 
+    @Override
+    public List<ShopEnter> selectByUserId(Long id) {
+        return null;
+    }
+
+    @Override
+    public int updateById(ShopEnterVO record) {
+        return 0;
+    }
 
 
     /**

@@ -22,27 +22,32 @@
     <result column="logo_pic" jdbcType="VARCHAR" property="logoPic" />
     <result column="shop_hours" jdbcType="VARCHAR" property="shopHours" />
     <result column="other_service" jdbcType="VARCHAR" property="otherService" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
 
   </resultMap>
 
   <sql id="Base_Column_List">
     id, user_name, mobile, shop_name, address, business_cate, license_pic, health_pic,
     door_pic, create_time, update_time, user_id,status,location_x,location_y,city,logo_pic,
-    shop_hours,other_service
+    shop_hours,other_service,remark
   </sql>
 
   <select id="selectBytemp" parameterType="com.xq.live.backend.business.vo.ShopEnterVO" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from shop_enter
+    from shop_enter ent
     <where>
-      1=1
+      status !=1
       <if test="id != null">
-      AND  id = #{id,jdbcType=BIGINT}
+      AND  ent.id = #{id,jdbcType=BIGINT}
       </if>
-
+      <if test="shopName != null">
+        AND  ent.shop_name LIKE CONCAT('%',#{shopName , jdbcType=VARCHAR},'%')
+      </if>
+      <if test="beginTime !=null and endTime != null">
+        and (ent.create_time BETWEEN #{beginTime} and #{endTime})
+      </if>
     </where>
-
   </select>
 
 
@@ -115,6 +120,9 @@
       </if>
       <if test="otherService != null">
         other_service = #{otherService,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}

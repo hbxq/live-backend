@@ -93,7 +93,7 @@
                 });
             },
             queryParams: function (params) {
-               /* params = $.extend({}, params);
+                /*params = $.extend({}, params);
                 params.keywords = params.searchText;
                 ///!*var start=$("#calendar").val();
                 //var end=$("#calendar2").val();*!/
@@ -143,7 +143,6 @@
                             if ($("#username") && $("#username")[0]) {
                                 $("#username").attr("readonly", "readonly");
                             }
-
                             bindSaveInfoEvent(options.updateUrl);
 
                         },

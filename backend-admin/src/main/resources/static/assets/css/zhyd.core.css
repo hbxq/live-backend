@@ -4284,9 +4284,12 @@ fieldset {
 }
 
 .cropper .docs-diagram .modal-dialog {
-    max-width: 352px
+    max-width: 352px;
+    z-index: 2000
 }
-
+.modal-backdrop{
+    z-index: 0;
+}
 .cropper .docs-cropped canvas {
     max-width: 100%
 }
@@ -5020,11 +5023,13 @@ ul, menu, dir {
     display: none;
     z-index: 999;
     position: absolute;
-    top: 195px;
+    top: 60px;
     left: 5px;
     right: 0;
     bottom: 58px;
-    background: #FFFFFF;
+    background: #FFF;
+    max-height: 70%;
+    overflow: hidden;
 }
 .listbox table{
     width: 96%;
@@ -5040,3 +5045,6 @@ ul, menu, dir {
 }
 
 /* 重写ztree样式，修复选择框上出现阴影的问题 */
+
+
+/*以下是自定义样式，*/
