@@ -62,10 +62,6 @@
     tomorrow=this.dateConv(tomorrow);
     today = this.dateConv(today);
 
-
-
-
-
     /*$(document).ready(function() {
         $("#startDate").bootstrapDatepickr({date_format: "Y-m-d"});
         $("#endDate").bootstrapDatepickr({date_format: "Y-m-d"});
@@ -91,10 +87,10 @@
         var currentShopId = '${shop.id}';
         var trShopId = row.id;
         var operateBtn = [
-            '<@shiro.hasPermission name="bill:detail"><a class="btn btn-xs btn-info btn-allot" data-id="' + trShopId + '"><i class="fa fa-trash-o"></i>查看明细</a></@shiro.hasPermission>',
+            '<@shiro.hasPermission name="bill:sotimeList"><a class="btn btn-xs btn-info btn-allot" data-id="' + trShopId + '"><i class="fa fa-trash-o"></i>查看明细</a></@shiro.hasPermission>',
         ];
         if (currentShopId != trShopId) {
-            operateBtn.push('<@shiro.hasPermission name="shop:edit"><a class="btn btn-xs btn-primary btn-isdui" data-id="' + trShopId + '"><i class="fa fa-edit"></i>对账</a></@shiro.hasPermission>');
+            operateBtn.push('<@shiro.hasPermission name="bill:updateSoList"><a class="btn btn-xs btn-primary btn-isdui" data-id="' + trShopId + '"><i class="fa fa-edit"></i>对账</a></@shiro.hasPermission>');
         }
         return operateBtn.join('');
     }
@@ -193,7 +189,7 @@
                 cache: false, // 设置为 false 禁用 AJAX 数据缓存， 默认为true
                 striped: true,  //表格显示条纹，默认为false
                 pagination: true, // 在表格底部显示分页组件，默认false
-                pageList: [10, 20], // 设置页面可以显示的数据条数
+                pageList: [10, 20, 30, 40, 50], // 设置页面可以显示的数据条数
                 pageSize: 10, // 页面数据条数
                 pageNumber: 1, // 首页页码
                 sidePagination: 'server', // 设置为服务器端分页

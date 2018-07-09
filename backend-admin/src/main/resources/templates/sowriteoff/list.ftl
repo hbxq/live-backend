@@ -53,10 +53,17 @@
     var thshopId;
     var thbegainTime;
     var thendTime;
-    $(document).ready(function() {
+
+    var today = new Date();
+    var tomorrow = new Date().getTime() + 86400000;
+    tomorrow=new Date(tomorrow);
+    tomorrow=this.dateConv(tomorrow);
+    today = this.dateConv(today);
+
+    /*$(document).ready(function() {
         $("#startDate").bootstrapDatepickr({date_format: "Y-m-d"});
         $("#endDate").bootstrapDatepickr({date_format: "Y-m-d"});
-    });
+    });*/
     /**
      * 操作按钮
      * @param code
@@ -68,25 +75,32 @@
         var currentShopId = '${shop.id}';
         var trShopId = row.id;
         var operateBtn = [
-            '<@shiro.hasPermission name="bill:detail"><a class="btn btn-xs btn-info btn-allot" data-id="' + trShopId + '"><i class="fa fa-trash-o"></i>查看明细</a></@shiro.hasPermission>',
+            '<@shiro.hasPermission name="bill:writePrice"><a class="btn btn-xs btn-info btn-allot" data-id="' + trShopId + '"><i class="fa fa-trash-o"></i>查看明细</a></@shiro.hasPermission>',
         ];
         if (currentShopId != trShopId) {
-            operateBtn.push('<@shiro.hasPermission name="shop:edit"><a class="btn btn-xs btn-primary btn-update" data-id="' + trShopId + '"><i class="fa fa-edit"></i>结算</a></@shiro.hasPermission>');
+            operateBtn.push('<@shiro.hasPermission name="bill:updateWriteList"><a class="btn btn-xs btn-primary btn-update" data-id="' + trShopId + '"><i class="fa fa-edit"></i>结算</a></@shiro.hasPermission>');
         }
         return operateBtn.join('');
     }
     $(function () {
+
+        $("#startDate").bootstrapDatepickr({date_format: "Y-m-d"});
+        $("#endDate").bootstrapDatepickr({date_format: "Y-m-d"});
+        $("#startDate").val(today);
+        $("#endDate").val(tomorrow);
         var options = {
             url: "/bill/list",//
             getInfoUrl: "/bill/get/{id}",
             updateUrl: "/bill/updateSoList",
             queryParams :function queryParams(params) { // 请求服务器数据时发送的参数，可以在这里添加额外的查询参数，返回false则终止请求
+                var start=$("#startDate").val();
+                var end=$("#endDate").val();
                 var tamp =  {
                     pageSize: params.limit, // 每页要显示的数据条数
                     offset: params.offset, // 每页显示数据的开始行号
                     keywords:params.searchText?params.searchText:"",
-                    beginTime:$("#startDate").val()?$("#startDate").val():"",
-                    endTime:$("#endDate").val()?$("#endDate").val():""
+                    beginTime:start?start:today,
+                    endTime:end?end:tomorrow
                 };
                 return tamp;
             },
