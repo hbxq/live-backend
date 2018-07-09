@@ -62,12 +62,7 @@
     tomorrow=this.dateConv(tomorrow);
     today = this.dateConv(today);
 
-    /*$(document).ready(function() {
-        $("#startDate").bootstrapDatepickr({date_format: "Y-m-d"});
-        $("#endDate").bootstrapDatepickr({date_format: "Y-m-d"});
-        $("#startDate").val(today);
-        $("#endDate").val(tomorrow);
-    });*/
+
     function  dateConv(dateStr,type) { // yyyy/mm/dd
         let year = dateStr.getFullYear(),
                 month = dateStr.getMonth() + 1,
@@ -76,6 +71,156 @@
         today = today > 9 ? today : "0" + today;
         return year + "-" + month + "-" + today;
     }
+
+    // 查看明细弹窗
+    function newtable(){
+        $("#tablest").bootstrapTable({ // 对应table标签的id
+            method: "post",//请求方式
+            contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+            url: "/bill/sotimeList", // 获取表格数据的url
+            cache: false, // 设置为 false 禁用 AJAX 数据缓存， 默认为true
+            striped: true,  //表格显示条纹，默认为false
+            pagination: true, // 在表格底部显示分页组件，默认false
+            pageList: [10, 20, 30, 40, 50], // 设置页面可以显示的数据条数
+            pageSize: 10, // 页面数据条数
+            pageNumber: 1, // 首页页码
+            sidePagination: 'server', // 设置为服务器端分页
+            queryParams: function queryParams(params) { // 请求服务器数据时发送的参数，可以在这里添加额外的查询参数，返回false则终止请求
+                var _offset = params.offset/10+1;
+                var tamp =  {
+                    pageSize: params.limit, // 每页要显示的数据条数
+                    offset: params.offset, // 每页显示数据的开始行号
+                    pageNumber:_offset,
+                    shopId:thshopId,
+                    beginTime:thbegainTime,
+                    endTime:thendTime
+                };
+                return tamp;
+            },
+            sortName: 'id', // 要排序的字段
+            sortOrder: 'desc', // 排序规则
+            columns: [
+                {
+                    field: 'id', // 返回json数据中的name
+                    title: '订单号', // 表格表头显示文字
+                    align: 'center', // 左右居中
+                    valign: 'middle' // 上下居中
+                }, {
+                    field: 'userName',
+                    title: '下单人',
+                    align: 'center',
+                    valign: 'middle'
+                }, {
+                    field: 'paidTime',
+                    title: '支付时间',
+                    align: 'center',
+                    valign: 'middle',
+                    editable: false,
+                    formatter: function (code) {
+                        return new Date(code).format("yyyy-MM-dd hh:mm:ss")
+                    }
+                }, {
+                    field: 'sellPrice',
+                    title: '服务费',
+                    align: 'center',
+                    valign: 'middle',
+                    editable: true
+                }, {
+                    field: 'soType',
+                    title: '订单类型',
+                    editable: false,
+                    formatter: function (code) {
+                        if(code==1){
+                            return "平台订单";
+                        }else if(code==2){
+                            return "商家订单";
+                        }
+                    }
+                }, {
+                    field: 'isDui',
+                    title: '对账状态(0未对账,1已对账)',
+                    align: 'center',
+                    valign: 'middle'
+                }, {
+                    field: 'soAmount',
+                    title: '支付金额',
+                    align: 'center',
+                    valign: 'middle'
+                }, {
+                    field: 'soPrice',
+                    title: '扣除服务费后的金额',
+                    align: 'center',
+                    valign: 'middle',
+                    editable: true
+                }
+            ],
+            onLoadSuccess: function(){  //加载成功时执行
+                console.info("加载成功");
+                console.log(this)
+            },
+            onLoadError: function(){  //加载失败时执行
+                console.info("加载数据失败");
+            }
+        })
+    };
+
+    $('#guanbi').on('click',function(){
+        $("#tablest").bootstrapTable('destroy');
+        $("#dztotal").html("");
+        $('.listbox').hide();
+    });
+
+    /* 分配用户角色  --查看明细弹窗 */
+    $('#tablelist').on('click', '.btn-allot', function (e) {
+        var start=$("#startDate").val();
+        var end=$("#endDate").val();
+        console.log(new Date(start).getTime())
+        $('.listbox').show();
+        if(new Date(start).getTime()>new Date(end).getTime()){
+            alert("结束日期不能小于开始日期");
+            $("#startDate").val("");
+            $("#endDate").val("");
+            return;
+        }
+        thshopId=e.target.dataset.id;
+        thbegainTime=$("#startDate").val();
+        thendTime=$("#endDate").val();
+        $.ajax({
+            type: "post",
+            url: "/bill/soPrice",
+            data:{shopId:thshopId, beginTime:thbegainTime,endTime:thendTime},
+            dataType: "json",
+            success: function (data) {
+                console.log("data:",data);
+                data.soAllPrice?data.soAllPrice:"0"
+                $("#dztotal").html("合计￥"+data.soAllPrice);
+            },
+        });
+        newtable();
+    });
+
+    /* 对账 */
+    $('#tablelist').on('click', '.btn-isdui', function (e) {
+        var truthBeTold = window.confirm("单击“确定”继续。单击“取消”停止。")
+        if (truthBeTold) {
+        } else{
+            return;
+        }
+        var shopid = e.target.dataset.id;
+        //console.log("userid:",userId);
+        $.ajax({
+            type: "post",
+            url: "/bill/updateSoList",
+            data:{shopId:shopid, beginTime:$("#startDate").val(),endTime:$("#endDate").val()},
+            dataType: "json",
+            success: function (data) {
+                console.log("data:",data);
+                alert(data.message)
+            },
+            error: $.tool.ajaxError
+        });
+    });
+
     /**
      * 操作按钮
      * @param code
@@ -94,6 +239,8 @@
         }
         return operateBtn.join('');
     }
+
+    /*初始化加载表格*/
     $(function () {
         $("#startDate").bootstrapDatepickr({date_format: "Y-m-d"});
         $("#endDate").bootstrapDatepickr({date_format: "Y-m-d"});
@@ -147,151 +294,6 @@
         };
         //1.初始化Table
         $.tableUtil.init(options);
-        $('#guanbi').on('click',function(){
-            $("#tablest").bootstrapTable('destroy');
-            $("#dztotal").html("");
-            $('.listbox').hide();
-        });
-        /* 分配用户角色  --查看明细弹窗 */
-        $('#tablelist').on('click', '.btn-allot', function (e) {
-            var start=$("#startDate").val();
-            var end=$("#endDate").val();
-            console.log(new Date(start).getTime())
-            $('.listbox').show();
-            if(new Date(start).getTime()>new Date(end).getTime()){
-                alert("结束日期不能小于开始日期");
-                $("#startDate").val("");
-                $("#endDate").val("");
-                return;
-            }
-            thshopId=e.target.dataset.id;
-            thbegainTime=$("#startDate").val();
-            thendTime=$("#endDate").val();
-            $.ajax({
-                type: "post",
-                url: "/bill/soPrice",
-                data:{shopId:thshopId, beginTime:thbegainTime,endTime:thendTime},
-                dataType: "json",
-                success: function (data) {
-                    console.log("data:",data);
-                    data.soAllPrice?data.soAllPrice:"0"
-                    $("#dztotal").html("合计￥"+data.soAllPrice);
-                },
-            });
-            newtable();
-        });
-        // 查看明细弹窗
-        function newtable(){
-            $("#tablest").bootstrapTable({ // 对应table标签的id
-                method: "post",//请求方式
-                contentType : "application/x-www-form-urlencoded; charset=UTF-8",
-                url: "/bill/sotimeList", // 获取表格数据的url
-                cache: false, // 设置为 false 禁用 AJAX 数据缓存， 默认为true
-                striped: true,  //表格显示条纹，默认为false
-                pagination: true, // 在表格底部显示分页组件，默认false
-                pageList: [10, 20, 30, 40, 50], // 设置页面可以显示的数据条数
-                pageSize: 10, // 页面数据条数
-                pageNumber: 1, // 首页页码
-                sidePagination: 'server', // 设置为服务器端分页
-                queryParams: function queryParams(params) { // 请求服务器数据时发送的参数，可以在这里添加额外的查询参数，返回false则终止请求
-                    var _offset = params.offset/10+1;
-                    var tamp =  {
-                        pageSize: params.limit, // 每页要显示的数据条数
-                        offset: params.offset, // 每页显示数据的开始行号
-                        pageNumber:_offset,
-                        shopId:thshopId,
-                        beginTime:thbegainTime,
-                        endTime:thendTime
-                    };
-                    return tamp;
-                },
-                sortName: 'id', // 要排序的字段
-                sortOrder: 'desc', // 排序规则
-                columns: [
-                     {
-                        field: 'id', // 返回json数据中的name
-                        title: '订单号', // 表格表头显示文字
-                        align: 'center', // 左右居中
-                        valign: 'middle' // 上下居中
-                    }, {
-                        field: 'userName',
-                        title: '下单人',
-                        align: 'center',
-                        valign: 'middle'
-                    }, {
-                        field: 'paidTime',
-                        title: '支付时间',
-                        align: 'center',
-                        valign: 'middle',
-                        editable: false,
-                        formatter: function (code) {
-                            return new Date(code).format("yyyy-MM-dd hh:mm:ss")
-                        }
-                    }, {
-                        field: 'sellPrice',
-                        title: '服务费',
-                        align: 'center',
-                        valign: 'middle',
-                        editable: true
-                    }, {
-                        field: 'soType',
-                        title: '订单类型',
-                        editable: false,
-                        formatter: function (code) {
-                            if(code==1){
-                                return "平台订单";
-                            }else if(code==2){
-                                return "商家订单";
-                            }
-                        }
-                    }, {
-                        field: 'isDui',
-                        title: '对账状态(0未对账,1已对账)',
-                        align: 'center',
-                        valign: 'middle'
-                    }, {
-                        field: 'soAmount',
-                        title: '支付金额',
-                        align: 'center',
-                        valign: 'middle'
-                    }, {
-                        field: 'soPrice',
-                        title: '扣除服务费后的金额',
-                        align: 'center',
-                        valign: 'middle',
-                        editable: true
-                    }
-                ],
-                onLoadSuccess: function(){  //加载成功时执行
-                    console.info("加载成功");
-                    console.log(this)
-                },
-                onLoadError: function(){  //加载失败时执行
-                    console.info("加载数据失败");
-                }
-            })
-        };
-
-        /* 对账 */
-        $('#tablelist').on('click', '.btn-isdui', function (e) {
-            var truthBeTold = window.confirm("单击“确定”继续。单击“取消”停止。")
-            if (truthBeTold) {
-            } else{
-                return;
-            }
-            var shopid = e.target.dataset.id;
-            //console.log("userid:",userId);
-            $.ajax({
-                type: "post",
-                url: "/bill/updateSoList",
-                data:{shopId:shopid, beginTime:$("#startDate").val(),endTime:$("#endDate").val()},
-                dataType: "json",
-                success: function (data) {
-                    console.log("data:",data);
-                    alert(data.message)
-                },
-                error: $.tool.ajaxError
-            });
-        });
     });
+
 </script>
