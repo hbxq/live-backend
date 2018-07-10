@@ -65,6 +65,7 @@ public class So extends AbstractDO {
     @Transient
     private String shopName;
 
+    @Transient
     private Integer paymentMethod;//商家是否自收
 
 }
