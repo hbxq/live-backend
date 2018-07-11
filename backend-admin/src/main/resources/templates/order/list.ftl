@@ -15,14 +15,14 @@
                     <div class="col-md-3">
                         <div class="input-group">
                             <span class="input-group-addon" id="basic-addon1">开始时间</span>
-                            <input type="text" id="calendar" placeholder="test" class="form-control">
+                            <input type="text" id="startDate" placeholder="test" class="form-control">
                             <#--<input type="text" id="calendar1" placeholder="test" class="form-control">-->
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="input-group">
                             <span class="input-group-addon" id="basic-addon1">结束时间</span>
-                            <input type="text" id="calendar2" placeholder="test" class="form-control">
+                            <input type="text" id="endDate" placeholder="test" class="form-control">
                             <#--<input type="text" id="calendar3" placeholder="test" class="form-control">-->
                         </div>
                     </div>
@@ -41,13 +41,13 @@
                     </button>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" id="order_type">
                         <li role="presentation">
-                            <a role="menuitem" tabindex="-1" id="-1" href="#">Java</a>
+                            <a role="menuitem" tabindex="0" id="" href="#">全部</a>
                         </li>
                         <li role="presentation">
-                            <a role="menuitem" tabindex="1" id="1" href="#">数据挖掘</a>
+                            <a role="menuitem" tabindex="1" id="1" href="#">平台订单</a>
                         </li>
                         <li role="presentation">
-                            <a role="menuitem" tabindex="2" id="2" href="#">数据通信/网络</a>
+                            <a role="menuitem" tabindex="2" id="2" href="#">商家订单</a>
                         </li>
                     </ul>
                 </div>
@@ -57,19 +57,25 @@
                     </button>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu12" id="order_status">
                         <li role="presentation">
-                            <a role="menuitem" tabindex="-1" id="-1" href="#">订单状态1</a>
+                            <a role="menuitem" tabindex="0" id="" href="#">全部</a>
                         </li>
                         <li role="presentation">
-                            <a role="menuitem" tabindex="1" id="1" href="#">订单状态2</a>
+                            <a role="menuitem" tabindex="1" id="1" href="#">待支付</a>
                         </li>
                         <li role="presentation">
-                            <a role="menuitem" tabindex="2" id="2" href="#">订单状态3</a>
+                            <a role="menuitem" tabindex="2" id="2" href="#">已支付</a>
+                        </li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="3" id="3" href="#">已核销</a>
+                        </li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="4" id="10" href="#">取消</a>
                         </li>
                     </ul>
                 </div>
 
 
-                <button type="button" class="btn btn-primary" id="search">搜索</button>
+                <button type="button" class="btn btn-primary" id="search">搜索11</button>
                 <div class="<#--table-responsive-->">
                     <table id="tablelist">
                     </table>
@@ -101,69 +107,69 @@
     </div>
 </div>
 <!--/弹框-->
-<!--添加用户弹框-->
+<!--订单明细弹框-->
 <div class="modal fade" id="addOrUpdateModal" tabindex="-1" role="dialog" aria-labelledby="addroleLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="addroleLabel">添加商家</h4>
+                <h4 class="modal-title" id="addroleLabel">订单明细</h4>
             </div>
             <div class="modal-body">
                 <form id="addOrUpdateForm" class="form-horizontal form-label-left" novalidate>
                     <input type="hidden" name="id">
                     <div class="item form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="shopName">订单号: <span class="required">*</span></label>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="id">订单号: <span class="required">*</span></label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" class="form-control col-md-7 col-xs-12" name="shopName" id="shopName" required="required" placeholder="请输入商户名称" />
+                            <input type="text" class="form-control col-md-7 col-xs-12" name="id" id="id" required="required" readonly="true"/>
                         </div>
                     </div>
                     <div class="item form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="mobile">订单金额: <span class="required">*</span></label>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="soAmount">订单金额: <span class="required">*</span></label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" class="form-control col-md-7 col-xs-12" id="mobile" name="mobile" required="required" placeholder="请输入联系手机号"/>
+                            <input type="text" class="form-control col-md-7 col-xs-12" id="soAmount" name="soAmount" required="required" readonly="true"/>
                         </div>
                     </div>
                     <div class="item form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="address">下单人:</label>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="userName">下单人:</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" class="form-control col-md-7 col-xs-12" name="address" id="address" placeholder="请输入地址"/>
+                            <input type="text" class="form-control col-md-7 col-xs-12" name="userName"  id="userName" readonly="true"/>
                         </div>
                     </div>
                     <div class="item form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="logoUrl">支付类型:</label>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="payType">支付类型:</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" class="form-control col-md-7 col-xs-12" name="logoUrl" id="logoUrl" data-validate-length-range="8,500" placeholder="请输入主图地址"/>
+                            <input type="text" class="form-control col-md-7 col-xs-12" name="payType" id="payType" data-validate-length-range="8,500" readonly="true"/>
                         </div>
                     </div>
                     <div class="item form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="shopInfo">订单状态:</label>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="soStatus">订单状态:</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" class="form-control col-md-7 col-xs-12" name="shopInfo" id="shopInfo" placeholder="请输入商家简介"/>
+                            <input type="text" class="form-control col-md-7 col-xs-12"  name="soStatus" id="soStatus" readonly="true"/>
                         </div>
                     </div>
                     <div class="item form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="city">订单类型:</label>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="soType">订单类型:</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" class="form-control col-md-7 col-xs-12" name="city" id="city" placeholder="请输入城市"/>
+                            <input type="text" class="form-control col-md-7 col-xs-12" name="soType" id="soType" readonly="true"/>
                         </div>
                     </div>
                     <div class="item form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="city">创建时间:</label>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="createTime">创建时间:</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" class="form-control col-md-7 col-xs-12" name="city" id="city" placeholder="请输入城市"/>
+                            <input type="text" class="form-control col-md-7 col-xs-12" name="createTime" id="createTime" readonly="true"/>
                         </div>
                     </div>
                     <div class="item form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="city">付款时间:</label>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="paidTime">付款时间:</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" class="form-control col-md-7 col-xs-12" name="city" id="city" placeholder="请输入城市"/>
+                            <input type="text" class="form-control col-md-7 col-xs-12" name="paidTime" id="paidTime" readonly="true"/>
                         </div>
                     </div>
                     <div class="item form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="city">核销时间:</label>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="hxTime">核销时间:</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" class="form-control col-md-7 col-xs-12" name="city" id="city" placeholder="请输入城市"/>
+                            <input type="text" class="form-control col-md-7 col-xs-12" name="hxTime" id="hxTime" readonly="true"/>
                         </div>
                     </div>
                 </form>
@@ -176,6 +182,25 @@
 </div>
 <!--/添加用户弹框-->
 <script>
+    var thbegainTime;
+    var thendTime;
+
+    var today = new Date();
+    var tomorrow = new Date().getTime() + 86400000;
+    tomorrow=new Date(tomorrow);
+    tomorrow=this.dateConv(tomorrow);
+    today = this.dateConv(today);
+
+
+    function  dateConv(dateStr,type) { // yyyy/mm/dd
+        let year = dateStr.getFullYear(),
+                month = dateStr.getMonth() + 1,
+                today = dateStr.getDate();
+        month = month > 9 ? month : "0" + month;
+        today = today > 9 ? today : "0" + today;
+        return year + "-" + month + "-" + today;
+    }
+
     /**
      * 操作按钮
      * @param code
@@ -183,7 +208,7 @@
      * @param index
      * @returns {string}
      */
-    var _status='', _type='',shop_name=''
+    var _status='', _type='',shop_name='';
     $("#order_type li").click(function(event){
         //获取选择的订单类型
         _type =  event.target.id;
@@ -200,46 +225,83 @@
         $("<span class='caret'></span>").appendTo("#dropdownMenu12");
     });
 
-    $('#shop_name').bind('input propertychange', function() {
+    /*$('#shop_name').bind('input propertychange', function() {
         //实时监听input框中输入的值
-        console.log($(this).val());
+
         shop_name=$("#shop_name").val();
-    });
+        console.log(shop_name);
+//        $.ajax({url:"/shop/list",success:function(result){
+//            console.log("result:",result)
+//        }});
+
+
+        $.post("/shop/list",{},function(data,status){
+           console.log(data,status)
+        });
+    });*/
     $("#search").click(function(){
         //点击搜索按钮，执行搜索事件
-        var start=$("#calendar").val();
-        var end=$("#calendar2").val();
+        console.log("search")
+        var start=$("#startdate").val();
+        var end=$("#enddate").val();
 
-        console.log("start:",start);
-        console.log("end:",end);
-        console.log("shop_name:",shop_name);
-        console.log("_type:",_type)
-        console.log("_status:",_status)
+//        console.log("start:",start);
+//        console.log("end:",end);
+//        console.log("shop_name:",shop_name);
+//        console.log("_type:",_type)
+//        console.log("_status:",_status)
 
+        var newObj ={
+            soType:_type,
+            soStatus:_status,
+            beginTim:start?start:today,
+            endTime:end?end:tomorrow
+                },value='';
+        for (var key in newObj) {
+            value += key + "=" + newObj[key] + "&";
+        }
+        value = value.substring(0, value.length - 1);
 
-    });
-    $(document).ready(function() {
-        $("#calendar").bootstrapDatepickr({date_format: "Y-m-d"});
-        $("#calendar1").bootstrapDatepickr({date_format: "h:m:s"});
-        $("#calendar2").bootstrapDatepickr({date_format: "Y-m-d"});
-        $("#calendar3").bootstrapDatepickr({date_format: "hh:ii:ss"});
+        $('#tablelist').bootstrapTable('refresh', { url: '/order/list?'+value});
     });
     function operateFormatter(code, row, index) {
         var trId = row.id;
         var operateBtn = [
-            '<@shiro.hasPermission name="order:detail"><a class="btn btn-xs btn-info btn-allot" data-id="' + trId + '"><i class="fa fa-trash-o"></i>查看明细</a></@shiro.hasPermission>'
+            '<@shiro.hasPermission name="order:detail"><a class="btn btn-xs btn-primary btn-detail" data-id="' + trId + '"><i class="fa fa-trash-o"></i>查看明细</a></@shiro.hasPermission>'
         ];
         return operateBtn.join('');
     }
 
-    $(function () {
+    function opentable(){
         var options = {
             url: "/order/list",
-            getInfoUrl: "/shop/get/{id}",
-            updateUrl: "/shop/edit",
+            getInfoUrl: "/order/detail",
+            updateUrl: "/order/edit",//此接口还没有，可以根据后续需要
             removeUrl: "/shop/remove",
             createUrl: "/shop/add",
             saveRolesUrl: "/shop/saveUserRoles",
+            queryParams :function queryParams(params) { // 请求服务器数据时发送的参数，可以在这里添加额外的查询参数，返回false则终止请求
+                var start=$("#startDate").val();
+                var end=$("#endDate").val();
+                /*var _pageNumber= params.limit;
+                var _pageSize= params.offset;*/
+                console.log("params00:",params)
+                var tamp =  {
+                    pageSize: params.pageSize, // 每页要显示的数据条数
+                    pageNumber:params.pageNumber,
+                    offset: params.offset, // 每页显示数据的开始行号
+                    keywords:params.searchText?params.searchText:"",
+                    beginTime:start?start:today,
+                    endTime:end?end:tomorrow
+                };
+                if(_type){
+                    tamp.soType = _type;
+                }
+                if(_status){
+                    tamp.soStatus = _status;
+                }
+                return tamp;
+            },
             columns: [
                 {
                     checkbox: true
@@ -304,22 +366,19 @@
                 },{
                     field: 'createTime',
                     title: '创建时间',
-                    editable: false,
-                    formatter: function (code) {
-                        return new Date(code).format("yyyy-MM-dd hh:mm:ss")
-                    }
+                    editable: false
                 }, {
                     field: 'paidTime',
                     title: '付款时间',
-                    editable: false,
-                    formatter: function (code) {
-                        return new Date(code).format("yyyy-MM-dd hh:mm:ss")
-                    }
+                    editable: false
                 }, {
                     field: 'hxTime',
                     title: '核销时间',
                     editable: false,
                     formatter: function (code) {
+                        if(code==null){
+                            return null;
+                        }
                         return new Date(code).format("yyyy-MM-dd hh:mm:ss")
                     }
                 }, {
@@ -328,13 +387,23 @@
                     formatter: operateFormatter //自定义方法，添加操作按钮
                 }
             ],
-            modalName: "用户"
+            modalName: "订单"
         };
 
         //1.初始化Table
         $.tableUtil.init(options);
         //2.初始化Button的点击事件
         $.buttonUtil.init(options);
+    }
+
+    $(function () {
+        $("#startDate").bootstrapDatepickr({date_format: "Y-m-d"});
+        $("#endDate").bootstrapDatepickr({date_format: "Y-m-d"});
+        $("#startDate").val(today);
+        $("#endDate").val(tomorrow);
+
+        opentable();
+
 
         /* 分配用户角色 */
         /*$('#tablelist').on('click', '.btn-allot', function () {

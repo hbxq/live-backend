@@ -1,5 +1,6 @@
 package com.xq.live.backend.business.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.xq.live.backend.framework.object.AbstractBO;
 import com.xq.live.backend.persistence.beans.Shop;
@@ -95,7 +96,7 @@ public class SoBo {
     public void setSoType(Integer soType) {
         this.so.setSoType(soType);
     }
-
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     public Date getPaidTime() {
         return this.so.getPaidTime();
     }
@@ -103,7 +104,7 @@ public class SoBo {
     public void setPaidTime(Date paidTime) {
         this.so.setPaidTime(paidTime);
     }
-
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     public Date getHxTime() {
         return this.so.getHxTime();
     }
@@ -112,6 +113,7 @@ public class SoBo {
         this.so.setHxTime(hxTime);
     }
 
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     public Date getCreateTime() {
         return this.so.getCreateTime();
     }
@@ -119,7 +121,7 @@ public class SoBo {
     public void setCreateTime(Date createTime) {
         this.so.setCreateTime(createTime);
     }
-
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     public Date getUpdateTime() {
         return this.so.getUpdateTime();
     }

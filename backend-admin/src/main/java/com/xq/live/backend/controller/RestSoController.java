@@ -7,8 +7,10 @@ import com.xq.live.backend.business.entity.SoBo;
 import com.xq.live.backend.business.service.SoService;
 import com.xq.live.backend.business.vo.SoConditionVO;
 import com.xq.live.backend.framework.object.PageResult;
+import com.xq.live.backend.framework.object.ResponseVO;
 import com.xq.live.backend.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,5 +36,16 @@ public class RestSoController {
         PageHelper.startPage(vo.getPageNumber() - 1, vo.getPageSize());
         PageInfo<SoBo> pageInfo = soService.findPageBreakByCondition(vo);
         return ResultUtil.tablePage(pageInfo);
+    }
+
+    /**
+     * 查看订单明细
+     * @param vo
+     * @return
+     */
+    @PostMapping("/detail")
+    public ResponseVO details(SoConditionVO vo){
+        SoBo result = soService.detail(vo);
+        return ResultUtil.success(null,result);
     }
 }

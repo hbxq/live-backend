@@ -1,5 +1,6 @@
 package com.xq.live.backend.persistence.beans;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.xq.live.backend.framework.object.AbstractDO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -43,7 +44,9 @@ public class So extends AbstractDO {
     private Integer payType;
     private Integer soStatus;
     private Integer soType;
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date paidTime;
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date hxTime;
     private Integer isDui;
 

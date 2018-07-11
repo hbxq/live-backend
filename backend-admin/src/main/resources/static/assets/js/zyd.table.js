@@ -100,7 +100,7 @@
                 console.log("start:",start,"end:",end);
 
                // alert(params.keywords);*/
-                console.log(params);
+                console.log("params123:",params);
                 return params;
             },
             refresh: function () {
@@ -144,6 +144,38 @@
                                 $("#username").attr("readonly", "readonly");
                             }
                             bindSaveInfoEvent(options.updateUrl);
+
+                        },
+                        error: $.tool.ajaxError
+                    });
+                });
+
+                /* 查看明细*/
+                $('#tablelist').on('click', '.btn-detail', function () {
+                    var $this = $(this);
+                    var soId = $this.attr("data-id");
+                    var data = {
+                        id : soId
+                      };
+                    $.ajax({
+                        type: "post",
+                        url: options.getInfoUrl,
+                        data:data,
+                        dataType:"json",
+                        success: function (json) {
+                            console.log(json);
+                            var info = json.data;
+                            // console.log(info);
+                            resetForm(info);
+                            $("#addOrUpdateModal").modal('show');
+                            $("#addOrUpdateModal").find(".modal-dialog .modal-content .modal-header h4.modal-title").html("查看" + options.modalName);
+                            if ($("#password") && $("#password")[0]) {
+                                $("#password").removeAttr("required");
+                            }
+                            if ($("#username") && $("#username")[0]) {
+                                $("#username").attr("readonly", "readonly");
+                            }
+                            //bindSaveInfoEvent(options.updateUrl);
 
                         },
                         error: $.tool.ajaxError
@@ -231,7 +263,7 @@ function clearText($this, type, info){
             $this.iCheck((thisValue || thisValue == 1) ? 'check' : 'uncheck');
         } else {
             $this.val('');//解决弹出的时候，没有删除上次点击获取的数据
-            if (thisValue && thisName != 'password') {
+            if ((thisValue||thisValue==0) && thisName != 'password') {
                 $this.val(thisValue);
             }
         }

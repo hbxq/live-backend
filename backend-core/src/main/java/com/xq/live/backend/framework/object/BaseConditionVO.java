@@ -23,6 +23,7 @@
  */
 package com.xq.live.backend.framework.object;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -46,9 +47,11 @@ public class BaseConditionVO {
     private String orderField;
     private String orderDirection;
     private String keywords;
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    //@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date beginTime;
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    //@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
     public int getPageSize() {

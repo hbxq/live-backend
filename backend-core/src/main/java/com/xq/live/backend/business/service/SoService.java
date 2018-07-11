@@ -46,4 +46,10 @@ public interface SoService extends AbstractService<SoBo, Long> {
      */
     Integer updateByShopId(SoConditionVO list);
 
+    /**
+     * 查看订单明细
+     * @param vo
+     * @return
+     */
+    SoBo detail(SoConditionVO vo);
 }

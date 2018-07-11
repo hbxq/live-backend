@@ -44,6 +44,10 @@
             overflow: hidden;
             overflow-y: auto;
         }
+        .fixed-table-body{
+            max-height: 500px;
+            overflow-y:scroll;
+        }
     </style>
 </head>
 <body class="nav-md">

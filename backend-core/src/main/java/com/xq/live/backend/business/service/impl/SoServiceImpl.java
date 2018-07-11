@@ -173,6 +173,15 @@ public class SoServiceImpl implements SoService{
     }
 
     @Override
+    public SoBo detail(SoConditionVO vo) {
+        Assert.notNull(vo, "SoConditionVO不能为空");
+        So so = new So();
+        so.setId(vo.getId());
+        So result = soMapper.selectOne(so);
+        return new SoBo(result);
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public SoBo insert(SoBo entity) {
         return null;
