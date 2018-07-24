@@ -20,7 +20,12 @@ public class ShopCashier  extends AbstractDO {
     public final static byte SHOP_CASHIER_NO_DELETED = 0;
 
     public final static byte SHOP_CASHIER_IS_DELETED = 1;
+    /**
+     * is_admin 0 不是管理员  1 管理员
+     */
+    public final static byte SHOP_CASHIER_NO_ADMIN = 0;
 
+    public final static byte SHOP_CASHIER_IS_ADMIN = 1;
 
     private Long cashierId;
     private String cashierName;

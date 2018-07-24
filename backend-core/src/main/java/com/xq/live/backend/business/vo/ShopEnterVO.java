@@ -10,10 +10,6 @@ import java.util.Date;
  * Created by ss on 2018/7/2.
  */
 public class ShopEnterVO extends BaseConditionVO {
-  /*  @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
-    private Date beginTime;
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
-    private Date endTime;*/
 
     private Long id;
     private Date createTime;
@@ -33,6 +29,34 @@ public class ShopEnterVO extends BaseConditionVO {
     private BigDecimal locationY;//维度
     private String city;//城市
     private String remark;//备注
+    private String logoPic; //logo
+
+    private String shopHours;//营业时间
+    private String otherService;//其他服务
+
+    public String getShopHours() {
+        return shopHours;
+    }
+
+    public void setShopHours(String shopHours) {
+        this.shopHours = shopHours;
+    }
+
+    public String getOtherService() {
+        return otherService;
+    }
+
+    public void setOtherService(String otherService) {
+        this.otherService = otherService;
+    }
+
+    public String getLogoPic() {
+        return logoPic;
+    }
+
+    public void setLogoPic(String logoPic) {
+        this.logoPic = logoPic;
+    }
 
     public String getRemark() {
         return remark;

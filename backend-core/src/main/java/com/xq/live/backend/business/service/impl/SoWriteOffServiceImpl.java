@@ -19,6 +19,7 @@ import java.util.List;
 /**
  * ${DESCRIPTION}
  *
+ * 核销
  * @author
  * @date
  * @copyright:hbxq
@@ -86,9 +87,15 @@ public class SoWriteOffServiceImpl implements SoWriteOffService {
         BigDecimal allPrice = new BigDecimal(0);
         for (int i=0;i<soWriteOffs.size();i++){
             soWriteOffs.get(i).setSoType(soWriteOffs.get(i).getSo().getSoType());
-            if (soWriteOffs.get(i).getSo().getShopId()!=null&&soWriteOffs.get(i).getSo().getSoType()==1){//食典券訂單
+            if (soWriteOffs.get(i).getSo().getShopId()!=null&&soWriteOffs.get(i).getSo().getSoType()==1&&soWriteOffs.get(i).getSkuId()!=406){//食典券訂單
                 soWriteOffs.get(i).getSo().setSellPrice(a);
                 soWriteOffs.get(i).setSellPrice(soWriteOffs.get(i).getSo().getSellPrice());
+                soWriteOffs.get(i).getSo().setSoPrice(soWriteOffs.get(i).getSo().getSellPrice());
+                soWriteOffs.get(i).setSoPrice(soWriteOffs.get(i).getSo().getSoPrice());
+            }else  if(soWriteOffs.get(i).getSkuId()==406&&soWriteOffs.get(i).getSo().getSoType() == 1) {//套餐券
+                soWriteOffs.get(i).getSo().setSellPrice(a);
+                soWriteOffs.get(i).setSellPrice(soWriteOffs.get(i).getSo().getSellPrice());
+                soWriteOffs.get(i).getSo().setSoPrice(soWriteOffs.get(i).getSo().getSellPrice());
                 soWriteOffs.get(i).setSoPrice(soWriteOffs.get(i).getSo().getSoPrice());
             }else {//商家訂單和平台訂單
                 if (soWriteOffs.get(i).getSo().getSellPrice()==null){
@@ -103,11 +110,6 @@ public class SoWriteOffServiceImpl implements SoWriteOffService {
                 soWriteOffs.get(i).getSo().setSoPrice(new BigDecimal(0));
                 soWriteOffs.get(i).setSoPrice(soWriteOffs.get(i).getSo().getSoPrice());
             }
-            /*System.out.println("getSoPrice" + soWriteOffs.get(i).getSoPrice());
-            allPrice.add(soWriteOffs.get(i).getSoPrice());
-            System.out.println("allPrice" + allPrice);
-            allPrice.add(new BigDecimal(10));
-            System.out.println("allPrice" + allPrice);*/
             soWriteOffBos.add(new SoWriteOffBo(soWriteOffs.get(i)));
         }
         PageInfo bean = new PageInfo<SoWriteOff>(soWriteOffs);
@@ -125,9 +127,15 @@ public class SoWriteOffServiceImpl implements SoWriteOffService {
         BigDecimal allPrice = new BigDecimal(0);
         for (int i=0;i<soWriteOffs.size();i++){
             soWriteOffs.get(i).setSoType(soWriteOffs.get(i).getSo().getSoType());
-            if (soWriteOffs.get(i).getSo().getShopId()!=null&&soWriteOffs.get(i).getSo().getSoType()==1){//食典券訂單
+            if (soWriteOffs.get(i).getSo().getShopId()!=null&&soWriteOffs.get(i).getSo().getSoType()==1&&soWriteOffs.get(i).getSkuId()!=406){//食典券訂單
                 soWriteOffs.get(i).getSo().setSellPrice(a);
                 soWriteOffs.get(i).setSellPrice(soWriteOffs.get(i).getSo().getSellPrice());
+                soWriteOffs.get(i).getSo().setSoPrice(soWriteOffs.get(i).getSo().getSellPrice());
+                soWriteOffs.get(i).setSoPrice(soWriteOffs.get(i).getSo().getSoPrice());
+            }else  if(soWriteOffs.get(i).getSkuId()==406&&soWriteOffs.get(i).getSo().getSoType() == 1) {//套餐券
+                soWriteOffs.get(i).getSo().setSellPrice(a);
+                soWriteOffs.get(i).setSellPrice(soWriteOffs.get(i).getSo().getSellPrice());
+                soWriteOffs.get(i).getSo().setSoPrice(soWriteOffs.get(i).getSo().getSellPrice());
                 soWriteOffs.get(i).setSoPrice(soWriteOffs.get(i).getSo().getSoPrice());
             }else {//商家訂單和平台訂單
                 if (soWriteOffs.get(i).getSo().getSellPrice()==null){
@@ -142,14 +150,10 @@ public class SoWriteOffServiceImpl implements SoWriteOffService {
                 soWriteOffs.get(i).getSo().setSoPrice(new BigDecimal(0));
                 soWriteOffs.get(i).setSoPrice(soWriteOffs.get(i).getSo().getSoPrice());
             }
-            //System.out.println("getSoPrice" + soWriteOffs.get(i).getSoPrice());
             allPrice=allPrice.add(soWriteOffs.get(i).getSoPrice());
-            //System.out.println("allPrice" + allPrice);
         }
-        System.out.println("allPrice" + allPrice);
         SoWriteOff soWriteOff = new SoWriteOff();
         soWriteOff.setTotalService(allPrice);
-
         SoWriteOffBo bo= new SoWriteOffBo(soWriteOff);
         return bo;
     }

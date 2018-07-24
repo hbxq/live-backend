@@ -5,13 +5,11 @@ import com.github.pagehelper.PageInfo;
 import com.xq.live.backend.business.entity.ShopBo;
 import com.xq.live.backend.business.entity.SoBo;
 import com.xq.live.backend.business.service.SoService;
+import com.xq.live.backend.business.vo.AccountLogConditionVO;
 import com.xq.live.backend.business.vo.SoConditionVO;
-import com.xq.live.backend.persistence.beans.So;
-import com.xq.live.backend.persistence.beans.SoDetail;
-import com.xq.live.backend.persistence.beans.SoShopLog;
-import com.xq.live.backend.persistence.mapper.SoDetailMapper;
-import com.xq.live.backend.persistence.mapper.SoMapper;
-import com.xq.live.backend.persistence.mapper.SoShopLogMapper;
+import com.xq.live.backend.business.vo.UserAccountConditionVO;
+import com.xq.live.backend.persistence.beans.*;
+import com.xq.live.backend.persistence.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +34,16 @@ public class SoServiceImpl implements SoService{
 
     @Autowired
     private SoShopLogMapper soShopLogMapper;
+
+    @Autowired
+    private UserAccountMapper userAccountMapper;
+
+    @Autowired
+    private AccountLogMapper accountLogMapper;
+
+    @Autowired
+    private UserMapper userMapper;
+
 
     @Override
     public PageInfo<SoBo> findPageBreakByCondition(SoConditionVO vo) {
@@ -81,19 +89,15 @@ public class SoServiceImpl implements SoService{
                     sos.get(i).setSellPrice(a);
                     sos.get(i).setSoPrice(sos.get(i).getSoAmount().subtract(a));
                 }else if (sos.get(i).getShopId()!=null&&sos.get(i).getSoType()==2){//商家訂單
-                    if (sos.get(i).getSkuId()!=null){
-                        sos.get(i).setSoPrice(sos.get(i).getSoAmount().subtract(sos.get(i).getSellPrice()));
-                    }else {
                         sos.get(i).setSoPrice(sos.get(i).getSoAmount());
-                    }
                 }else if (sos.get(i).getShopId()==null&&sos.get(i).getSoType()==1){//平臺訂單
-                    if (sos.get(i).getSkuId()!=null){
-                        sos.get(i).setSoPrice(sos.get(i).getSoAmount().subtract(sos.get(i).getSellPrice()));
-                    }else {
                         sos.get(i).setSoPrice(sos.get(i).getSoAmount());
-                    }
                 }
             }else if (sos.get(i).getPaymentMethod()==1){//商家自收
+                if(sos.get(i).getShopId()!=null&&sos.get(i).getSoType()==1){//食典券訂單
+                    sos.get(i).setSellPrice(a);
+                    sos.get(i).setSoPrice(sos.get(i).getSoAmount().subtract(a));
+                }
             }
             if (sos.get(i).getSoPrice()==null){
                 sos.get(i).setSoPrice(new BigDecimal(0));
@@ -123,19 +127,15 @@ public class SoServiceImpl implements SoService{
                     sos.get(i).setSellPrice(a);
                     sos.get(i).setSoPrice(sos.get(i).getSoAmount().subtract(a));
                 }else if (sos.get(i).getShopId()!=null&&sos.get(i).getSoType()==2){//商家訂單
-                    if (sos.get(i).getSkuId()!=null){
-                        sos.get(i).setSoPrice(sos.get(i).getSoAmount().subtract(sos.get(i).getSellPrice()));
-                    }else {
                         sos.get(i).setSoPrice(sos.get(i).getSoAmount());
-                    }
                 }else if (sos.get(i).getShopId()==null&&sos.get(i).getSoType()==1){//平臺訂單
-                    if (sos.get(i).getSkuId()!=null){
-                        sos.get(i).setSoPrice(sos.get(i).getSoAmount().subtract(sos.get(i).getSellPrice()));
-                    }else {
                         sos.get(i).setSoPrice(sos.get(i).getSoAmount());
-                    }
                 }
             }else if (sos.get(i).getPaymentMethod()==1){//商家自收
+                if(sos.get(i).getShopId()!=null&&sos.get(i).getSoType()==1){//食典券訂單
+                    sos.get(i).setSellPrice(a);
+                    sos.get(i).setSoPrice(sos.get(i).getSoAmount().subtract(a));
+                }
             }
             if (sos.get(i).getSoPrice()==null){
                 sos.get(i).setSoPrice(new BigDecimal(0));
@@ -145,7 +145,6 @@ public class SoServiceImpl implements SoService{
             //System.out.println(allPrice);
         }
         So so = new So();
-
         so.setSoAllPrice(allPrice);
         SoBo soprice=new SoBo(so);
         //System.out.println(soprice.getSo().getSoAllPrice());
@@ -164,10 +163,18 @@ public class SoServiceImpl implements SoService{
 
     @Override
     @Transactional
-    public Integer updateByShopId(SoConditionVO list) {
-        Integer i=soMapper.updateByShopId(list);
-        if (i<1){
-            return 0;
+    public Integer updateByShopId(SoConditionVO list) throws RuntimeException{
+
+        Integer i = soMapper.updateByShopId(list);
+        if (i < 1) {
+            throw new RuntimeException("订单状态修改失败!");
+        }
+        Long userid = userMapper.selectByshopid(list.getShopId());
+        UserAccount userAccount = userAccountMapper.findAccountByUserId(userid);
+        AccountLogConditionVO accountLogConditionVO = custom(userAccount,list);
+        Integer ac=accountLogMapper.billLog(accountLogConditionVO);
+        if (ac < 1) {
+            throw new RuntimeException("账户余额日志添加失败!");
         }
         return i;
     }
@@ -248,5 +255,36 @@ public class SoServiceImpl implements SoService{
             soBos.add(new SoBo(su));
         }
         return soBos;
+    }
+
+    @Transactional
+    public AccountLogConditionVO custom(UserAccount userAccount,SoConditionVO vo)  throws RuntimeException{
+        AccountLogConditionVO accountLog = new AccountLogConditionVO();
+        accountLog.setAccountId(userAccount.getId());
+        accountLog.setUserName(userAccount.getUserName());
+        accountLog.setPreAmount(userAccount.getAccountAmount());
+        SoBo pageInfo = findSoShop(vo);
+        accountLog.setOperateAmount(pageInfo.getSoAllPrice());
+        accountLog.setAfterAmount(accountLog.getPreAmount().subtract(accountLog.getOperateAmount()));
+        accountLog.setOperateType(AccountLog.OPERATE_TYPE_PAYOUT);
+        StringBuilder remark = new StringBuilder();
+        remark.append("商家对账");//标题
+        remark.append("交易对象:"+userAccount.getUserName());//交易对象
+        remark.append("对账的时间范围: 开始:" + vo.getBeginTime() + "结束:" + vo.getEndTime());//内容，交易金额的时间段
+        remark.append("交易金额:" + accountLog.getOperateAmount());//金额
+        accountLog.setRemark(remark.toString());
+        accountLog.setUserId(userAccount.getUserId());
+        accountLog.setAccountName(userAccount.getAccountName());
+        System.out.println(accountLog.getRemark());
+
+        //更改用户余额
+        UserAccountConditionVO userAccountConditionVO = new UserAccountConditionVO();
+        userAccountConditionVO.setUserId(userAccount.getUserId());
+        userAccountConditionVO.setAccountAmount(accountLog.getPreAmount().subtract(accountLog.getOperateAmount()));
+        Integer i=userAccountMapper.amoutForUserid(userAccountConditionVO);
+        if (i < 1) {
+            throw new RuntimeException("账户余额修改失败!");
+        }
+        return accountLog;
     }
 }

@@ -79,29 +79,30 @@
     <!--查询商家一段时间内的订单和服务费信息-->
     <select id="findSoForShop" parameterType="com.xq.live.backend.business.vo.SoConditionVO" resultMap="BaseResultMap">
         SELECT
-        s.id ,
+        s.id,
         s.so_amount,
-        s.user_name ,
-        s.so_status ,
-        s.so_type ,
-        s.paid_time ,
-        s.is_dui ,
-        s.shop_id ,
-        sd.sku_id ,
+        s.user_name,
+        s.so_status,
+        s.so_type,
+        s.paid_time,
+        s.is_dui,
+        s.shop_id,
+        s.hx_time,
+        sd.sku_id,
         sk.sell_price,
         al.payment_method
         FROM
         so s
-        LEFT JOIN so_shop_log sd ON s.id = sd.so_id
+        LEFT JOIN so_detail sd ON s.id = sd.so_id
+        LEFT JOIN so_log sl ON s.id = sl.so_id
         LEFT JOIN sku sk ON sd.sku_id = sk.id
-        LEFT JOIN shop_allocation al ON sd.shop_id = al.shop_id
+        LEFT JOIN shop_allocation al ON s.shop_id = al.shop_id
         WHERE
-        sd.operate_type = 2
-        AND
-        sd.shop_id=#{shopId,jdbcType=BIGINT}
+        sl.operate_type = 3
         <if test="beginTime !=null and endTime != null">
             and (s.create_time BETWEEN #{beginTime} and #{endTime})
         </if>
+        AND s.shop_id =#{shopId,jdbcType=BIGINT}
         AND s.so_status != 1
         ORDER BY
         s.id DESC

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xq.live.backend.persistence.mapper.ActTopicMapper">
+  <resultMap id="BaseResultMap" type="com.xq.live.backend.persistence.beans.ActTopic">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="act_id" jdbcType="BIGINT" property="actId" />
+    <result column="topic_id" jdbcType="BIGINT" property="topicId" />
+    <result column="act_topic_code" jdbcType="VARCHAR" property="actTopicCode" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="apply_status" jdbcType="INTEGER" property="applyStatus" />
+    <result column="vote_num" jdbcType="INTEGER" property="voteNum" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, act_id, topic_id, act_topic_code, user_id, apply_status, vote_num, create_time, 
+    update_time
+  </sql>
+
+  <!--按条件查询一段时间内的视频文章-->
+  <select id="selectBykeywords" parameterType="com.xq.live.backend.business.vo.ActTopicConditionVO"  resultMap="BaseResultMap">
+    SELECT
+    t.act_id,
+    t.act_topic_code,
+    t.create_time,
+    t.apply_status,
+    u.mobile,
+    u.nick_name
+    FROM
+    act_topic t
+    left join user u on t.user_id= u.id
+    <where>
+      1=1
+      <if test="id != null">
+        and t.id =#{id}
+      </if>
+      <if test="keywords != null and keywords != '' ">
+        AND
+        (
+        t.act_topic_code like concat('%',#{keywords , jdbcType=VARCHAR}, '%') or
+        u.mobile like concat('%',#{keywords , jdbcType=VARCHAR}, '%') or
+        u.nick_name like concat('%',#{keywords , jdbcType=VARCHAR}, '%')
+        )
+      </if>
+      <if test="actId != null">
+        and t.act_id =#{actId}
+      </if>
+    </where>
+  </select>
+
+  <!--通过id修改状态-->
+  <update id="updateById" parameterType="com.xq.live.backend.business.vo.ActTopicConditionVO">
+    update act_topic
+    <set>
+      <if test="actTopicCode != null">
+        act_topic_code = #{actTopicCode,jdbcType=VARCHAR},
+      </if>
+      <if test="applyStatus != null">
+        apply_status = #{applyStatus,jdbcType=INTEGER},
+      </if>
+      <if test="voteNum != null">
+        vote_num = #{voteNum,jdbcType=INTEGER},
+      </if>
+      update_time = now()
+    </set>
+    where topic_id = #{topicId,jdbcType=BIGINT}
+  </update>
+
+
+
+</mapper>

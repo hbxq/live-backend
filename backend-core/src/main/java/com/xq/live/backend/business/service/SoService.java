@@ -44,7 +44,7 @@ public interface SoService extends AbstractService<SoBo, Long> {
      * @param list
      * @return
      */
-    Integer updateByShopId(SoConditionVO list);
+    Integer updateByShopId(SoConditionVO list) throws RuntimeException;
 
     /**
      * 查看订单明细

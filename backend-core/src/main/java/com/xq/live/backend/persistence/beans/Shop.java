@@ -50,6 +50,8 @@ public class Shop extends AbstractDO {
 
     private String remark;
 
+    private String shopCode;
+
     @Transient
     private Long userId;       //店铺关联的账号id
 

@@ -4,7 +4,7 @@
     <div class="col-md-12 col-sm-12 col-xs-12">
         <ol class="breadcrumb">
             <li><a href="/">首页</a></li>
-            <li class="active">对账管理</li>
+            <li class="active">商家入驻管理</li>
         </ol>
         <div class="x_panel">
             <div class="x_content">
@@ -24,7 +24,13 @@
                     <div class="btn-group hidden-xs" id="toolbar">
                     </div>
                     <table id="tablelist">
+
                     </table>
+                <#--审核-->
+                        <div id="remak-status">
+                            <input id="status_pass" type="button" value="审核通过"/>
+                            <input id="status_reject" type="button" value="审核驳回"/>
+                        </div>
                 </div>
             </div>
         </div>
@@ -42,26 +48,100 @@
     </div>
 </div>
 <!--/弹框-->
-<#--查看明细弹窗-->
-<div class="listbox">
-    <div class="headline">详情订单量<input id="guanbi" class="closebtn_bill" type="button" value="关闭"/><span id="dztotal"></span></div>
-    <table id="tablest">
-    </table>
+<!--入驻明细弹框-->
+<div class="modal fade" id="detail_Modal" tabindex="-1" role="dialog" aria-labelledby="addroleLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="addroleLabel">入驻明细</h4>
+            </div>
+            <div class="modal-body">
+                <form id="detail_Form" class="form-horizontal form-label-left" novalidate>
+                    <input type="hidden" name="id">
+                    <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="shopName">店铺名称: <span class="required">*</span></label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" class="form-control col-md-7 col-xs-12" name="shopName" id="shopName" readonly="true"/>
+                        </div>
+                    </div>
+                    <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="address">店铺地址: <span class="required">*</span></label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" class="form-control col-md-7 col-xs-12" id="address" name="address" readonly="true"/>
+                        </div>
+                    </div>
+                    <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="logoPic">logo:</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" class="form-control col-md-7 col-xs-12" name="logoPic"  id="logoPic" readonly="true"/>
+                            <#--<img type="img" class="image-detail" src="">-->
+                        </div>
+                    </div>
+                    <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="businessCate">经营品类:</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" class="form-control col-md-7 col-xs-12" name="businessCate" id="businessCate" data-validate-length-range="8,500" readonly="true"/>
+                        </div>
+                    </div>
+                    <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="licensePic">营业执照:</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" class="form-control col-md-7 col-xs-12"  name="licensePic" id="licensePic" readonly="true"/>
+                        </div>
+                    </div>
+                    <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="healthPic">卫生许可证:</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" class="form-control col-md-7 col-xs-12" name="healthPic" id="healthPic" readonly="true"/>
+                        </div>
+                    </div>
+                    <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="doorPic">门头照:</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" class="form-control col-md-7 col-xs-12" name="doorPic" id="doorPic" readonly="true"/>
+                        </div>
+                    </div>
+                    <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="otherService">其他服务:</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" class="form-control col-md-7 col-xs-12" name="otherService" id="otherService" readonly="true"/>
+                        </div>
+                    </div>
+                    <div class="item form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="remark">备注:</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" class="form-control col-md-7 col-xs-12" name="remark" id="remark" readonly="true"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
 </div>
-<#--</div>-->
-<#--查看明细弹窗-->
+<#--备注弹框-->
+<div class="box-remark-text">
+    <div id="remark-text">
+        <span>备注内容</span>
+        <textarea id="remark-txt" rows="3" cols="20"></textarea>
+    </div>
+    <input id="on-remark" type="button" value="提交"/>
+    <input id="out-remark" type="button" value="关闭"/>
+</div>
 
 <script>
-    var thshopId;
     var thbegainTime;
     var thendTime;
+    var enterid;
 
     var today = new Date();
     var tomorrow = new Date().getTime() + 86400000;
     tomorrow=new Date(tomorrow);
     tomorrow=this.dateConv(tomorrow);
     today = this.dateConv(today);
-
 
     function  dateConv(dateStr,type) { // yyyy/mm/dd
         let year = dateStr.getFullYear(),
@@ -72,153 +152,101 @@
         return year + "-" + month + "-" + today;
     }
 
-    // 查看明细弹窗
-    function newtable(){
-        $("#tablest").bootstrapTable({ // 对应table标签的id
-            method: "post",//请求方式
-            contentType : "application/x-www-form-urlencoded; charset=UTF-8",
-            url: "/bill/sotimeList", // 获取表格数据的url
-            cache: false, // 设置为 false 禁用 AJAX 数据缓存， 默认为true
-            striped: true,  //表格显示条纹，默认为false
-            pagination: true, // 在表格底部显示分页组件，默认false
-            pageList: [10, 20, 30, 40, 50], // 设置页面可以显示的数据条数
-            pageSize: 10, // 页面数据条数
-            pageNumber: 1, // 首页页码
-            sidePagination: 'server', // 设置为服务器端分页
-            queryParams: function queryParams(params) { // 请求服务器数据时发送的参数，可以在这里添加额外的查询参数，返回false则终止请求
-                var _offset = params.offset/10+1;
-                var tamp =  {
-                    pageSize: params.limit, // 每页要显示的数据条数
-                    offset: params.offset, // 每页显示数据的开始行号
-                    pageNumber:_offset,
-                    shopId:thshopId,
-                    beginTime:thbegainTime,
-                    endTime:thendTime
-                };
-                return tamp;
-            },
-            sortName: 'id', // 要排序的字段
-            sortOrder: 'desc', // 排序规则
-            columns: [
-                {
-                    field: 'id', // 返回json数据中的name
-                    title: '订单号', // 表格表头显示文字
-                    align: 'center', // 左右居中
-                    valign: 'middle' // 上下居中
-                }, {
-                    field: 'userName',
-                    title: '下单人',
-                    align: 'center',
-                    valign: 'middle'
-                }, {
-                    field: 'paidTime',
-                    title: '支付时间',
-                    align: 'center',
-                    valign: 'middle',
-                    editable: false,
-                    formatter: function (code) {
-                        return new Date(code).format("yyyy-MM-dd hh:mm:ss")
-                    }
-                }, {
-                    field: 'sellPrice',
-                    title: '服务费',
-                    align: 'center',
-                    valign: 'middle',
-                    editable: true
-                }, {
-                    field: 'soType',
-                    title: '订单类型',
-                    editable: false,
-                    formatter: function (code) {
-                        if(code==1){
-                            return "平台订单";
-                        }else if(code==2){
-                            return "商家订单";
-                        }
-                    }
-                }, {
-                    field: 'isDui',
-                    title: '对账状态(0未对账,1已对账)',
-                    align: 'center',
-                    valign: 'middle'
-                }, {
-                    field: 'soAmount',
-                    title: '支付金额',
-                    align: 'center',
-                    valign: 'middle'
-                }, {
-                    field: 'soPrice',
-                    title: '扣除服务费后的金额',
-                    align: 'center',
-                    valign: 'middle',
-                    editable: true
-                }
-            ],
-            onLoadSuccess: function(){  //加载成功时执行
-                console.info("加载成功");
-                console.log(this)
-            },
-            onLoadError: function(){  //加载失败时执行
-                console.info("加载数据失败");
-            }
-        })
-    };
-
     $('#guanbi').on('click',function(){
         $("#tablest").bootstrapTable('destroy');
-        $("#dztotal").html("");
         $('.listbox').hide();
     });
 
-    /* 分配用户角色  --查看明细弹窗 */
-    $('#tablelist').on('click', '.btn-allot', function (e) {
-        var start=$("#startDate").val();
-        var end=$("#endDate").val();
-        console.log(new Date(start).getTime())
-        $('.listbox').show();
-        if(new Date(start).getTime()>new Date(end).getTime()){
-            alert("结束日期不能小于开始日期");
-            $("#startDate").val("");
-            $("#endDate").val("");
-            return;
-        }
-        thshopId=e.target.dataset.id;
-        thbegainTime=$("#startDate").val();
-        thendTime=$("#endDate").val();
-        $.ajax({
-            type: "post",
-            url: "/bill/soPrice",
-            data:{shopId:thshopId, beginTime:thbegainTime,endTime:thendTime},
-            dataType: "json",
-            success: function (data) {
-                console.log("data:",data);
-                data.soAllPrice?data.soAllPrice:"0"
-                $("#dztotal").html("合计￥"+data.soAllPrice);
-            },
-        });
-        newtable();
+    $('#guanbicompile').on('click',function(){
+        $('.compilebox').hide();
     });
 
-    /* 对账 */
-    $('#tablelist').on('click', '.btn-isdui', function (e) {
+    /*审核通过*/
+    $('#status_pass').on('click',function(){
         var truthBeTold = window.confirm("单击“确定”继续。单击“取消”停止。")
         if (truthBeTold) {
         } else{
             return;
         }
-        var shopid = e.target.dataset.id;
-        //console.log("userid:",userId);
+        var enter = getSelectedenter();
+        if (!enter || enter == null) {
+            $.tool.alertError("请至少选择一条记录");
+            return;
+        }
         $.ajax({
             type: "post",
-            url: "/bill/updateSoList",
-            data:{shopId:shopid, beginTime:$("#startDate").val(),endTime:$("#endDate").val()},
+            url: "/enter/addShop",
+            data:{id:enter.enterid, userId:enter.userId, shopName:enter.shopName},
             dataType: "json",
             success: function (data) {
                 console.log("data:",data);
+                $.tableUtil.refresh();
                 alert(data.message)
             },
             error: $.tool.ajaxError
         });
+    });
+    /*审核驳回*/
+    $('#status_reject').on('click',function(){
+        var truthBeTold = window.confirm("单击“确定”继续。单击“取消”停止。")
+        if (truthBeTold) {
+        } else{
+            return;
+        }
+        var enter = getSelectedenter();
+        if (!enter || enter == null) {
+            $.tool.alertError("请至少选择一条记录");
+            return;
+        }
+         $.ajax({
+             type: "post",
+             url: "/enter/toreject",
+             data:{id:enter.enterid, status:2},
+             dataType: "json",
+             success: function (data) {
+                 console.log("data:",data);
+                 $.tableUtil.refresh();
+                 alert(data.message)
+             },
+             error: $.tool.ajaxError
+         });
+    });
+
+    /* 编写备注 */
+    $('#tablelist').on('click', '.btn-remark', function (e) {
+        enterid = e.target.dataset.id;
+
+        $('.box-remark-text').show();
+    });
+
+    $('#on-remark').on('click',function(){
+        if ($('#remark-txt').val()==null||$('#remark-txt').val()=="") {
+            var truthBeTold = window.confirm("单击“确定”继续。单击“取消”停止。")
+            if (truthBeTold) {
+            } else{
+                return;
+            }
+        }
+
+        $.ajax({
+            type: "post",
+            url: "/enter/toremark",
+            data:{id:enterid, remark:$("#remark-txt").val()},
+            dataType: "json",
+            success: function (data) {
+                console.log("data:",data);
+                $.tableUtil.refresh();
+                alert(data.message)
+            },
+            error: $.tool.ajaxError
+        });
+        $('#remark-txt').val("");
+        return;
+    });
+
+    $('#out-remark').on('click',function(){
+        $('.box-remark-text').hide();
+        $('#remark-txt').val("");
     });
 
     /**
@@ -229,14 +257,13 @@
      * @returns {string}
      */
     function operateFormatter(code, row, index) {
-        var currentShopId = '${shop.id}';
-        var trShopId = row.id;
+        var id = row.id;
+        var user = row.userId;
+        var name=row.shopName;
         var operateBtn = [
-            '<@shiro.hasPermission name="bill:sotimeList"><a class="btn btn-xs btn-info btn-allot" data-id="' + trShopId + '"><i class="fa fa-trash-o"></i>查看明细</a></@shiro.hasPermission>',
+           '<@shiro.hasPermission name="enter:detail"><a class="btn btn-xs btn-primary btn-detail" data-id="' + id + '"><i class="fa fa-edit"></i>查看明细</a></@shiro.hasPermission>',
         ];
-        if (currentShopId != trShopId) {
-            operateBtn.push('<@shiro.hasPermission name="bill:updateSoList"><a class="btn btn-xs btn-primary btn-isdui" data-id="' + trShopId + '"><i class="fa fa-edit"></i>对账</a></@shiro.hasPermission>');
-        }
+        operateBtn.push('<@shiro.hasPermission name="enter:toremark"><a class="btn btn-xs btn-primary btn-remark" data-id="' + id + '"><i class="fa fa-edit"></i>编写备注</a></@shiro.hasPermission>');
         return operateBtn.join('');
     }
 
@@ -247,18 +274,15 @@
         $("#startDate").val(today);
         $("#endDate").val(tomorrow);
         var options = {
-            url: "/enter/seelist",//
-            getInfoUrl: "/bill/get/{id}",
-            updateUrl: "/bill/updateSoList",
-            removeUrl: "/shop/remove",
-            createUrl: "/shop/add",
+            url: "/enter/seelist",
+            getInfoUrl: "/enter/detail",
             queryParams :function queryParams(params) { // 请求服务器数据时发送的参数，可以在这里添加额外的查询参数，返回false则终止请求
                 var start=$("#startDate").val();
                 var end=$("#endDate").val();
 
                 var tamp =  {
-                    pageSize: params.limit, // 每页要显示的数据条数
-                    offset: params.offset, // 每页显示数据的开始行号
+                    pageSize: params.pageSize, // 每页要显示的数据条数
+                    pageNumber:params.pageNumber,
                     keywords:params.searchText?params.searchText:"",
                     beginTime:start?start:today,
                     endTime:end?end:tomorrow
@@ -280,43 +304,22 @@
                     field: 'shopName',
                     title: '店铺名称',
                     editable: true
-                }, {
-                    field: 'address',
-                    title: '店铺地址',
-                    editable: true
-                }, {
-                    field: 'logoPic',
-                    title: 'logo',
-                    editable: true
-                }, {
-                    field: 'businessCate',
-                    title: '经营品类',
-                    editable: true
-                }, {
-                    field: 'licensePic',
-                    title: '营业执照',
-                    editable: true
-                }, {
-                    field: 'healthPic',
-                    title: '卫生许可证',
-                    editable: true
-                }, {
-                    field: 'doorPic',
-                    title: '门头照',
-                    editable: true
-                }, {
+                },{
                     field: 'shopHours',
                     title: '营业时间',
                     editable: true,
 
                 }, {
-                    field: 'otherService',
-                    title: '其他服务',
-                    editable: true
-                }, {
                     field: 'status',
-                    title: '审核状态 0待审批 2审批不通过',
-                    editable: true
+                    title: '审核状态',
+                    editable: false,
+                    formatter: function (code) {
+                        if(code==0){
+                            return "待审批";
+                        }else if(code==2){
+                            return "审批不通过";
+                        }
+                    }
                 }, {
                     field: 'createTime',
                     title: '创建时间',
@@ -334,12 +337,18 @@
                     field: 'remark',
                     title: '备注',
                     editable: true
+                }, {
+                    field: 'city',
+                    title: '城市',
+                    editable: true
                 }
             ],
             modalName: "商家入驻"
         };
         //1.初始化Table
         $.tableUtil.init(options);
+        //2.初始化Button的点击事件
+        $.buttonUtil.init(options);
     });
 
     //修改——转换日期格式(时间戳转换为datetime格式)
@@ -349,13 +358,26 @@
             var date = new Date(parseInt(dateVal.replace("/Date(", "").replace(")/", ""), 10));
             var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
             var currentDate = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
-
             var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
             var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
             var seconds = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
-
             return date.getFullYear() + "-" + month + "-" + currentDate + " " + hours + ":" + minutes + ":" + seconds;
         }
+    }
+
+    /**
+     * 获取选中的信息
+     * @returns {Array}
+     */
+    function getSelectedenter() {
+        var selectedJson = $("#tablelist").bootstrapTable('getAllSelections');
+        var enter = new Object();
+        $.each(selectedJson, function (i) {
+            enter.enterid=selectedJson[i].id;
+            enter.userId=selectedJson[i].userId;
+            enter.shopName=selectedJson[i].shopName;
+        });
+        return enter;
     }
 
 </script>

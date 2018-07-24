@@ -20,11 +20,26 @@ public interface ShopEnterService extends AbstractService<ShopEnterBo, Long> {
      */
     Integer addShop(ShopEnterVO shopEnter);
 
-    List<ShopEnter> selectByUserId(Long id);
-
+    /**
+     * 根据Id修改状态和备注
+     * @param record
+     * @return
+     */
     int updateById(ShopEnterVO record);
 
+    /**
+     * 分页查询列表
+     * @param record
+     * @return
+     */
     PageInfo<ShopEnterBo> selectBytemp(ShopEnterVO record);
+
+    /**
+     * 查询单条记录
+     * @param record
+     * @return
+     */
+    ShopEnterBo seedetail(ShopEnterVO record);
 
     
 }

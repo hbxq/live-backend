@@ -139,12 +139,9 @@
             saveRolesUrl: "/shop/saveUserRoles",
             queryParams :function queryParams(params) { // 请求服务器数据时发送的参数，可以在这里添加额外的查询参数，返回false则终止请求
                 var tamp =  {
-                    pageSize: params.limit, // 每页要显示的数据条数
-                    offset: params.offset, // 每页显示数据的开始行号
+                    pageSize: params.pageSize, // 每页要显示的数据条数
                     pageNumber:params.pageNumber,
                     keywords:params.searchText?params.searchText:"",
-                   /* beginTime:$("#startDate").val()?$("#startDate").val():"",
-                    endTime:$("#endDate").val()?$("#endDate").val():""*/
                 };
                 return tamp;
             },

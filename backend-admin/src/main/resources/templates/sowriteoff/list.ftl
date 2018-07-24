@@ -4,7 +4,7 @@
     <div class="col-md-12 col-sm-12 col-xs-12">
         <ol class="breadcrumb">
             <li><a href="/">首页</a></li>
-            <li class="active">对账管理</li>
+            <li class="active">结算管理</li>
         </ol>
         <div class="x_panel">
             <div class="x_content">
@@ -157,11 +157,17 @@
                     }
                 }, {
                     field: 'isBill',
-                    title: '结清状态(0未结清,1已结清)',
+                    title: '结清状态',
                     align: 'center',
-                    valign: 'middle'
+                    valign: 'middle',
+                    formatter: function (code) {
+                        if(code==0){
+                            return "未结清";
+                        }else if(code==1){
+                            return "已结清";
+                        }
+                    }
                 }, {
-                    //paidAmount
                     field: 'paidAmount',
                     title: '支付金额',
                     align: 'center',
@@ -251,8 +257,8 @@
                 var end=$("#endDate").val();
                 var _offset = params.offset/10+1;
                 var tamp =  {
-                    pageSize: params.limit, // 每页要显示的数据条数
-                    offset: params.offset, // 每页显示数据的开始行号
+                    pageSize: params.pageSize, // 每页要显示的数据条数
+                    //offset: params.offset, // 每页显示数据的开始行号
                     pageNumber:params.pageNumber,
                     keywords:params.searchText?params.searchText:"",
                     beginTime:start?start:today,

@@ -68,7 +68,7 @@ public class RestBillController {
     }
 
     /**
-     * 查询一个商家一段时间内的订单信息
+     * 订单合计
      * @param vo
      * @return
      */
@@ -79,7 +79,7 @@ public class RestBillController {
     }
 
     /**
-     * 查询一个商家一段时间内的核销票券信息
+     * 核销合计
      * @param vo
      * @return
      */
@@ -117,11 +117,5 @@ public class RestBillController {
         return ResultUtil.error(0,"修改失败!");
     }
 
-    @PostMapping("/detail")
-    public PageResult details(ShopConditionVO vo){
-        PageHelper.startPage(vo.getPageNumber() - 1, vo.getPageSize());
-        PageInfo<ShopBo> pageInfo = shopService.findPageBreakByCondition(vo);
-        return ResultUtil.tablePage(pageInfo);
-    }
 
 }

@@ -13,12 +13,6 @@ import java.util.Date;
  */
 public class UserVO  extends BaseConditionVO {
 
-   /* @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
-    private Date beginTime;
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
-    private Date endTime;*/
-
-
     private Long id;
     private Date createTime;
     private Date updateTime;
@@ -53,21 +47,6 @@ public class UserVO  extends BaseConditionVO {
     private Integer age;//年龄
     private Integer height;//身高
 
-/*    public Date getBeginTime() {
-        return beginTime;
-    }
-
-    public void setBeginTime(Date beginTime) {
-        this.beginTime = beginTime;
-    }
-
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }*/
 
     public Long getId() {
         return id;

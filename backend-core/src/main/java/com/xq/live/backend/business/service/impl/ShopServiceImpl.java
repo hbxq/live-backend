@@ -20,7 +20,7 @@ import java.util.List;
 
 /**
  * com.xq.live.backend.business.service.impl
- *
+ *商家信息
  * @author zhangpeng32
  * Created on 2018/5/23 下午5:33
  * @Description:

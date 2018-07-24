@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xq.live.backend.persistence.mapper.CashApplyMapper">
+  <resultMap id="BaseResultMap" type="com.xq.live.backend.persistence.beans.CashApply">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="account_id" jdbcType="BIGINT" property="accountId" />
+    <result column="account_name" jdbcType="VARCHAR" property="accountName" />
+    <result column="cash_amount" jdbcType="DECIMAL" property="cashAmount" />
+    <result column="apply_status" jdbcType="TINYINT" property="applyStatus" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="paid_time" jdbcType="TIMESTAMP" property="paidTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="paid_user_id" jdbcType="BIGINT" property="paidUserId" />
+    <result column="paid_user_name" jdbcType="VARCHAR" property="paidUserName" />
+
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
+    <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, user_name, account_id, account_name, cash_amount,
+    apply_status, create_time, paid_time, update_time, paid_user_id, paid_user_name
+  </sql>
+    <select id="selectCashlist" parameterType="com.xq.live.backend.business.vo.CashApplyConditionVO" resultMap="BaseResultMap">
+          SELECT
+              ca.id,
+              ca.user_id,
+              ca.user_name,
+              ca.account_id,
+              ca.account_name,
+              ca.apply_status,
+              ca.create_time,
+              ca.paid_time,
+              ca.update_time,
+              ca.paid_user_id,
+              ca.paid_user_name,
+              a.nick_name,
+              a.mobile
+          FROM
+              cash_apply ca
+          INNER JOIN `user` a ON a.id = ca.user_id
+          <where>
+            1=1
+            <if test="keywords != null and keywords != '' ">
+              AND
+              (
+              a.nick_name LIKE CONCAT('%',#{keywords , jdbcType=VARCHAR},'%') or
+              a.mobile LIKE CONCAT('%',#{keywords , jdbcType=VARCHAR},'%') or
+              ca.user_name LIKE CONCAT('%',#{keywords , jdbcType=VARCHAR},'%')
+              )
+            </if>
+            <if test="userId != null">
+              AND  ca.user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="id != null">
+              AND  ca.id = #{id,jdbcType=BIGINT}
+            </if>
+          </where>
+    </select>
+
+</mapper>

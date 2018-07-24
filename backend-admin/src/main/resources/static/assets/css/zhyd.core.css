@@ -5016,6 +5016,40 @@ ul, menu, dir {
 .Wbutton button {
     background-color: red;
 }
+.box-remark-text{
+    width: 50.0%;
+    border: 1px solid black;
+    margin: 0 auto;
+    display: none;
+    z-index: 999;
+    position: absolute;
+    top: 60px;
+    left: 10px;
+    right: 0;
+    bottom: 60px;
+    background: #FFF;
+    max-height: 50%;
+    overflow: hidden;
+}
+
+
+/*弃用的编辑审核弹窗*/
+/*.compilebox{
+    width: 50.0%;
+    border: 1px solid black;
+    margin: 0 auto;
+    display: none;
+    z-index: 999;
+    position: absolute;
+    top: 60px;
+    left: 10px;
+    right: 0;
+    bottom: 60px;
+    background: #FFF;
+    max-height: 50%;
+    overflow: hidden;
+}*/
+
 .listbox{
     width: 67.2%;
     border: 1px solid black;
@@ -5042,6 +5076,12 @@ ul, menu, dir {
 .total{
     text-align: center;
     font-weight: 600;
+}
+
+.image-detail{
+    width:200px;
+    height: 200px;
+    margin: 20px auto;
 }
 
 /* 重写ztree样式，修复选择框上出现阴影的问题 */

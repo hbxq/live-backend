@@ -30,22 +30,31 @@ public class RestShopEnterController {
      * @return
      */
     @PostMapping(value = "/seelist")
-    public PageResult add(ShopEnterVO shopEnter) {
+    public PageResult seelist(ShopEnterVO shopEnter) {
         PageInfo<ShopEnterBo> pageInfo = shopEnterService.selectBytemp(shopEnter);
         return ResultUtil.tablePage(pageInfo);
     }
 
-
-   /* @Autowired
-    private ShopEnterService shopEnterService;
-
-
-    *//**
-     *   审批通过后，插入shop表,更改user状态
+    /**
+     * 查看明细
+     *
      * @param shopEnter
      * @return
-     * *//*
+     */
+    @PostMapping(value = "/detail")
+    public ResponseVO seedetail(ShopEnterVO shopEnter) {
+        ShopEnterBo shopEnterBo = shopEnterService.seedetail(shopEnter);
+        return ResultUtil.success("1", shopEnterBo);
+    }
 
+
+
+    /**
+     *  审批通过后，插入shop表,更改user状态
+     *
+     * @param shopEnter
+     * @return
+     */
     @PostMapping(value = "/addShop")
     public ResponseVO add(ShopEnterVO shopEnter) {
         if(shopEnter==null||shopEnter.getUserId()==null||shopEnter.getShopName()==null){
@@ -55,23 +64,33 @@ public class RestShopEnterController {
         if(integer==null){
             return  ResultUtil.error("查询结果异常");
         }
-        return ResultUtil.success("审核通过-成功入驻");
+        return ResultUtil.success("审核通过-成功入驻", integer);
     }
 
-    *//**
-     *   审批通过后，插入shop表,更改user状态
+
+    /**
      * @param shopEnter
      * @return
-     * *//*
-
-    @PostMapping(value = "/list")
-    public ResponseVO seelist(ShopEnterVO shopEnter) {
-
-        Integer integer = shopEnterService.addShop(shopEnter);
-        if(integer==null){
-            return  ResultUtil.error("查询结果异常");
+     */
+    @PostMapping(value = "/toremark")
+    public ResponseVO toremark(ShopEnterVO shopEnter) {
+        Integer integer = shopEnterService.updateById(shopEnter);
+        if(integer==0){
+            return  ResultUtil.error("修改失败");
         }
-        return ResultUtil.success("审核通过-成功入驻");
+        return ResultUtil.success("编写成功");
     }
-*/
+
+    /**
+     * @param shopEnter
+     * @return
+     */
+    @PostMapping(value = "/toreject")
+    public ResponseVO toreject(ShopEnterVO shopEnter) {
+        Integer integer = shopEnterService.updateById(shopEnter);
+        if(integer==0){
+            return  ResultUtil.error("修改失败");
+        }
+        return ResultUtil.success("商家未通过审核");
+    }
 }

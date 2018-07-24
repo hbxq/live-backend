@@ -18,6 +18,17 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = false)
 @Table(name = "shop_enter")
 public class ShopEnter  extends AbstractDO {
+
+    /**
+     * 审批状态 0 审批中  1 审批通过  2审批不通过
+     */
+    public final static int SHOP_ENTER_WAIT = 0;
+
+    public final static int SHOP_ENTER_CAN = 1;
+
+    public final static int SHOP_ENTER_NO_CAN =2;
+
+
     private String userName;//用户名称
     private String mobile;//联系方式
     private String shopName;//店铺名称

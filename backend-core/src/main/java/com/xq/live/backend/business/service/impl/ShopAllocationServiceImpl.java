@@ -7,6 +7,8 @@ import com.xq.live.backend.persistence.beans.ShopAllocation;
 import java.util.List;
 
 /**
+ *
+ * 商家收款方式配置表
  * Created by ss on 2018/7/4.
  */
 public class ShopAllocationServiceImpl implements ShopAllocationService{

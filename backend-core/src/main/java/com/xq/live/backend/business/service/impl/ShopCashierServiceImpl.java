@@ -7,6 +7,7 @@ import com.xq.live.backend.persistence.beans.ShopCashier;
 import java.util.List;
 
 /**
+ * 商家设置管理员表
  * Created by ss on 2018/7/4.
  */
 public class ShopCashierServiceImpl implements ShopCashierService {

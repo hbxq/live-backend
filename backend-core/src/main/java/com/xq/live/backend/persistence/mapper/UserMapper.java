@@ -13,4 +13,6 @@ public interface UserMapper  extends BaseMapper<ShopEnter> {
     int updateUserType(UserVO record);
 
     User selectByid(Long id);
+
+    Long selectByshopid(Long shopId);
 }

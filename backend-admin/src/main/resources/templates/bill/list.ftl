@@ -137,7 +137,20 @@
                     }
                 }, {
                     field: 'isDui',
-                    title: '对账状态(0未对账,1已对账)',
+                    title: '对账状态',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function (code) {
+                        if(code==0){
+                            return "未对账";
+                        }else if(code==1){
+                            return "已对账";
+                        }
+                    }
+                },
+                {
+                    field: 'hxTime',
+                    title: '核销时间',
                     align: 'center',
                     valign: 'middle'
                 }, {
@@ -249,14 +262,12 @@
             url: "/bill/list",//
             getInfoUrl: "/bill/get/{id}",
             updateUrl: "/bill/updateSoList",
-            removeUrl: "/shop/remove",
-            createUrl: "/shop/add",
             queryParams :function queryParams(params) { // 请求服务器数据时发送的参数，可以在这里添加额外的查询参数，返回false则终止请求
                 var start=$("#startDate").val();
                 var end=$("#endDate").val();
                 var tamp =  {
-                    pageSize: params.limit, // 每页要显示的数据条数
-                    offset: params.offset, // 每页显示数据的开始行号
+                    pageSize: params.pageSize, // 每页要显示的数据条数
+                    //offset: params.offset, // 每页显示数据的开始行号
                     pageNumber:params.pageNumber,
                     keywords:params.searchText?params.searchText:"",
                     beginTime:start?start:today,

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xq.live.backend.persistence.mapper.AccountLogMapper">
+    <resultMap id="BaseResultMap" type="com.xq.live.backend.persistence.beans.AccountLog">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="user_id" jdbcType="BIGINT" property="userId" />
+        <result column="user_name" jdbcType="VARCHAR" property="userName" />
+        <result column="account_id" jdbcType="BIGINT" property="accountId" />
+        <result column="account_name" jdbcType="VARCHAR" property="accountName" />
+        <result column="pre_amount" jdbcType="DECIMAL" property="preAmount" />
+        <result column="after_amount" jdbcType="DECIMAL" property="afterAmount" />
+        <result column="operate_amount" jdbcType="DECIMAL" property="operateAmount" />
+        <result column="operate_type" jdbcType="TINYINT" property="operateType" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, user_id, user_name, account_id, account_name, pre_amount, after_amount, operate_amount,
+        operate_type, remark, create_time
+    </sql>
+
+    <!--记录商家对账记录-->
+    <insert id="billLog" parameterType="com.xq.live.backend.business.vo.AccountLogConditionVO">
+        insert into account_log (id, user_id, user_name,
+        account_id, account_name, pre_amount,
+        after_amount, operate_amount, operate_type,
+        remark, create_time)
+        values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{userName,jdbcType=VARCHAR},
+        #{accountId,jdbcType=BIGINT}, #{accountName,jdbcType=VARCHAR}, #{preAmount,jdbcType=DECIMAL},
+        #{afterAmount,jdbcType=DECIMAL}, #{operateAmount,jdbcType=DECIMAL}, #{operateType,jdbcType=TINYINT},
+        #{remark,jdbcType=VARCHAR}, now())
+    </insert>
+
+</mapper>

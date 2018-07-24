@@ -17,7 +17,7 @@ import java.util.Date;
  * Created on 2018/5/26 下午5:53
  * @Description:
  */
-public class SoBo {
+public class SoBo extends AbstractBO {
     private So so;
 
     public SoBo() {

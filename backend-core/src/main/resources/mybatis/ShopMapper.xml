@@ -21,6 +21,8 @@
         <result column="apply_status" jdbcType="INTEGER" property="applyStatus"/>
         <result column="business_cate" jdbcType="VARCHAR" property="businessCate"/>
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="shop_code" jdbcType="BIGINT" property="shopCode"/>
+
 
         <result column="shop_hours" jdbcType="VARCHAR" property="shopHours"/>
         <result column="other_service" jdbcType="VARCHAR" property="otherService"/>

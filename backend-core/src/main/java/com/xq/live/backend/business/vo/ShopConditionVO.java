@@ -20,11 +20,6 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = false)
 public class ShopConditionVO extends BaseConditionVO {
 
-   /* @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
-    private Date beginTime;
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
-    private Date endTime;*/
-
     private ShopBo shopBo;
 
     private Long id;
@@ -48,10 +43,19 @@ public class ShopConditionVO extends BaseConditionVO {
     private Integer applyStatus;//审批状态
     private String businessCate;//经营品类
     private String city;
+    private String shopCode;
 
     private String keywords;
     private String shopHours;//营业时间
     private String otherService;//其他服务
+
+    public String getShopCode() {
+        return shopCode;
+    }
+
+    public void setShopCode(String shopCode) {
+        this.shopCode = shopCode;
+    }
 
     public ShopBo getShopBo() {
         return shopBo;

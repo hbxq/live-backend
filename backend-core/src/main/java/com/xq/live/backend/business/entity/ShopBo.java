@@ -14,7 +14,7 @@ import java.util.Date;
  * Created on 2018/5/26 下午5:59
  * @Description:
  */
-public class ShopBo{
+public class ShopBo extends AbstractBO {
     private Shop shop;
 
     public ShopBo() {
@@ -141,5 +141,13 @@ public class ShopBo{
 
     public void setOtherService(String otherService) {
         this.shop.setOtherService(otherService);
+    }
+
+    public String getShopCode() {
+        return this.shop.getShopCode();
+    }
+
+    public void setShopCode(String shopCode) {
+        this.shop.setShopCode(shopCode);
     }
 }

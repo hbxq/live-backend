@@ -17,17 +17,8 @@ import java.util.Date;
  * Created on 2018/5/26 下午4:14
  * @Description:
  */
-//@Data
 @EqualsAndHashCode(callSuper = false)
 public class SoConditionVO extends BaseConditionVO {
-    //private So so;
-
-    /*@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
-    private Date beginTime;
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
-    private Date endTime;*/
-
-
 
     private BigDecimal soAmount;
     private Long userId;
@@ -44,21 +35,6 @@ public class SoConditionVO extends BaseConditionVO {
     private Date createTime;
     private Date updateTime;
 
-    /*public Date getBeginTime() {
-        return beginTime;
-    }
-
-    public void setBeginTime(Date beginTime) {
-        this.beginTime = beginTime;
-    }
-
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }*/
 
     public BigDecimal getSoAmount() {
         return soAmount;

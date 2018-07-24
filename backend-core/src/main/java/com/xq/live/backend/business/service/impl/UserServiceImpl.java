@@ -6,12 +6,10 @@ import com.xq.live.backend.business.service.UserService;
 import java.util.List;
 
 /**
+ * 基础用户信息
  * Created by ss on 2018/7/5.
  */
 public class UserServiceImpl implements UserService{
-
-
-
 
     @Override
     public UserBo insert(UserBo entity) {
@@ -20,7 +18,6 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void insertList(List<UserBo> entities) {
-
     }
 
     @Override

@@ -165,12 +165,15 @@
                         success: function (json) {
                             console.log(json);
                             var info = json.data;
-                            // console.log(info);
-                            resetForm(info);
-                            $("#addOrUpdateModal").modal('show');
-                            $("#addOrUpdateModal").find(".modal-dialog .modal-content .modal-header h4.modal-title").html("查看" + options.modalName);
+                            console.log(info);
+                            detailresetForm(info);
+                            $("#detail_Modal").modal('show');
+                            $("#detail_Modal").find(".modal-dialog .modal-content .modal-header h4.modal-title").html("查看" + options.modalName);
                             if ($("#password") && $("#password")[0]) {
                                 $("#password").removeAttr("required");
+                            }
+                            if ($("#username") && $("#username")[0]) {
+                                $("#username").attr("readonly", "readonly");
                             }
                             if ($("#username") && $("#username")[0]) {
                                 $("#username").attr("readonly", "readonly");
@@ -184,7 +187,8 @@
 
                 /* 删除 */
                 function remove(ids) {
-                    $.tool.confirm("确定删除该" + options.modalName + "信息？", function () {
+                    /*$.tool.confirm("确定删除该" + options.modalName + "信息？", function () {*/
+                    $.tool.confirm("确定删除该信息？", function () {
                         $.ajax({
                             type: "post",
                             url: options.removeUrl,
@@ -248,6 +252,15 @@ function resetForm(info) {
     });
 }
 
+function detailresetForm(info) {
+    $("#detail_Modal form input,#detail_Modal form select,#detail_Modal form textarea,#detail_Modal form img").each(function () {
+        var $this = $(this);
+        clearText($this, this.type, info);
+
+        //clearsrc($this, this.typeof, info)
+    });
+}
+
 function clearText($this, type, info){
     var $div = $this.parents(".item");
     if ($div.hasClass("bad")) {
@@ -261,7 +274,13 @@ function clearText($this, type, info){
             $this.iCheck(((thisValue && 1 == $this.val()) || (!thisValue && 0 == $this.val())) ? 'check' : 'uncheck')
         } else if (type == 'checkbox') {
             $this.iCheck((thisValue || thisValue == 1) ? 'check' : 'uncheck');
-        } else {
+        }/*else if (type == 'aaabbb') {
+            //$this.iCheck((thisValue || thisValue == 1) ? 'check' : 'uncheck');
+            if ((thisValue||thisValue==0) && thisName != 'password') {
+                $this.attr('src',thisValue);
+
+            }
+        } */else {
             $this.val('');//解决弹出的时候，没有删除上次点击获取的数据
             if ((thisValue||thisValue==0) && thisName != 'password') {
                 $this.val(thisValue);
@@ -275,6 +294,7 @@ function clearText($this, type, info){
         }
     }
 }
+
 
 /**
  * 获取选中的记录ID

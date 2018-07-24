@@ -108,7 +108,7 @@
 </div>
 <!--/弹框-->
 <!--订单明细弹框-->
-<div class="modal fade" id="addOrUpdateModal" tabindex="-1" role="dialog" aria-labelledby="addroleLabel">
+<div class="modal fade" id="detail_Modal" tabindex="-1" role="dialog" aria-labelledby="addroleLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
