@@ -119,9 +119,13 @@ public class SoServiceImpl implements SoService{
                 if(s.getShopId()!=null&&s.getSoType()==1){//食典券訂單
                     s.setSellPrice(BigDecimal.ONE);
                     s.setSoPrice(s.getSoAmount().subtract(BigDecimal.ONE));
-                }/*else if (s.getShopId()!=null&&s.getSoType()==2){//商家訂單
-                    s.setSoPrice(s.getSoAmount());
-                }else if (s.getShopId()==null&& s.getSoType()==1){//平臺訂單
+                }else if (s.getShopId()!=null&&s.getSoType()==2){//商家訂單
+                    if (s.getSkuId()!=null){
+                        s.setSoPrice(s.getSoAmount().subtract(s.getSellPrice()));
+                    }else {
+                        s.setSoPrice(s.getSoAmount());
+                    }
+                }/*else if (s.getShopId()==null&& s.getSoType()==1){//平臺訂單
                     s.setSoPrice(s.getSoAmount());
                 }*/
             }else if (s.getPaymentMethod()==1){//商家自收
@@ -141,6 +145,11 @@ public class SoServiceImpl implements SoService{
         return soprice;
     }
 
+    /**
+     * 根据soid批量更改商家訂單
+     * @param list
+     * @return
+     */
     @Override
     @Transactional
     public Integer updateBySO(List<SoConditionVO> list) {
@@ -151,14 +160,34 @@ public class SoServiceImpl implements SoService{
         return i;
     }
 
+    /**
+     * 根据shopid和时间批量更改商家訂單
+     * @param list
+     * @return
+     */
     @Override
-    @Transactional
     public Integer updateByShopId(SoConditionVO list) throws RuntimeException{
-
         Integer i = soMapper.updateByShopId(list);
         if (i < 1) {
             throw new RuntimeException("订单状态修改失败!");
         }
+       /* Long userid = userMapper.selectByshopid(list.getShopId());
+        UserAccount userAccount = userAccountMapper.findAccountByUserId(userid);
+        AccountLogConditionVO accountLogConditionVO = custom(userAccount,list);
+        Integer ac=accountLogMapper.billLog(accountLogConditionVO);
+        if (ac < 1) {
+            throw new RuntimeException("账户余额日志添加失败!");
+        }*/
+        return i;
+    }
+
+    /**
+     * 修改用户余额
+     * @param list
+     * @return
+     */
+    @Override
+    public Integer updateUseract(SoConditionVO list){
         Long userid = userMapper.selectByshopid(list.getShopId());
         UserAccount userAccount = userAccountMapper.findAccountByUserId(userid);
         AccountLogConditionVO accountLogConditionVO = custom(userAccount,list);
@@ -166,7 +195,7 @@ public class SoServiceImpl implements SoService{
         if (ac < 1) {
             throw new RuntimeException("账户余额日志添加失败!");
         }
-        return i;
+        return ac;
     }
 
     @Override

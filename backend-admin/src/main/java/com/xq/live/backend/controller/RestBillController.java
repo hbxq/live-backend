@@ -15,6 +15,7 @@ import com.xq.live.backend.framework.object.PageResult;
 import com.xq.live.backend.framework.object.ResponseVO;
 import com.xq.live.backend.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -95,8 +96,10 @@ public class RestBillController {
      * @return
      */
     @PostMapping("/updateSoList")
+    @Transactional
     public ResponseVO updateList(SoConditionVO inVo) {
         Integer i=soService.updateByShopId(inVo);
+        Integer ac=soService.updateUseract(inVo);
         if (i>0){
          return  ResultUtil.success("成功修改"+i+"条数据",i);
         }

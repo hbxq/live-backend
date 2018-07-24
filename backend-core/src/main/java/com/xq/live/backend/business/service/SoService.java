@@ -52,4 +52,11 @@ public interface SoService extends AbstractService<SoBo, Long> {
      * @return
      */
     SoBo detail(SoConditionVO vo);
+
+    /**
+     * 修改用户余额
+     * @param list
+     * @return
+     */
+    Integer updateUseract(SoConditionVO list);
 }
