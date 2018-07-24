@@ -114,8 +114,8 @@ public class SoServiceImpl implements SoService{
             return null;
         }
         for (So s:sos){
+            s.setSoPrice(s.getSoAmount());
             if (s.getPaymentMethod()==2){//平臺代收
-                s.setSoPrice(s.getSoAmount());
                 if(s.getShopId()!=null&&s.getSoType()==1){//食典券訂單
                     s.setSellPrice(BigDecimal.ONE);
                     s.setSoPrice(s.getSoAmount().subtract(BigDecimal.ONE));
