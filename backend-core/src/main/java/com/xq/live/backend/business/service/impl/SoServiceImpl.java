@@ -84,38 +84,6 @@ public class SoServiceImpl implements SoService{
         BigDecimal allPrice = BigDecimal.ZERO;
         for (So s:sos){
             if (s.getPaymentMethod()==2){//平臺代收
-                s.setSoPrice(s.getSoAmount());
-                if(s.getShopId()!=null&&s.getSoType()==1){//食典券訂單
-                    s.setSellPrice(BigDecimal.ONE);
-                    s.setSoPrice(s.getSoAmount().subtract(BigDecimal.ONE));
-                }
-            }else if (s.getPaymentMethod()==1){//商家自收
-                if(s.getShopId()!=null&&s.getSoType()==1){//食典券訂單
-                    s.setSellPrice(BigDecimal.ONE);
-                    s.setSoPrice(s.getSoAmount().subtract(BigDecimal.ONE));
-                }
-            }
-            if (s.getSoPrice()==null){
-                s.setSoPrice(new BigDecimal(0));
-            }
-            allPrice=allPrice.add(allPrice.add(s.getSoPrice()));
-            SoBos.add(new SoBo(s));
-        }
-        PageInfo bean = new PageInfo<So>(sos);
-        bean.setList(SoBos);
-        return bean;
-    }
-
-    @Override
-    public SoBo findSoShop(SoConditionVO vo) {
-        List<So> sos = soMapper.findSoForShop(vo);
-        BigDecimal allPrice = BigDecimal.ZERO;
-        if (CollectionUtils.isEmpty(sos)) {
-            return null;
-        }
-        for (So s:sos){
-            s.setSoPrice(s.getSoAmount());
-            if (s.getPaymentMethod()==2){//平臺代收
                 if(s.getShopId()!=null&&s.getSoType()==1){//食典券訂單
                     s.setSellPrice(BigDecimal.ONE);
                     s.setSoPrice(s.getSoAmount().subtract(BigDecimal.ONE));
@@ -138,6 +106,48 @@ public class SoServiceImpl implements SoService{
                 s.setSoPrice(new BigDecimal(0));
             }
             allPrice=allPrice.add(allPrice.add(s.getSoPrice()));
+            SoBos.add(new SoBo(s));
+        }
+        PageInfo bean = new PageInfo<So>(sos);
+        bean.setList(SoBos);
+        return bean;
+    }
+
+    @Override
+    public SoBo findSoShop(SoConditionVO vo) {
+        List<So> sos = soMapper.findSoForShop(vo);
+        /*BigDecimal allPrice = BigDecimal.ZERO;*/
+        BigDecimal allPrice =new BigDecimal(0);
+        if (CollectionUtils.isEmpty(sos)) {
+            return null;
+        }
+        for (So s:sos){
+            if (s.getPaymentMethod()==2){//平臺代收
+                s.setSoPrice(s.getSoAmount());
+                if(s.getShopId()!=null&&s.getSoType()==1){//食典券訂單
+                    s.setSellPrice(BigDecimal.ONE);
+                    s.setSoPrice(s.getSoAmount().subtract(BigDecimal.ONE));
+                }else if (s.getShopId()!=null&&s.getSoType()==2){//商家訂單
+                    if (s.getSkuId()!=null){
+                        s.setSoPrice(s.getSoAmount().subtract(s.getSellPrice()));
+                    }else {
+                        s.setSoPrice(s.getSoAmount());
+                    }
+                }/*else if (s.getShopId()==null&& s.getSoType()==1){//平臺訂單
+                    s.setSoPrice(s.getSoAmount());
+                }*/
+            }else if (s.getPaymentMethod()==1){//商家自收
+                if(s.getShopId()!=null&&s.getSoType()==1){//食典券訂單
+                    s.setSellPrice(BigDecimal.ONE);
+                    s.setSoPrice(s.getSoAmount().subtract(BigDecimal.ONE));
+                }
+            }
+            if (s.getSoPrice()==null){
+                s.setSoPrice(BigDecimal.ZERO);
+            }
+//            allPrice=allPrice.add(allPrice.add(s.getSoPrice()));
+            /*allPrice=allPrice.add(s.getSoPrice());*/
+            allPrice.add(s.getSoPrice());
         }
         So so = new So();
         so.setSoAllPrice(allPrice);
