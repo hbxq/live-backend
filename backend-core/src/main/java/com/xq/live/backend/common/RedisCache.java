@@ -6,7 +6,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -56,6 +56,38 @@ public class RedisCache {
     public  void  delAll(String key){
         Set keys = redisTemplate.keys(key);
         redisTemplate.delete(keys);
+    }
+
+    /**
+     * 模糊查询缓存,获取指定数据类型
+     * @param key
+     * @param clazz
+     * @param <T>
+     * @return
+     */
+    /*public <T> Map<Object,T> getList(String key, Class<T> clazz){
+        Set keys = redisTemplate.keys(key);
+        HashMap<Object,T> map = new HashMap<Object,T>();
+        for (Object o : keys) {
+            map.put(o,(T)redisTemplate.boundValueOps(o).get());
+        }
+        return map;
+    }*/
+
+    /**
+     * 模糊查询缓存,直接获取对象
+     * @param key
+     * @return
+     */
+    public  Map<Object,Object> getList(String key){
+        Set keys = redisTemplate.keys(key);
+        HashMap<Object,Object> map = new HashMap<Object,Object>();
+        for (Object o : keys) {
+            byte[] serialize = redisTemplate.getValueSerializer().serialize(redisTemplate.boundValueOps(o).get());
+            Object deserialize = redisTemplate.getValueSerializer().deserialize(serialize);
+            map.put(o,redisTemplate.getValueSerializer().serialize(key));
+        }
+        return map;
     }
 
 

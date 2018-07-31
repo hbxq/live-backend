@@ -105,4 +105,9 @@ public class RenderController {
     public ModelAndView cash() {
         return ResultUtil.view("cash/list");
     }
+
+    @GetMapping("/caches")
+    public ModelAndView caches() {
+        return ResultUtil.view("cache/list");
+    }
 }
