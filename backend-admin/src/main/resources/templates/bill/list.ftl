@@ -26,7 +26,7 @@
                     <div id="soBill">
                         <label>是否核销：</label>
                         <input type="radio" checked name="bill" value="3"/><label>已核销</label>
-                        <input type="radio" name="bill" value="2"/><label>未核销</label>
+                        <input type="radio" name="bill" value="2"/><label>已支付</label>
                     </div>
                     <table id="tablelist">
                     </table>
