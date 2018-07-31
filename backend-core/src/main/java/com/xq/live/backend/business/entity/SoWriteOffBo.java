@@ -231,4 +231,28 @@ public class SoWriteOffBo extends AbstractBO {
     public void setSoAmount(BigDecimal soAmount) {
         this.soWrite.setSoAmount(soAmount);
     }
+
+    public Integer getSkuType() {
+        return this.soWrite.getSkuType();
+    }
+
+    public void setSkuType(Integer skuType) {
+        this.soWrite.setSkuType(skuType);
+    }
+
+    public String getSkuName() {
+        return this.soWrite.getSkuName();
+    }
+
+    public void setSkuName(String skuName) {
+        this.soWrite.setSkuName(skuName);
+    }
+
+    public Date getHxTime() {
+        return this.soWrite.getHxTime();
+    }
+
+    public void setHxTime(Date hxTime) {
+        this.soWrite.setHxTime(hxTime);
+    }
 }

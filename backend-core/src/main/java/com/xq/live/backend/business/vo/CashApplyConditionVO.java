@@ -15,13 +15,10 @@ public class CashApplyConditionVO extends BaseConditionVO {
     private Date createTime;
     private Date updateTime;
 
-    @NotNull(message = "userId必填")
     private Long userId;
-    @NotNull(message = "userName必填")
     private String userName;
     private Long accountId;
     private String accountName;
-    @NotNull(message = "cashAmount必填")
     private BigDecimal cashAmount;  //提现金额
     private Byte applyStatus;
     private Date paidTime;

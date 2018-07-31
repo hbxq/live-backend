@@ -23,6 +23,11 @@
                 <div class="">
                     <div class="btn-group hidden-xs" id="toolbar">
                     </div>
+                    <div id="soBill">
+                        <label>是否核销：</label>
+                        <input type="radio" checked name="bill" value="3"/><label>已核销</label>
+                        <input type="radio" name="bill" value="2"/><label>未核销</label>
+                    </div>
                     <table id="tablelist">
                     </table>
                 </div>
@@ -44,8 +49,10 @@
 <!--/弹框-->
 <#--查看明细弹窗-->
 <div class="listbox">
-    <div class="headline">详情订单量<input id="guanbi" class="closebtn_bill" type="button" value="关闭"/><span id="dztotal"></span></div>
+    <div class="headline">订单详情<input id="guanbi" class="closebtn_bill" type="button" value="关闭"/><span id="dztotal"></span></div>
     <table id="tablest">
+    </table>
+    <table id="tablests">
     </table>
 </div>
 <#--</div>-->
@@ -73,6 +80,7 @@
 
     // 查看明细弹窗
     function newtable(shopId){
+        //食典券平台订单
         $("#tablest").bootstrapTable({ // 对应table标签的id
             method: "post",//请求方式
             contentType : "application/x-www-form-urlencoded; charset=UTF-8",
@@ -92,7 +100,128 @@
                     pageNumber:_offset,
                     shopId:shopId,
                     beginTime:thbegainTime,
-                    endTime:thendTime
+                    endTime:thendTime,
+                    soStatus:$('#soBill input[name="bill"]:checked ').val()
+                };
+                return tamp;
+            },
+            sortName: 'id', // 要排序的字段
+            sortOrder: 'desc', // 排序规则
+            columns: [
+                {
+                    field: 'id', // 返回json数据中的name
+                    title: '订单号', // 表格表头显示文字
+                    align: 'center', // 左右居中
+                    valign: 'middle' // 上下居中
+                }, {
+                    field: 'userName',
+                    title: '下单人',
+                    align: 'center',
+                    valign: 'middle'
+                }, {
+                    field: 'paidTime',
+                    title: '支付时间',
+                    align: 'center',
+                    valign: 'middle',
+                    editable: false,
+                    formatter: function (code) {
+                        return new Date(code).format("yyyy-MM-dd hh:mm:ss")
+                    }
+                }, {
+                    field: 'sellPrice',
+                    title: '服务费',
+                    align: 'center',
+                    valign: 'middle',
+                    editable: true
+                }, {
+                    field: 'soType',
+                    title: '订单类型',
+                    editable: false,
+                    formatter: function (code) {
+                        if(code==1){
+                            return "平台订单";
+                        }else if(code==2){
+                            return "商家订单";
+                        }
+                    }
+                }, {
+                    field: 'skuType',
+                    title: '券类型',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function (code) {
+                        if(code==1){
+                            return "享七券";
+                        }else if(code==2){
+                            return "特色菜";
+                        }else if(code==3){
+                            return "食典券";
+                        }else if(code==5){
+                            return "商家套餐";
+                        }
+                    }
+                }, {
+                    field: 'isDui',
+                    title: '对账状态',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function (code) {
+                        if(code==0){
+                            return "未对账";
+                        }else if(code==1){
+                            return "已对账";
+                        }
+                    }
+                },
+                {
+                    field: 'hxTime',
+                    title: '核销时间',
+                    align: 'center',
+                    valign: 'middle'
+                }, {
+                    field: 'soAmount',
+                    title: '支付金额',
+                    align: 'center',
+                    valign: 'middle'
+                }, {
+                    field: 'soPrice',
+                    title: '扣除服务费后的金额',
+                    align: 'center',
+                    valign: 'middle',
+                    editable: true
+                }
+            ],
+            onLoadSuccess: function(){  //加载成功时执行
+                console.info("加载成功");
+                console.log(this)
+            },
+            onLoadError: function(){  //加载失败时执行
+                console.info("加载数据失败");
+            }
+        })
+        //商家订单
+        $("#tablests").bootstrapTable({ // 对应table标签的id
+            method: "post",//请求方式
+            contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+            url: "/bill/sotimeLists", // 获取表格数据的url
+            cache: false, // 设置为 false 禁用 AJAX 数据缓存， 默认为true
+            striped: true,  //表格显示条纹，默认为false
+            pagination: true, // 在表格底部显示分页组件，默认false
+            pageList: [10, 20, 30, 40, 50], // 设置页面可以显示的数据条数
+            pageSize: 10, // 页面数据条数
+            pageNumber: 1, // 首页页码
+            sidePagination: 'server', // 设置为服务器端分页
+            queryParams: function queryParams(params) { // 请求服务器数据时发送的参数，可以在这里添加额外的查询参数，返回false则终止请求
+                var _offset = params.offset/10+1;
+                var tamp =  {
+                    pageSize: params.limit, // 每页要显示的数据条数
+                    offset: params.offset, // 每页显示数据的开始行号
+                    pageNumber:_offset,
+                    shopId:shopId,
+                    beginTime:thbegainTime,
+                    endTime:thendTime,
+                    soStatus:$('#soBill input[name="bill"]:checked ').val()
+
                 };
                 return tamp;
             },
@@ -174,10 +303,12 @@
                 console.info("加载数据失败");
             }
         })
+
     };
 
     $('#guanbi').on('click',function(){
         $("#tablest").bootstrapTable('destroy');
+        $("#tablests").bootstrapTable('destroy');
         $("#dztotal").html("");
         $('.listbox').hide();
     });
@@ -201,14 +332,15 @@
         $.ajax({
             type: "post",
             url: "/bill/soPrice",
-            data:{shopId:shopId, beginTime:thbegainTime,endTime:thendTime},
+            data:{shopId:shopId, beginTime:thbegainTime,endTime:thendTime,soStatus:$('#soBill input[name="bill"]:checked ').val()},
             dataType: "json",
             success: function (data) {
                 console.log("data:",data);
                 data.soAllPrice?data.soAllPrice:"0.0"
-                $("#dztotal").html("合计￥"+data.soAllPrice);
+                $("#dztotal").html(" 合计￥ :"+data.soAllPrice+" 已支付￥: "+data.soBillPrice+" 待支付￥: "+data.soNoBillPrice);
             },
         });
+        //alert($('#soBill input[name="bill"]:checked ').val());
         newtable(shopId);
     });
 

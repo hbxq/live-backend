@@ -20,6 +20,9 @@
         <result column="sku_id" jdbcType="BIGINT" property="skuId"/>
         <result column="sell_price" jdbcType="DECIMAL" property="sellPrice"/>
         <result column="payment_method" jdbcType="INTEGER" property="paymentMethod"/>
+        <result column="sku_type" jdbcType="INTEGER" property="skuType"/>
+        <result column="is_deleted" jdbcType="INTEGER" property="isDeleted"/>
+
     </resultMap>
     <sql id="Base_Column_List">
     id, so_amount, user_id, user_name, shop_id,pay_type, so_status, so_type, create_time, update_time,is_dui
@@ -76,8 +79,46 @@
         s.id DESC
     </select>
 
-    <!--查询商家一段时间内的订单和服务费信息-->
+    <!--查询商家一段时间内的订单和服务费信息（食典券）-->
     <select id="findSoForShop" parameterType="com.xq.live.backend.business.vo.SoConditionVO" resultMap="BaseResultMap">
+        SELECT
+        s.id,
+        s.so_amount,
+        s.user_name,
+        s.so_status,
+        s.so_type,
+        s.paid_time,
+        s.is_dui,
+        s.shop_id,
+        s.hx_time,
+        sd.sku_id,
+        sk.sell_price,
+        sk.sku_type,
+        al.payment_method
+        FROM
+        so s
+        INNER JOIN so_detail sd ON s.id = sd.so_id
+        INNER JOIN sku sk ON sd.sku_id = sk.id
+        INNER JOIN shop_allocation al ON s.shop_id = al.shop_id
+        WHERE
+        s.so_status = #{soStatus}
+        <if test="soStatus == 3">
+            <if test="beginTime !=null and endTime != null">
+                and (s.hx_time BETWEEN #{beginTime} and #{endTime})
+            </if>
+        </if>
+        <if test="soStatus == 2">
+            <if test="beginTime !=null and endTime != null">
+                and (s.create_time BETWEEN #{beginTime} and #{endTime})
+            </if>
+        </if>
+        AND s.shop_id =#{shopId,jdbcType=BIGINT}
+        ORDER BY
+        s.id DESC
+    </select>
+
+    <!--查询商家一段时间内的订单和服务费信息（食典券）且未对账的-->
+    <select id="findSoForIsDui" parameterType="com.xq.live.backend.business.vo.SoConditionVO" resultMap="BaseResultMap">
         SELECT
         s.id,
         s.so_amount,
@@ -93,17 +134,87 @@
         al.payment_method
         FROM
         so s
-        LEFT JOIN so_detail sd ON s.id = sd.so_id
-        LEFT JOIN so_log sl ON s.id = sl.so_id
-        LEFT JOIN sku sk ON sd.sku_id = sk.id
-        LEFT JOIN shop_allocation al ON s.shop_id = al.shop_id
+        INNER JOIN so_detail sd ON s.id = sd.so_id
+        INNER JOIN sku sk ON sd.sku_id = sk.id
+        INNER JOIN shop_allocation al ON s.shop_id = al.shop_id
         WHERE
-        sl.operate_type = 3
+        s.so_status = 3
+        AND s.is_dui=0
+            <if test="beginTime !=null and endTime != null">
+                and (s.hx_time BETWEEN #{beginTime} and #{endTime})
+            </if>
+        AND s.shop_id =#{shopId,jdbcType=BIGINT}
+        ORDER BY
+        s.id DESC
+    </select>
+
+    <!--查询商家一段时间内的订单和服务费信息（商家订单）且未对账的-->
+    <select id="findShopForIsDui" parameterType="com.xq.live.backend.business.vo.SoConditionVO" resultMap="BaseResultMap">
+        SELECT
+        s.id ,
+        s.so_amount,
+        s.user_name ,
+        s.so_status ,
+        s.so_type ,
+        s.paid_time ,
+        s.is_dui ,
+        s.shop_id ,
+        s.hx_time,
+        sd.sku_id ,
+        sk.sell_price,
+        sk.sku_type,
+        sk.is_deleted,
+        al.payment_method
+        FROM
+        so s
+        INNER JOIN so_shop_log sd ON s.id = sd.so_id
+        LEFT JOIN sku sk ON sd.sku_id = sk.id
+        INNER JOIN shop_allocation al ON sd.shop_id = al.shop_id
+        WHERE
+        s.so_status = 2
+        AND s.is_dui=0
+        AND
+        sd.operate_type=2
+        AND
+        sd.shop_id=#{shopId,jdbcType=BIGINT}
         <if test="beginTime !=null and endTime != null">
             and (s.create_time BETWEEN #{beginTime} and #{endTime})
         </if>
-        AND s.shop_id =#{shopId,jdbcType=BIGINT}
-        AND s.so_status != 1
+        ORDER BY
+        s.id DESC
+    </select>
+
+    <!--查询商家一段时间内的订单和服务费信息商家订单-->
+    <select id="findSoForShops" parameterType="com.xq.live.backend.business.vo.SoConditionVO" resultMap="BaseResultMap">
+        SELECT
+        s.id ,
+        s.so_amount,
+        s.user_name ,
+        s.so_status ,
+        s.so_type ,
+        s.paid_time ,
+        s.is_dui ,
+        s.shop_id ,
+        s.hx_time,
+        sd.sku_id ,
+        sk.sell_price,
+        sk.sku_type,
+        sk.is_deleted,
+        al.payment_method
+        FROM
+        so s
+        INNER JOIN so_shop_log sd ON s.id = sd.so_id
+        LEFT JOIN sku sk ON sd.sku_id = sk.id
+        INNER JOIN shop_allocation al ON sd.shop_id = al.shop_id
+        WHERE
+        s.so_status = 2
+        AND
+        sd.operate_type=2
+        AND
+        sd.shop_id=#{shopId,jdbcType=BIGINT}
+            <if test="beginTime !=null and endTime != null">
+                and (s.create_time BETWEEN #{beginTime} and #{endTime})
+            </if>
         ORDER BY
         s.id DESC
     </select>
@@ -120,20 +231,50 @@
         </foreach>
     </update>
 
-    <!--批量修改符合条件订单的对账状态(适用版，通过shopid和时间段批量修改)-->
+    <!--批量修改符合条件订单的对账状态(适用版，通过shopid和时间段批量修改)修改的已核销的食典券-->
     <update id="updateByShopId" parameterType="com.xq.live.backend.business.vo.SoConditionVO">
        UPDATE so s
-        LEFT JOIN so_shop_log sd ON s.id = sd.so_id
-        LEFT JOIN sku sk ON sd.sku_id = sk.id
-        LEFT JOIN shop_allocation al ON  sd.shop_id = al.shop_id
         SET s.is_dui=1
         WHERE
-        sd.operate_type = 2
+        s.so_status = 3
         AND
-        sd.shop_id=#{shopId,jdbcType=BIGINT}
+        s.shop_id=#{shopId,jdbcType=BIGINT}
+        AND s.is_dui=0
+        AND s.so_type=1
+            <if test="beginTime !=null and endTime != null">
+                and (s.hx_time BETWEEN #{beginTime} and #{endTime})
+            </if>
+    </update>
+
+    <!--批量修改食典券订单的结算状态(适用版，通过shopid和时间段批量修改)修改的已核销食典券-->
+    <update id="updateByShopIdBill" parameterType="com.xq.live.backend.business.vo.SoConditionVO">
+        UPDATE so_write_off woff
+        INNER JOIN so s ON woff.so_id=s.id
+        INNER JOIN sku sk ON woff.sku_id = sk.id
+        INNER JOIN so_detail sd ON woff.so_id = sd.so_id
+        INNER JOIN shop_allocation al ON s.shop_id = al.shop_id
+        SET woff.is_bill=1
+        WHERE
+        woff.shop_id=#{shopId,jdbcType=BIGINT}
+        AND s.so_status = 3
         <if test="beginTime !=null and endTime != null">
-            and (s.create_time BETWEEN #{beginTime} and #{endTime})
+            and (woff.create_time BETWEEN #{beginTime} and #{endTime})
         </if>
     </update>
 
+    <!--批量修改符合条件订单的对账状态(适用版，通过shopid和时间段批量修改)修改的已核销的商家订单-->
+    <update id="updateByShopIds" parameterType="com.xq.live.backend.business.vo.SoConditionVO">
+        UPDATE so s
+        SET s.is_dui=1
+        WHERE
+        s.so_status = 2
+        AND
+        s.shop_id=#{shopId,jdbcType=BIGINT}
+        AND
+        s.so_type=2
+        AND s.is_dui=0
+            <if test="beginTime !=null and endTime != null">
+                and (s.create_time BETWEEN #{beginTime} and #{endTime})
+            </if>
+    </update>
 </mapper>

@@ -182,7 +182,39 @@ public class SoBo extends AbstractBO {
     }
 
     public void setSoAllPrice(BigDecimal soAllPrice) {
-        this.setSoAllPrice(soAllPrice);
+        this.so.setSoAllPrice(soAllPrice);
+    }
+
+    public Integer getSkuType() {
+        return this.so.getSkuType();
+    }
+
+    public void setSkuType(Integer skuType) {
+        this.so.setSkuType(skuType);
+    }
+
+    public Integer getIsDeleted() {
+        return this.so.getIsDeleted();
+    }
+
+    public void setIsDeleted(Integer isDeleted) {
+        this.so.setIsDeleted(isDeleted);
+    }
+
+    public BigDecimal getSoBillPrice() {
+        return this.so.getSoBillPrice();
+    }
+
+    public void setSoBillPrice(BigDecimal soBillPrice) {
+        this.so.setSoBillPrice(soBillPrice);
+    }
+
+    public BigDecimal getSoNoBillPrice() {
+        return this.so.getSoNoBillPrice();
+    }
+
+    public void setSoNoBillPrice(BigDecimal soNoBillPrice) {
+        this.so.setSoNoBillPrice(soNoBillPrice);
     }
 
 }

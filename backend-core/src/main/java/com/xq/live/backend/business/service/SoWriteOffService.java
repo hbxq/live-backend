@@ -22,11 +22,18 @@ public interface SoWriteOffService extends AbstractService<SoWriteOffBo, Long> {
     PageInfo<SoWriteOffBo> findSoForShop(SoWriteOffInVo vo);
 
     /**
-     * 不分页查询商家核销票券
+     * 不分页查询商家核销票券(全部的)
      * @param vo
      * @return
      */
     SoWriteOffBo findSoShop(SoWriteOffInVo vo);
+
+    /**
+     * 不分页查询商家核销票券(未结算的)
+     * @param vo
+     * @return
+     */
+    SoWriteOffBo findSobill(SoWriteOffInVo vo);
 
     /**
      * 不根据shopid和时间批量更改商家訂單

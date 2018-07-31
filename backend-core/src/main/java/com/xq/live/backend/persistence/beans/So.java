@@ -57,6 +57,12 @@ public class So extends AbstractDO {
     private Long skuId;
 
     @Transient
+    private Integer  skuType;//券类型
+
+    @Transient
+    private Integer isDeleted;
+
+    @Transient
     private BigDecimal sellPrice;//平臺服務費/平台服务费
 
     @Transient
@@ -66,9 +72,17 @@ public class So extends AbstractDO {
     private BigDecimal soAllPrice;//所有订单服务费
 
     @Transient
+    private BigDecimal soBillPrice;//已对账订单服务费
+
+    @Transient
+    private BigDecimal soNoBillPrice;//未对账订单服务费
+
+    @Transient
     private String shopName;
 
     @Transient
     private Integer paymentMethod;//商家是否自收
+
+
 
 }

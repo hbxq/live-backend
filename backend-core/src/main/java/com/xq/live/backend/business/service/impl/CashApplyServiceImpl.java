@@ -3,10 +3,15 @@ package com.xq.live.backend.business.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.xq.live.backend.business.entity.CashApplyBo;
+import com.xq.live.backend.business.entity.User;
+import com.xq.live.backend.business.enums.ResponseStatus;
 import com.xq.live.backend.business.service.CashApplyService;
 import com.xq.live.backend.business.vo.CashApplyConditionVO;
 import com.xq.live.backend.persistence.beans.CashApply;
 import com.xq.live.backend.persistence.mapper.CashApplyMapper;
+import com.xq.live.backend.util.ResultUtil;
+import com.xq.live.backend.util.SessionUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -81,5 +86,20 @@ public class CashApplyServiceImpl implements CashApplyService{
         PageInfo bean = new PageInfo<CashApply>(list);
         bean.setList(ActTopicBos);
         return bean;
+    }
+
+    @Override
+    public Integer updateAcsh(CashApplyConditionVO inVo) {
+        User user = SessionUtil.getUser();
+        inVo.setPaidUserId(user.getId());
+        inVo.setPaidUserName(user.getUsername());
+        if (user == null || StringUtils.isEmpty(user.getUsername())) {
+            return null;
+        }
+        Integer pay=cashApplyMapper.paystart(inVo);
+        if (pay < 1) {
+            return null;
+        }
+        return pay;
     }
 }

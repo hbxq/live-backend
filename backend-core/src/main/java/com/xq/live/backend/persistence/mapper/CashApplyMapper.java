@@ -11,9 +11,19 @@ import java.util.List;
  */
 public interface CashApplyMapper extends BaseMapper<CashApply> {
 
-    /*
-  * 按条件模糊查询一段时间内的申请
-  * */
-    List<CashApply> selectCashlist(CashApplyConditionVO invo);
+    /**
+     * 按条件模糊查询一段时间内的申请
+     * @param invo
+     * @return
+     */
+     List<CashApply> selectCashlist(CashApplyConditionVO invo);
+
+    /**
+     * 修改申请状态
+     * @param inVo
+     * @return
+     */
+    Integer paystart(CashApplyConditionVO inVo);
+
 
 }

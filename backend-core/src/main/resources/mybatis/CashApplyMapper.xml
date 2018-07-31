@@ -22,6 +22,7 @@
     id, user_id, user_name, account_id, account_name, cash_amount,
     apply_status, create_time, paid_time, update_time, paid_user_id, paid_user_name
   </sql>
+    <!--查询商家提现-->
     <select id="selectCashlist" parameterType="com.xq.live.backend.business.vo.CashApplyConditionVO" resultMap="BaseResultMap">
           SELECT
               ca.id,
@@ -58,5 +59,21 @@
             </if>
           </where>
     </select>
+
+    <!--修改申请状态-->
+    <update id="paystart" parameterType="com.xq.live.backend.business.vo.CashApplyConditionVO">
+        UPDATE cash_apply ca
+        SET ca.apply_status= #{applyStatus},
+        <if test="applyStatus==2">
+            ca.paid_time= now(),
+        </if>
+        ca.update_time= now(),
+        ca.paid_user_id= #{paidUserId},
+        ca.paid_user_name= #{paidUserName}
+        <where>
+        ca.id = #{id,jdbcType=BIGINT}
+        </where>
+    </update>
+
 
 </mapper>

@@ -11,9 +11,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * com.xq.live.backend.business.vo
  *
- * @author zhangpeng32
+ * @author
  * Created on 2018/5/26 下午4:14
  * @Description:
  */
@@ -30,11 +29,47 @@ public class SoConditionVO extends BaseConditionVO {
     private Date paidTime;
     private Date hxTime;
     private Integer isDui;
+    private Integer skuType;//券类型
+    private Integer isDeleted;
+    private BigDecimal soBillPrice;//已对账订单服务费
+    private BigDecimal soNoBillPrice;//未对账订单服务费
 
     private Long id;
     private Date createTime;
     private Date updateTime;
 
+
+    public BigDecimal getSoBillPrice() {
+        return soBillPrice;
+    }
+
+    public void setSoBillPrice(BigDecimal soBillPrice) {
+        this.soBillPrice = soBillPrice;
+    }
+
+    public BigDecimal getSoNoBillPrice() {
+        return soNoBillPrice;
+    }
+
+    public void setSoNoBillPrice(BigDecimal soNoBillPrice) {
+        this.soNoBillPrice = soNoBillPrice;
+    }
+
+    public Integer getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Integer isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
+    public Integer getSkuType() {
+        return skuType;
+    }
+
+    public void setSkuType(Integer skuType) {
+        this.skuType = skuType;
+    }
 
     public BigDecimal getSoAmount() {
         return soAmount;

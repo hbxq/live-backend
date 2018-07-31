@@ -19,10 +19,9 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="is_bill" jdbcType="INTEGER" property="isBill"/>
-
-       <!-- <result column="sell_price" jdbcType="DECIMAL" property="sellPrice"/>
-        <result column="so_type" jdbcType="TINYINT" property="soType"/>
-        <result column="so_amount" jdbcType="DECIMAL" property="soAmount"/>-->
+        <result column="sku_type" jdbcType="INTEGER" property="skuType"/>
+        <result column="sku_name" jdbcType="VARCHAR" property="skuName"/>
+        <result column="hx_time" jdbcType="TIMESTAMP" property="hxTime"/>
 
         <association property="so" javaType="com.xq.live.backend.persistence.beans.So">
             <result column="shop_id" jdbcType="BIGINT" property="shopId"/><!--重复，别名-->
@@ -38,12 +37,14 @@
     user_id, user_name, cashier_id, cashier_name, paid_amount, create_time, update_time,is_bill
   </sql>
 
+    <!--总服务费包括未交的服务费-->
     <select id="selectofflist" parameterType="com.xq.live.backend.business.vo.SoWriteOffInVo" resultMap="BaseResultMap">
         SELECT
         woff.so_id ,
         s.so_amount,
         s.so_type ,
         s.shop_id,
+        s.hx_time,
         woff.shop_id,
         woff.sku_id,
         woff.user_name,
@@ -55,13 +56,52 @@
         woff.coupon_amount ,
         woff.cashier_name ,
         woff.is_bill ,
-        sk.sell_price
+        sk.sell_price,
+        sk.sku_type,
+        sk.sku_name
         FROM
         so_write_off woff
-        LEFT JOIN so s ON woff.so_id=s.id
-        LEFT JOIN sku sk ON woff.sku_id = sk.id
+        INNER JOIN so s ON woff.so_id=s.id
+        INNER JOIN sku sk ON woff.sku_id = sk.id
         WHERE
         woff.shop_id=#{shopId,jdbcType=BIGINT}
+        AND sk.is_deleted=0
+        <if test="beginTime !=null and endTime != null">
+            and (woff.create_time BETWEEN #{beginTime} and #{endTime})
+        </if>
+        ORDER BY
+        woff.id DESC
+    </select>
+    <!--未交的服务费-->
+    <select id="selectoffbill" parameterType="com.xq.live.backend.business.vo.SoWriteOffInVo" resultMap="BaseResultMap">
+        SELECT
+        woff.so_id ,
+        s.so_amount,
+        s.so_type ,
+        s.shop_id,
+        s.hx_time,
+        woff.shop_id,
+        woff.sku_id,
+        woff.user_name,
+        woff.user_id ,
+        woff.shop_amount ,
+        woff.paid_amount ,
+        woff.shop_name ,
+        woff.coupon_code ,
+        woff.coupon_amount ,
+        woff.cashier_name ,
+        woff.is_bill ,
+        sk.sell_price,
+        sk.sku_type,
+        sk.sku_name
+        FROM
+        so_write_off woff
+        INNER JOIN so s ON woff.so_id=s.id
+        INNER JOIN sku sk ON woff.sku_id = sk.id
+        WHERE
+        woff.shop_id=#{shopId,jdbcType=BIGINT}
+        AND sk.is_deleted=0
+        AND woff.is_bill=0
         <if test="beginTime !=null and endTime != null">
             and (woff.create_time BETWEEN #{beginTime} and #{endTime})
         </if>
@@ -69,14 +109,16 @@
         woff.id DESC
     </select>
 
-    <!--批量修改符合条件订单的对账状态(适用版，通过shopid和时间段批量修改)-->
+    <!--批量修改符合条件核销券订单的结算状态(适用版，通过shopid和时间段批量修改)-->
     <update id="updateByShopId" parameterType="com.xq.live.backend.business.vo.SoWriteOffInVo">
         UPDATE so_write_off woff
-        LEFT JOIN so s ON woff.so_id=s.id
-        LEFT JOIN sku sk ON woff.sku_id = sk.id
+        INNER JOIN so s ON woff.so_id=s.id
+        INNER JOIN sku sk ON woff.sku_id = sk.id
         SET woff.is_bill=1
         WHERE
-        woff.shop_id=35
+        woff.shop_id=#{shopId,jdbcType=BIGINT}
+        AND  woff.is_bill=0
+        AND sk.is_deleted=0
         <if test="beginTime !=null and endTime != null">
             and (woff.create_time BETWEEN #{beginTime} and #{endTime})
         </if>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xq.live.backend.persistence.mapper.ServiceAmountMapper">
+    <resultMap id="BaseResultMap" type="com.xq.live.backend.persistence.beans.ServiceAmount">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="paid_user_id" jdbcType="BIGINT" property="paidUserId"/>
+        <result column="shop_id" jdbcType="BIGINT" property="shopId"/>
+        <result column="service_price" jdbcType="DECIMAL" property="servicePrice"/>
+        <result column="begin_time" jdbcType="TIMESTAMP" property="beginTime"/>
+        <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, paid_user_id, shop_id, service_price, begin_time,end_time, create_time, update_time
+    </sql>
+
+    <!--查询商家一段时间内的服务费信息-->
+    <select id="findShopService" parameterType="com.xq.live.backend.business.vo.ServiceAmountVO" resultMap="BaseResultMap">
+       SELECT
+            sam.id,
+            sam.paid_user_id,
+            sam.service_price,
+            sam.shop_id,
+            sam.update_time,
+            sam.begin_time,
+            sam.end_time,
+            sam.create_time
+        FROM
+	  service_amount sam
+	  WHERE
+	  sam.shop_id=#{shopId,jdbcType=BIGINT}
+        <if test="beginTime !=null and endTime != null">
+            and (sam.create_time BETWEEN #{beginTime} and #{endTime})
+        </if>
+    </select>
+
+</mapper>

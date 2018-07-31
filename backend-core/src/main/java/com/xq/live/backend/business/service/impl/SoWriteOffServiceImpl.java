@@ -83,34 +83,35 @@ public class SoWriteOffServiceImpl implements SoWriteOffService {
             return null;
         }
         List<SoWriteOffBo> soWriteOffBos =new ArrayList<SoWriteOffBo>();
-        BigDecimal a = new BigDecimal(1);
-        BigDecimal allPrice = new BigDecimal(0);
-        for (int i=0;i<soWriteOffs.size();i++){
-            soWriteOffs.get(i).setSoType(soWriteOffs.get(i).getSo().getSoType());
-            if (soWriteOffs.get(i).getSo().getShopId()!=null&&soWriteOffs.get(i).getSo().getSoType()==1&&soWriteOffs.get(i).getSkuId()!=406){//食典券訂單
-                soWriteOffs.get(i).getSo().setSellPrice(a);
-                soWriteOffs.get(i).setSellPrice(soWriteOffs.get(i).getSo().getSellPrice());
-                soWriteOffs.get(i).getSo().setSoPrice(soWriteOffs.get(i).getSo().getSellPrice());
-                soWriteOffs.get(i).setSoPrice(soWriteOffs.get(i).getSo().getSoPrice());
-            }else  if(soWriteOffs.get(i).getSkuId()==406&&soWriteOffs.get(i).getSo().getSoType() == 1) {//套餐券
-                soWriteOffs.get(i).getSo().setSellPrice(a);
-                soWriteOffs.get(i).setSellPrice(soWriteOffs.get(i).getSo().getSellPrice());
-                soWriteOffs.get(i).getSo().setSoPrice(soWriteOffs.get(i).getSo().getSellPrice());
-                soWriteOffs.get(i).setSoPrice(soWriteOffs.get(i).getSo().getSoPrice());
+        BigDecimal a = BigDecimal.ONE;
+        BigDecimal allPrice = BigDecimal.ZERO;
+
+        for (SoWriteOff swo:soWriteOffs){
+            swo.setSoType(swo.getSo().getSoType());
+            if (swo.getSkuType()==3){//食典券訂單
+                swo.getSo().setSellPrice(BigDecimal.ZERO);
+                swo.setSellPrice(swo.getSo().getSellPrice());
+                swo.getSo().setSoPrice(swo.getSo().getSellPrice());
+                swo.setSoPrice(swo.getSo().getSoPrice());
+            }else  if(swo.getSkuType()==1&&swo.getSkuId()==406) {//套餐券
+//                soWriteOffs.get(i).getSo().setSellPrice(a);设置套餐券的收费
+                swo.setSellPrice(swo.getSo().getSellPrice());
+                swo.getSo().setSoPrice(swo.getSo().getSellPrice());
+                swo.setSoPrice(swo.getSo().getSoPrice());
             }else {//商家訂單和平台訂單
-                if (soWriteOffs.get(i).getSo().getSellPrice()==null){
-                    soWriteOffs.get(i).getSo().setSellPrice(new BigDecimal(0));
-                    soWriteOffs.get(i).setSellPrice(soWriteOffs.get(i).getSo().getSellPrice());
+                if (swo.getSo().getSellPrice()==null){
+                    swo.getSo().setSellPrice(BigDecimal.ZERO);
+                    swo.setSellPrice(swo.getSo().getSellPrice());
                 }
-                soWriteOffs.get(i).setSellPrice(soWriteOffs.get(i).getSo().getSellPrice());
-                soWriteOffs.get(i).getSo().setSoPrice(soWriteOffs.get(i).getSo().getSellPrice());
-                soWriteOffs.get(i).setSoPrice(soWriteOffs.get(i).getSo().getSoPrice());
+                swo.setSellPrice(swo.getSo().getSellPrice());
+                swo.getSo().setSoPrice(swo.getSo().getSellPrice());
+                swo.setSoPrice(swo.getSo().getSoPrice());
             }
-            if (soWriteOffs.get(i).getSo().getSoPrice()==null){
-                soWriteOffs.get(i).getSo().setSoPrice(new BigDecimal(0));
-                soWriteOffs.get(i).setSoPrice(soWriteOffs.get(i).getSo().getSoPrice());
+            if (swo.getSo().getSoPrice()==null){
+                swo.getSo().setSoPrice(BigDecimal.ZERO);
+                swo.setSoPrice(swo.getSo().getSoPrice());
             }
-            soWriteOffBos.add(new SoWriteOffBo(soWriteOffs.get(i)));
+            soWriteOffBos.add(new SoWriteOffBo(swo));
         }
         PageInfo bean = new PageInfo<SoWriteOff>(soWriteOffs);
         bean.setList(soWriteOffBos);
@@ -126,13 +127,13 @@ public class SoWriteOffServiceImpl implements SoWriteOffService {
         BigDecimal allPrice =BigDecimal.ZERO;
         for (SoWriteOff swo :soWriteOffs){
             swo.setSoType(swo.getSo().getSoType());
-            if (swo.getSo().getShopId()!=null&&swo.getSo().getSoType()==1&&swo.getSkuId()!=406){//食典券訂單
-                swo.getSo().setSellPrice(BigDecimal.ONE);
+            if (swo.getSkuType()==3){//食典券訂單
+                swo.getSo().setSellPrice(BigDecimal.ZERO);//食典券不计算商家服务费
                 swo.setSellPrice(swo.getSo().getSellPrice());
                 swo.getSo().setSoPrice(swo.getSo().getSellPrice());
                 swo.setSoPrice(swo.getSo().getSoPrice());
-            }else  if(swo.getSkuId()==406&&swo.getSo().getSoType() == 1) {//套餐券
-                swo.getSo().setSellPrice(BigDecimal.ONE);
+            }else  if(swo.getSkuType()==1&&swo.getSkuId()==406) {//套餐券
+                swo.getSo().setSellPrice(BigDecimal.ZERO);//套餐券不计算商家服务费
                 swo.setSellPrice(swo.getSo().getSellPrice());
                 swo.getSo().setSoPrice(swo.getSo().getSellPrice());
                 swo.setSoPrice(swo.getSo().getSoPrice());
@@ -151,33 +152,45 @@ public class SoWriteOffServiceImpl implements SoWriteOffService {
             }
             allPrice=allPrice.add(swo.getSoPrice());
         }
+        SoWriteOff soWriteOff = new SoWriteOff();
+        soWriteOff.setTotalService(allPrice);
+        SoWriteOffBo bo= new SoWriteOffBo(soWriteOff);
+        return bo;
+    }
 
-        for (int i=0;i<soWriteOffs.size();i++){
-            soWriteOffs.get(i).setSoType(soWriteOffs.get(i).getSo().getSoType());
-            if (soWriteOffs.get(i).getSo().getShopId()!=null&&soWriteOffs.get(i).getSo().getSoType()==1&&soWriteOffs.get(i).getSkuId()!=406){//食典券訂單
-                soWriteOffs.get(i).getSo().setSellPrice(BigDecimal.ONE);
-                soWriteOffs.get(i).setSellPrice(soWriteOffs.get(i).getSo().getSellPrice());
-                soWriteOffs.get(i).getSo().setSoPrice(soWriteOffs.get(i).getSo().getSellPrice());
-                soWriteOffs.get(i).setSoPrice(soWriteOffs.get(i).getSo().getSoPrice());
-            }else  if(soWriteOffs.get(i).getSkuId()==406&&soWriteOffs.get(i).getSo().getSoType() == 1) {//套餐券
-                soWriteOffs.get(i).getSo().setSellPrice(BigDecimal.ONE);
-                soWriteOffs.get(i).setSellPrice(soWriteOffs.get(i).getSo().getSellPrice());
-                soWriteOffs.get(i).getSo().setSoPrice(soWriteOffs.get(i).getSo().getSellPrice());
-                soWriteOffs.get(i).setSoPrice(soWriteOffs.get(i).getSo().getSoPrice());
+    @Override
+    public SoWriteOffBo findSobill(SoWriteOffInVo vo) {
+        List<SoWriteOff> soWriteOffs=soWriteOffMapper.selectoffbill(vo);
+        if (CollectionUtils.isEmpty(soWriteOffs)) {
+            return null;
+        }
+        BigDecimal allPrice =BigDecimal.ZERO;
+        for (SoWriteOff swo :soWriteOffs){
+            swo.setSoType(swo.getSo().getSoType());
+            if (swo.getSkuType()==3){//食典券訂單
+                swo.getSo().setSellPrice(BigDecimal.ZERO);//食典券不计算商家服务费
+                swo.setSellPrice(swo.getSo().getSellPrice());
+                swo.getSo().setSoPrice(swo.getSo().getSellPrice());
+                swo.setSoPrice(swo.getSo().getSoPrice());
+            }else  if(swo.getSkuType()==1&&swo.getSkuId()==406) {//套餐券
+                swo.getSo().setSellPrice(BigDecimal.ZERO);//套餐券不计算商家服务费
+                swo.setSellPrice(swo.getSo().getSellPrice());
+                swo.getSo().setSoPrice(swo.getSo().getSellPrice());
+                swo.setSoPrice(swo.getSo().getSoPrice());
             }else {//商家訂單和平台訂單
-                if (soWriteOffs.get(i).getSo().getSellPrice()==null){
-                    soWriteOffs.get(i).getSo().setSellPrice(new BigDecimal(0));
-                    soWriteOffs.get(i).setSellPrice(soWriteOffs.get(i).getSo().getSellPrice());
+                if (swo.getSo().getSellPrice()==null){
+                    swo.getSo().setSellPrice(BigDecimal.ZERO);
+                    swo.setSellPrice(swo.getSo().getSellPrice());
                 }
-                soWriteOffs.get(i).setSellPrice(soWriteOffs.get(i).getSo().getSellPrice());
-                soWriteOffs.get(i).getSo().setSoPrice(soWriteOffs.get(i).getSo().getSellPrice());
-                soWriteOffs.get(i).setSoPrice(soWriteOffs.get(i).getSo().getSoPrice());
+                swo.setSellPrice(swo.getSo().getSellPrice());
+                swo.getSo().setSoPrice(swo.getSo().getSellPrice());
+                swo.setSoPrice(swo.getSo().getSoPrice());
             }
-            if (soWriteOffs.get(i).getSo().getSoPrice()==null){
-                soWriteOffs.get(i).getSo().setSoPrice(new BigDecimal(0));
-                soWriteOffs.get(i).setSoPrice(soWriteOffs.get(i).getSo().getSoPrice());
+            if (swo.getSo().getSoPrice()==null){
+                swo.getSo().setSoPrice(BigDecimal.ZERO);
+                swo.setSoPrice(swo.getSo().getSoPrice());
             }
-            allPrice=allPrice.add(soWriteOffs.get(i).getSoPrice());
+            allPrice=allPrice.add(swo.getSoPrice());
         }
         SoWriteOff soWriteOff = new SoWriteOff();
         soWriteOff.setTotalService(allPrice);

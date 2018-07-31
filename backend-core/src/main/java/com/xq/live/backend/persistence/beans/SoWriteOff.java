@@ -46,6 +46,15 @@ public class SoWriteOff extends AbstractDO {
     @Transient
     private BigDecimal soAmount;//订单类型
     @Transient
+    private Integer  skuType;//券类型
+    @Transient
+    private String  skuName;//券名
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+    @Transient
+    private Date hxTime;
+
+
+    @Transient
     private So so;
 
 

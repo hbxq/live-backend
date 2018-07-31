@@ -11,7 +11,7 @@ import java.util.List;
 public interface SoWriteOffMapper  extends BaseMapper<SoWriteOff> {
 
     /**
-     * 分页查询商家核销票券
+     * 分页查询商家核销票券（所有的票券）
      * @param vo
      * @return
      */
@@ -23,5 +23,13 @@ public interface SoWriteOffMapper  extends BaseMapper<SoWriteOff> {
      * @return
      */
     Integer updateByShopId(SoWriteOffInVo vo);
+
+    /**
+     * 分页查询商家核销票券（未结算的票券）
+     * @param vo
+     * @return
+     */
+    List<SoWriteOff> selectoffbill(SoWriteOffInVo vo);
+
 
 }

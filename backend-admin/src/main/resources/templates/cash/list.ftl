@@ -4,7 +4,7 @@
     <div class="col-md-12 col-sm-12 col-xs-12">
         <ol class="breadcrumb">
             <li><a href="/">首页</a></li>
-            <li class="active">对账管理</li>
+            <li class="active">申请管理</li>
         </ol>
         <div class="x_panel">
             <div class="x_content">
@@ -41,15 +41,6 @@
         </div>
     </div>
 </div>
-<!--/弹框-->
-<#--查看明细弹窗-->
-<div class="listbox">
-    <div class="headline">详情订单量<input id="guanbi" class="closebtn_bill" type="button" value="关闭"/><span id="dztotal"></span></div>
-    <table id="tablest">
-    </table>
-</div>
-<#--</div>-->
-<#--查看明细弹窗-->
 
 <script>
     var thbegainTime;
@@ -71,159 +62,54 @@
         return year + "-" + month + "-" + today;
     }
 
-    // 查看明细弹窗
-    function newtable(shopId){
-        $("#tablest").bootstrapTable({ // 对应table标签的id
-            method: "post",//请求方式
-            contentType : "application/x-www-form-urlencoded; charset=UTF-8",
-            url: "/bill/sotimeList", // 获取表格数据的url
-            cache: false, // 设置为 false 禁用 AJAX 数据缓存， 默认为true
-            striped: true,  //表格显示条纹，默认为false
-            pagination: true, // 在表格底部显示分页组件，默认false
-            pageList: [10, 20, 30, 40, 50], // 设置页面可以显示的数据条数
-            pageSize: 10, // 页面数据条数
-            pageNumber: 1, // 首页页码
-            sidePagination: 'server', // 设置为服务器端分页
-            queryParams: function queryParams(params) { // 请求服务器数据时发送的参数，可以在这里添加额外的查询参数，返回false则终止请求
-                var _offset = params.offset/10+1;
-                var tamp =  {
-                    pageSize: params.limit, // 每页要显示的数据条数
-                    offset: params.offset, // 每页显示数据的开始行号
-                    pageNumber:_offset,
-                    shopId:shopId,
-                    beginTime:thbegainTime,
-                    endTime:thendTime
-                };
-                return tamp;
-            },
-            sortName: 'id', // 要排序的字段
-            sortOrder: 'desc', // 排序规则
-            columns: [
-                {
-                    field: 'id', // 返回json数据中的name
-                    title: '订单号', // 表格表头显示文字
-                    align: 'center', // 左右居中
-                    valign: 'middle' // 上下居中
-                }, {
-                    field: 'userName',
-                    title: '下单人',
-                    align: 'center',
-                    valign: 'middle'
-                }, {
-                    field: 'paidTime',
-                    title: '支付时间',
-                    align: 'center',
-                    valign: 'middle',
-                    editable: false,
-                    formatter: function (code) {
-                        return new Date(code).format("yyyy-MM-dd hh:mm:ss")
-                    }
-                }, {
-                    field: 'sellPrice',
-                    title: '服务费',
-                    align: 'center',
-                    valign: 'middle',
-                    editable: true
-                }, {
-                    field: 'soType',
-                    title: '订单类型',
-                    editable: false,
-                    formatter: function (code) {
-                        if(code==1){
-                            return "平台订单";
-                        }else if(code==2){
-                            return "商家订单";
-                        }
-                    }
-                }, {
-                    field: 'isDui',
-                    title: '对账状态',
-                    align: 'center',
-                    valign: 'middle',
-                    formatter: function (code) {
-                        if(code==0){
-                            return "未对账";
-                        }else if(code==1){
-                            return "已对账";
-                        }
-                    }
-                }, {
-                    field: 'soAmount',
-                    title: '支付金额',
-                    align: 'center',
-                    valign: 'middle'
-                }, {
-                    field: 'soPrice',
-                    title: '扣除服务费后的金额',
-                    align: 'center',
-                    valign: 'middle',
-                    editable: true
-                }
-            ],
-            onLoadSuccess: function(){  //加载成功时执行
-                console.info("加载成功");
-                console.log(this)
-            },
-            onLoadError: function(){  //加载失败时执行
-                console.info("加载数据失败");
-            }
-        })
-    };
 
-    $('#guanbi').on('click',function(){
-        $("#tablest").bootstrapTable('destroy');
-        $("#dztotal").html("");
-        $('.listbox').hide();
-    });
-
-    /* 分配用户角色  --查看明细弹窗 */
-    $('#tablelist').on('click', '.btn-allot', function (e) {
-        var start=$("#startDate").val();
-        var end=$("#endDate").val();
-        console.log(new Date(start).getTime())
-        $('.listbox').show();
-        if(new Date(start).getTime()>new Date(end).getTime()){
-            alert("结束日期不能小于开始日期");
-            $("#startDate").val("");
-            $("#endDate").val("");
-            return;
-        }
-        var shopId=e.target.dataset.id;
-
-        thbegainTime=$("#startDate").val();
-        thendTime=$("#endDate").val();
-        $.ajax({
-            type: "post",
-            url: "/bill/soPrice",
-            data:{shopId:shopId, beginTime:thbegainTime,endTime:thendTime},
-            dataType: "json",
-            success: function (data) {
-                console.log("data:",data);
-                data.soAllPrice?data.soAllPrice:"0.0"
-                $("#dztotal").html("合计￥"+data.soAllPrice);
-            },
-        });
-        newtable(shopId);
-    });
-
-    /* 对账 */
-    $('#tablelist').on('click', '.btn-isdui', function (e) {
+    /*审批通过*/
+    $('#tablelist').on('click', '.btn-consent', function (e) {
         var truthBeTold = window.confirm("单击“确定”继续。单击“取消”停止。");
         if (truthBeTold) {
         } else{
             return;
         }
-        var shopid = e.target.dataset.id;
+        var start=$("#startDate").val();
+        var end=$("#endDate").val();
+        $('.listbox').show();
+        var Id=e.target.dataset.id;
+        // 2 审批通过 3 审批不通过
         $.ajax({
             type: "post",
-            url: "/bill/updateSoList",
-            data:{shopId:shopid, beginTime:$("#startDate").val(),endTime:$("#endDate").val()},
+            url: "/cash/updatestart",
+            data:{id:Id,applyStatus:2},
             dataType: "json",
             success: function (data) {
                 console.log("data:",data);
                 alert(data.message);
+                $.tableUtil.refresh();
             },
-            error: $.tool.ajaxError
+        });
+    });
+
+    /*审批通过*/
+    $('#tablelist').on('click', '.btn-reject', function (e) {
+        var truthBeTold = window.confirm("单击“确定”继续。单击“取消”停止。");
+        if (truthBeTold) {
+        } else{
+            return;
+        }
+        var start=$("#startDate").val();
+        var end=$("#endDate").val();
+        $('.listbox').show();
+        var Id=e.target.dataset.id;
+        // 2 审批通过 3 审批不通过
+        $.ajax({
+            type: "post",
+            url: "/cash/updatestart",
+            data:{id:Id,applyStatus:3},
+            dataType: "json",
+            success: function (data) {
+                console.log("data:",data);
+                alert(data.message);
+                $.tableUtil.refresh();
+            },
         });
     });
 
@@ -235,14 +121,11 @@
      * @returns {string}
      */
     function operateFormatter(code, row, index) {
-        var currentShopId = '${shop.id}';
-        var trShopId = row.id;
+        var Id = row.id;
         var operateBtn = [
-            '<@shiro.hasPermission name="bill:sotimeList"><a class="btn btn-xs btn-info btn-allot" data-id="' + trShopId + '"><i class="fa fa-trash-o"></i>查看明细</a></@shiro.hasPermission>',
+            '<@shiro.hasPermission name="bill:sotimeList"><a class="btn btn-xs btn-info btn-consent" data-id="' + Id + '"><i class="fa fa-trash-o"></i>同意申请</a></@shiro.hasPermission>',
         ];
-        if (currentShopId != trShopId) {
-            operateBtn.push('<@shiro.hasPermission name="bill:updateSoList"><a class="btn btn-xs btn-primary btn-isdui" data-id="' + trShopId + '"><i class="fa fa-edit"></i>对账</a></@shiro.hasPermission>');
-        }
+        operateBtn.push('<@shiro.hasPermission name="bill:updateSoList"><a class="btn btn-xs btn-primary btn-reject" data-id="' + Id + '"><i class="fa fa-edit"></i>驳回申请</a></@shiro.hasPermission>');
         return operateBtn.join('');
     }
 
@@ -253,15 +136,12 @@
         $("#startDate").val(today);
         $("#endDate").val(tomorrow);
         var options = {
-            url: "/cash/seelist",//
-            getInfoUrl: "/bill/get/{id}",
-            updateUrl: "/bill/updateSoList",
+            url: "/cash/seelist",
             queryParams :function queryParams(params) { // 请求服务器数据时发送的参数，可以在这里添加额外的查询参数，返回false则终止请求
                 var start=$("#startDate").val();
                 var end=$("#endDate").val();
                 var tamp =  {
                     pageSize: params.pageSize, // 每页要显示的数据条数
-                    //offset: params.offset, // 每页显示数据的开始行号
                     pageNumber:params.pageNumber,
                     keywords:params.searchText?params.searchText:"",
                     beginTime:start?start:today,
@@ -312,7 +192,12 @@
                 }, {
                     field: 'paidTime',
                     title: '打款时间',
-                    editable: true
+                    editable: true,
+                    sortable: true,
+                    //——修改——获取日期列的值进行转换
+                    formatter: function (value, row, index) {
+                        return changeDateFormat(value)
+                    }
                 }, {
                     field: 'paidUserId',
                     title: '打款人id',
@@ -331,5 +216,20 @@
         //1.初始化Table
         $.tableUtil.init(options);
     });
+
+
+    //修改——转换日期格式(时间戳转换为datetime格式)
+    function changeDateFormat(cellval) {
+        var dateVal = cellval + "";
+        if (cellval != null) {
+            var date = new Date(parseInt(dateVal.replace("/Date(", "").replace(")/", ""), 10));
+            var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+            var currentDate = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+            var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+            var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+            var seconds = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+            return date.getFullYear() + "-" + month + "-" + currentDate + " " + hours + ":" + minutes + ":" + seconds;
+        }
+    }
 
 </script>

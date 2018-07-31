@@ -73,6 +73,8 @@ public class SoServiceImpl implements SoService{
         bean.setList(SoBos);
         return bean;
     }
+    /*
+    * 食典券*/
     @Override
     public PageInfo<SoBo> findSoForShop(SoConditionVO vo) {
         PageHelper.startPage(vo.getPageNumber(), vo.getPageSize());
@@ -113,31 +115,69 @@ public class SoServiceImpl implements SoService{
         return bean;
     }
 
+    /*
+    * 商家订单*/
+    @Override
+    public PageInfo<SoBo> findSoForShops(SoConditionVO vo) {
+        PageHelper.startPage(vo.getPageNumber(), vo.getPageSize());
+        List<So> soss=soMapper.findSoForShops(vo);
+        if (CollectionUtils.isEmpty(soss)) {
+            return null;
+        }
+        List<SoBo> SoBos = new ArrayList<>();
+        BigDecimal allPrice = BigDecimal.ZERO;
+        for (So s:soss){
+            if (s.getPaymentMethod()==2){//平臺代收
+                if (s.getShopId()!=null&&s.getSoType()==2){//商家訂單
+                    if (s.getSkuId()!=null&&s.getIsDeleted()==0){
+                        s.setSoPrice(s.getSoAmount().subtract(s.getSellPrice()));
+                    }else {
+                        s.setSoPrice(s.getSoAmount());
+                    }
+                }
+            }else if (s.getPaymentMethod()==1){//商家自收
+            }
+            if (s.getSoPrice()==null){
+                s.setSoPrice(new BigDecimal(0));
+            }
+            allPrice=allPrice.add(allPrice.add(s.getSoPrice()));
+            SoBos.add(new SoBo(s));
+        }
+        System.out.println(SoBos);
+        PageInfo bean = new PageInfo<So>(soss);
+        bean.setList(SoBos);
+        return bean;
+    }
+
     @Override
     public SoBo findSoShop(SoConditionVO vo) {
         List<So> sos = soMapper.findSoForShop(vo);
-        /*BigDecimal allPrice = BigDecimal.ZERO;*/
-        BigDecimal allPrice =new BigDecimal(0);
-        if (CollectionUtils.isEmpty(sos)) {
-            return null;
+        List<So> soss=soMapper.findSoForShops(vo);
+
+        BigDecimal allPrice = BigDecimal.ZERO;
+        BigDecimal bilPrice = BigDecimal.ZERO;
+        BigDecimal noBilPrice = BigDecimal.ZERO;
+        if (soss!=null&&soss.size()>0){
+            sos.addAll(soss);
         }
+
         for (So s:sos){
             if (s.getPaymentMethod()==2){//平臺代收
-                s.setSoPrice(s.getSoAmount());
-                if(s.getShopId()!=null&&s.getSoType()==1){//食典券訂單
-                    s.setSellPrice(BigDecimal.ONE);
-                    s.setSoPrice(s.getSoAmount().subtract(BigDecimal.ONE));
-                }else if (s.getShopId()!=null&&s.getSoType()==2){//商家訂單
+                if (s.getSkuId()!=null){
+                    if(s.getSkuType()==3){//食典券訂單
+                        s.setSellPrice(BigDecimal.ONE);
+                        s.setSoPrice(s.getSoAmount().subtract(BigDecimal.ONE));
+                    }
+                }
+                if (s.getShopId()!=null&&s.getSoType()==2){//商家訂單
                     if (s.getSkuId()!=null){
                         s.setSoPrice(s.getSoAmount().subtract(s.getSellPrice()));
                     }else {
                         s.setSoPrice(s.getSoAmount());
                     }
-                }/*else if (s.getShopId()==null&& s.getSoType()==1){//平臺訂單
-                    s.setSoPrice(s.getSoAmount());
-                }*/
+                }
             }else if (s.getPaymentMethod()==1){//商家自收
-                if(s.getShopId()!=null&&s.getSoType()==1){//食典券訂單
+                if(s.getSkuType()==3){//食典券訂單
                     s.setSellPrice(BigDecimal.ONE);
                     s.setSoPrice(s.getSoAmount().subtract(BigDecimal.ONE));
                 }
@@ -145,12 +185,19 @@ public class SoServiceImpl implements SoService{
             if (s.getSoPrice()==null){
                 s.setSoPrice(BigDecimal.ZERO);
             }
-//            allPrice=allPrice.add(allPrice.add(s.getSoPrice()));
-            /*allPrice=allPrice.add(s.getSoPrice());*/
-            allPrice.add(s.getSoPrice());
+            allPrice=allPrice.add(s.getSoPrice());
+            if (s.getIsDui()==0){
+                noBilPrice=noBilPrice.add(s.getSoPrice());
+            }
+            if (s.getIsDui()==1){
+                bilPrice=bilPrice.add(s.getSoPrice());
+            }
         }
         So so = new So();
+        System.out.println(allPrice);
         so.setSoAllPrice(allPrice);
+        so.setSoBillPrice(bilPrice);
+        so.setSoNoBillPrice(noBilPrice);
         SoBo soprice=new SoBo(so);
         return soprice;
     }
@@ -171,24 +218,37 @@ public class SoServiceImpl implements SoService{
     }
 
     /**
-     * 根据shopid和时间批量更改商家訂單
+     * 根据shopid和时间批量更改商家訂單和食典券
      * @param list
      * @return
      */
     @Override
-    public Integer updateByShopId(SoConditionVO list) throws RuntimeException{
-        Integer i = soMapper.updateByShopId(list);
-        if (i < 1) {
-            throw new RuntimeException("订单状态修改失败!");
+    public Integer updateByShopId(SoConditionVO list){
+        /*食典券*/
+        List<So> sos = soMapper.findSoForIsDui(list);
+        /*商家订单*/
+        List<So> shopForIsDui = soMapper.findShopForIsDui(list);
+        Integer all = 0;
+        if (shopForIsDui!=null&&shopForIsDui.size()>0){
+            Integer shopIds = soMapper.updateByShopIds(list);
+            if (shopIds < 1){
+                throw new RuntimeException("商家订单状态修改失败!");
+            }
+            all=all+shopIds;
         }
-       /* Long userid = userMapper.selectByshopid(list.getShopId());
-        UserAccount userAccount = userAccountMapper.findAccountByUserId(userid);
-        AccountLogConditionVO accountLogConditionVO = custom(userAccount,list);
-        Integer ac=accountLogMapper.billLog(accountLogConditionVO);
-        if (ac < 1) {
-            throw new RuntimeException("账户余额日志添加失败!");
-        }*/
-        return i;
+        if (sos!=null&&sos.size()>0){
+            Integer i = soMapper.updateByShopId(list);
+            if (i < 1) {
+                throw new RuntimeException("食典券订单状态修改失败!");
+            }
+            all=all+i;
+            //修改食典券结算状态
+            Integer bill=soMapper.updateByShopIdBill(list);
+            if (bill<1){
+                throw new RuntimeException("食典券订单结算状态修改失败!");
+            }
+        }
+        return all;
     }
 
     /**
@@ -201,6 +261,7 @@ public class SoServiceImpl implements SoService{
         Long userid = userMapper.selectByshopid(list.getShopId());
         UserAccount userAccount = userAccountMapper.findAccountByUserId(userid);
         AccountLogConditionVO accountLogConditionVO = custom(userAccount,list);
+
         Integer ac=accountLogMapper.billLog(accountLogConditionVO);
         if (ac < 1) {
             throw new RuntimeException("账户余额日志添加失败!");
@@ -286,7 +347,6 @@ public class SoServiceImpl implements SoService{
         return soBos;
     }
 
-    @Transactional
     public AccountLogConditionVO custom(UserAccount userAccount,SoConditionVO vo)  throws RuntimeException{
         AccountLogConditionVO accountLog = new AccountLogConditionVO();
         accountLog.setAccountId(userAccount.getId());
@@ -309,6 +369,7 @@ public class SoServiceImpl implements SoService{
         //更改用户余额
         UserAccountConditionVO userAccountConditionVO = new UserAccountConditionVO();
         userAccountConditionVO.setUserId(userAccount.getUserId());
+        userAccountConditionVO.setVersionNo(userAccount.getVersionNo());
         userAccountConditionVO.setAccountAmount(accountLog.getPreAmount().subtract(accountLog.getOperateAmount()));
         Integer i=userAccountMapper.amoutForUserid(userAccountConditionVO);
         if (i < 1) {

@@ -12,13 +12,6 @@ import java.util.Date;
 //@Data
 @EqualsAndHashCode(callSuper = false)
 public class SoWriteOffInVo extends BaseConditionVO {
-   //private SoWriteOff soWrite;
-
-  /* @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
-   private Date beginTime;
-   @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
-   private Date endTime;*/
-
 
    private Long id;
    private Date createTime;//等同于核销时间
@@ -39,29 +32,49 @@ public class SoWriteOffInVo extends BaseConditionVO {
    private BigDecimal paidAmount;//支付金额(已经减去了卷面值的)
    private Integer isBill;//是否对账 0未对账 1对账
 
+   private Integer  skuType;//券类型
+   private String  skuName;//券名
+
    private BigDecimal totalPrice;//总营业额
    private BigDecimal totalService;//总服务费
    private BigDecimal soPrice;//單筆訂單服務費
    private BigDecimal sellPrice;//平臺服務費
    private Integer soType;//订单类型
+   private Date hxTime;
 
-  /* public Date getBeginTime() {
-      return beginTime;
+   public Date getHxTime() {
+      return hxTime;
    }
 
-   public void setBeginTime(Date beginTime) {
-      this.beginTime = beginTime;
+   public void setHxTime(Date hxTime) {
+      this.hxTime = hxTime;
    }
 
-   public Date getEndTime() {
-      return endTime;
+   public String getSkuName() {
+      return skuName;
    }
 
-   public void setEndTime(Date endTime) {
-      this.endTime = endTime;
-   }*/
+   public void setSkuName(String skuName) {
+      this.skuName = skuName;
+   }
 
-   public Long getId() {
+   public Integer getSkuType() {
+        return skuType;
+    }
+
+    public void setSkuType(Integer skuType) {
+        this.skuType = skuType;
+    }
+
+    public Integer getSoType() {
+        return soType;
+    }
+
+    public void setSoType(Integer soType) {
+        this.soType = soType;
+    }
+
+    public Long getId() {
       return id;
    }
 
@@ -211,14 +224,6 @@ public class SoWriteOffInVo extends BaseConditionVO {
 
    public void setSoPrice(BigDecimal soPrice) {
       this.soPrice = soPrice;
-   }
-
-   public Integer getSo_type() {
-      return soType;
-   }
-
-   public void setSo_type(Integer so_type) {
-      this.soType = so_type;
    }
 
    public BigDecimal getSellPrice() {

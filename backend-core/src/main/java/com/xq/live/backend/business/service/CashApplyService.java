@@ -16,4 +16,11 @@ public interface CashApplyService extends AbstractService<CashApplyBo, Long> {
      * @return
      */
     PageInfo<CashApplyBo> selectBykeywords(CashApplyConditionVO invo);
+
+    /**
+     * 修改申请状态
+     * @param inVo
+     * @return
+     */
+    Integer updateAcsh(CashApplyConditionVO inVo);
 }

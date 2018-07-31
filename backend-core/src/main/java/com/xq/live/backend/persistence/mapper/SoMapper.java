@@ -32,16 +32,53 @@ public interface SoMapper extends BaseMapper<So> {
     List<So> findSoForShop(SoConditionVO vo);
 
     /**
+     * 分页查询商家訂單
+     * @param vo
+     * @return
+     */
+    List<So> findSoForShops(SoConditionVO vo);
+
+
+    /**
      * 根据soid批量更改商家訂單
      * @param list
      * @return
      */
     Integer updateBySO( List<SoConditionVO> list);
     /**
-     * 根据shopid和时间批量更改商家訂單
+     * 根据shopid和时间批量更改食典券
      * @param list
      * @return
      */
     Integer updateByShopId(SoConditionVO list);
+
+    /**
+     * 根据shopid和时间批量更改已核销的平台订单(食典券)
+     * @param list
+     * @return
+     */
+    Integer updateByShopIdBill(SoConditionVO list);
+
+    /**
+     * 根据shopid和时间查询平台订单(食典券)
+     * @param list
+     * @return
+     */
+    List<So> findSoForIsDui(SoConditionVO list);
+
+    /**
+     * 根据shopid和时间查询平台订单(商家订单)
+     * @param list
+     * @return
+     */
+    List<So> findShopForIsDui(SoConditionVO list);
+
+
+    /**
+     * 根据shopid和时间批量更改商家订单
+     * @param list
+     * @return
+     */
+    Integer updateByShopIds(SoConditionVO list);
 
 }

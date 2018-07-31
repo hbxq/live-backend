@@ -44,8 +44,12 @@
 <!--/弹框-->
 <#--查看明细弹窗-->
 <div class="listbox">
-    <div class="headline">详情详情<input id="guanbi" class="closebtn_bill" type="button" value="关闭"/><span id="dztotal"></span></div>
+    <div class="headline">详情<input id="guanbi" class="closebtn_bill" type="button" value="关闭"/><span id="dztotal"></span>&nbsp;&nbsp;<span id="dztotalbill"></span></div>
+<#--查看明细-->
     <table id="tablest">
+    </table>
+<#--服务费-->
+    <table id="tablamount">
     </table>
 </div>
 <#--查看明细弹窗-->
@@ -71,7 +75,9 @@
 /*关闭明细弹窗*/
     $('#guanbi').on('click',function(){
         $("#tablest").bootstrapTable('destroy');
+        $("#tablamount").bootstrapTable('destroy');
         $("#dztotal").html("");
+        $("#dztotalbill").html("");
         $('.listbox').hide();
     });
     /**
@@ -91,6 +97,7 @@
         ];
         if (currentShopId != trShopId) {
             operateBtn.push('<@shiro.hasPermission name="bill:updateWriteList"><a class="btn btn-xs btn-primary btn-bill" data-id="' + trShopId + '"><i class="fa fa-edit"></i>结算</a></@shiro.hasPermission>');
+            operateBtn.push('<@shiro.hasPermission name="amount:getshopAmount"><a class="btn btn-xs btn-primary btn-amount" data-id="' + trShopId + '"><i class="fa fa-edit"></i>查看服务费</a></@shiro.hasPermission>');
         }
         return operateBtn.join('');
     }
@@ -164,7 +171,23 @@
                         if(code==0){
                             return "未结清";
                         }else if(code==1){
-                            return "已结清";
+                            return "已结清";skuType
+                        }
+                    }
+                }, {
+                    field: 'skuType',
+                    title: '订单类型',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function (code) {
+                        if(code==1){
+                            return "享七券";
+                        }else if(code==2){
+                            return "特色菜";
+                        }else if(code==3){
+                            return "食典券";
+                        }else if(code==5){
+                            return "商家套餐";
                         }
                     }
                 }, {
@@ -178,10 +201,84 @@
                     align: 'center',
                     valign: 'middle'
                 }, {
+                    field: 'skuName',
+                    title: '名称',
+                    align: 'center',
+                    valign: 'middle',
+                    editable: true
+                }, {
+                    field: 'hxTime',
+                    title: '核销时间',
+                    align: 'center',
+                    valign: 'middle',
+                    sortable: true,
+                    //——修改——获取日期列的值进行转换
+                    formatter: function (value, row, index) {
+                        return changeDateFormat(value)
+                    }
+                }, {
                     field: 'couponCode',
                     title: '电子券编码',
                     align: 'center',
                     valign: 'middle'
+                }
+            ],
+            onLoadSuccess: function(){  //加载成功时执行
+            },
+            onLoadError: function(){  //加载失败时执行
+            }
+        })
+    };
+
+    // 查看服务费弹窗
+    function newamtable(shopId){
+        $("#tablamount").bootstrapTable({ // 对应table标签的id
+            method: "post",//请求方式
+            contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+            url: "/amount/getshopAmount", // 获取表格数据的url
+            cache: false, // 设置为 false 禁用 AJAX 数据缓存， 默认为true
+            striped: true,  //表格显示条纹，默认为false
+            pagination: true, // 在表格底部显示分页组件，默认false
+            pageList: [10, 20], // 设置页面可以显示的数据条数
+            pageSize: 10, // 页面数据条数
+            pageNumber: 1, // 首页页码
+            sidePagination: 'server', // 设置为服务器端分页
+            queryParams: function queryParams(params) { // 请求服务器数据时发送的参数，可以在这里添加额外的查询参数，返回false则终止请求
+                var _offset = params.offset/10+1;
+                var tamp =  {
+                    pageSize: params.limit, // 每页要显示的数据条数
+                    offset: params.offset, // 每页显示数据的开始行号
+                    pageNumber:_offset,
+                    shopId:shopId,
+                    beginTime:thbegainTime,
+                    endTime:thendTime
+                };
+                return tamp;
+            },
+            sortName: 'id', // 要排序的字段
+            sortOrder: 'desc', // 排序规则
+            columns: [
+                {
+                    field: 'shopId', // 返回json数据中的name
+                    title: '商家Id', // 表格表头显示文字
+                    align: 'center', // 左右居中
+                    valign: 'middle' // 上下居中
+                }, {
+                    field: 'servicePrice',
+                    title: '服务费',
+                    align: 'center',
+                    valign: 'middle'
+                }, {
+                    field: 'beginTime',
+                    title: '开始时间',
+                    align: 'center',
+                    valign: 'middle'
+                }, {
+                    field: 'endTime',
+                    title: '结束时间',
+                    align: 'center',
+                    valign: 'middle',
+                    editable: true
                 }
             ],
             onLoadSuccess: function(){  //加载成功时执行
@@ -235,10 +332,40 @@
             success: function (data) {
                 console.log("data:",data);
                 data.totalService?data.totalService:"0";
-                $("#dztotal").html("合计￥"+data.totalService);
+                $("#dztotal").html("总合计￥"+data.totalService);
+            },
+        });
+
+        $.ajax({
+            type: "post",
+            url: "/bill/writePriceBill",
+            data:{shopId:shopId, beginTime:thbegainTime,endTime:thendTime},
+            dataType: "json",
+            success: function (data) {
+                console.log("data:",data);
+                data.totalService?data.totalService:"0";
+                $("#dztotalbill").html("未结清合计￥"+data.totalService);
             },
         });
         newtable(shopId);
+    });
+
+    /* 分配用户角色  --查看服务费弹窗 */
+    $('#tablelist').on('click', '.btn-amount', function (e) {
+        var start=$("#startDate").val();
+        var end=$("#endDate").val();
+        console.log(new Date(start).getTime())
+        $('.listbox').show();
+        if(new Date(start).getTime()>new Date(end).getTime()){
+            alert("结束日期不能小于开始日期");
+            $("#startDate").val("");
+            $("#endDate").val("");
+            return;
+        }
+        var shopId=e.target.dataset.id;
+        thbegainTime=$("#startDate").val();
+        thendTime=$("#endDate").val();
+        newamtable(shopId);
     });
 
     /*初始化加载表格*/
@@ -295,4 +422,19 @@
         //1.初始化Table
         $.tableUtil.init(options);
     });
+
+
+    //修改——转换日期格式(时间戳转换为datetime格式)
+    function changeDateFormat(cellval) {
+        var dateVal = cellval + "";
+        if (cellval != null) {
+            var date = new Date(parseInt(dateVal.replace("/Date(", "").replace(")/", ""), 10));
+            var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+            var currentDate = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+            var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+            var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+            var seconds = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+            return date.getFullYear() + "-" + month + "-" + currentDate + " " + hours + ":" + minutes + ":" + seconds;
+        }
+    }
 </script>

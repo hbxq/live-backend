@@ -18,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * com.xq.live.backend.controller
  *订单对账，核销结算
@@ -51,20 +53,41 @@ public class RestBillController {
      */
     @PostMapping(value = "/getSoWriteOfflist")
     public  PageResult list(SoWriteOffInVo vo){
+        if (vo.getShopId()==null){
+            return null;
+        }
         PageHelper.startPage(vo.getPageNumber() - 1, vo.getPageSize());
         PageInfo<SoWriteOffBo> pageInfo=soWriteOffService.findSoForShop(vo);
         return ResultUtil.tablePage(pageInfo);
     }
 
     /**
-     * 查询一个商家一段时间内的订单信息
+     * 查询一个商家一段时间内的订单信息食典券
      * @param vo
      * @return
      */
     @PostMapping("/sotimeList")
     public PageResult soList(SoConditionVO vo) {
+        if (vo.getShopId()==null){
+            return null;
+        }
         PageHelper.startPage(vo.getPageNumber() - 1, vo.getPageSize());
         PageInfo<SoBo> pageInfo = soService.findSoForShop(vo);
+        return ResultUtil.tablePage(pageInfo);
+    }
+
+    /**
+     * 查询一个商家一段时间内的订单信息商家订单
+     * @param vo
+     * @return
+     */
+    @PostMapping("/sotimeLists")
+    public PageResult soLists(SoConditionVO vo) {
+        if (vo.getShopId()==null){
+            return null;
+        }
+        PageHelper.startPage(vo.getPageNumber() - 1, vo.getPageSize());
+        PageInfo<SoBo> pageInfo = soService.findSoForShops(vo);
         return ResultUtil.tablePage(pageInfo);
     }
 
@@ -75,33 +98,59 @@ public class RestBillController {
      */
     @PostMapping("/soPrice")
     public SoBo soPrice(SoConditionVO vo) {
+        if (vo.getShopId()==null){
+            return  null;
+        }
         SoBo pageInfo = soService.findSoShop(vo);
         return pageInfo;
     }
 
     /**
-     * 核销合计
+     * 核销合计(所有票券)
      * @param vo
      * @return
      */
     @PostMapping("/writePrice")
     public SoWriteOffBo writePrice(SoWriteOffInVo vo) {
+        if (vo.getShopId()==null){
+            return  null;
+        }
         SoWriteOffBo soWriteOffBo = soWriteOffService.findSoShop(vo);
         return soWriteOffBo;
     }
 
     /**
-     * 批量修改一个商家时间段内符合条件的的订单信息
+     * 核销合计(未结算票券)
+     * @param vo
+     * @return
+     */
+    @PostMapping("/writePriceBill")
+    public SoWriteOffBo writePriceBill(SoWriteOffInVo vo) {
+        if (vo.getShopId()==null){
+            return  null;
+        }
+        SoWriteOffBo soWriteOffBo = soWriteOffService.findSobill(vo);
+        return soWriteOffBo;
+    }
+
+    /**
+     * 批量修改一个商家时间段内符合条件的的订单信息同时修改用户余额
      * @param inVo
      * @return
      */
     @PostMapping("/updateSoList")
     @Transactional
     public ResponseVO updateList(SoConditionVO inVo) {
+        if (inVo.getShopId()==null){
+            return  null;
+        }
         Integer i=soService.updateByShopId(inVo);
+            if (i>0){
         Integer ac=soService.updateUseract(inVo);
-        if (i>0){
-         return  ResultUtil.success("成功修改"+i+"条数据",i);
+            if (ac<1){
+             return ResultUtil.error(0,"修改失败!");
+         }
+         return  ResultUtil.success("成功修改" + i + "条数据", i);
         }
         return ResultUtil.error(0,"修改失败!");
     }
@@ -113,6 +162,9 @@ public class RestBillController {
      */
     @PostMapping("/updateWriteList")
     public ResponseVO updateWrite(SoWriteOffInVo inVo) {
+        if (inVo.getShopId()==null){
+            return  null;
+        }
         Integer i=soWriteOffService.updateByShopId(inVo);
         if (i>0){
             return  ResultUtil.success("成功修改"+i+"条数据",i);
