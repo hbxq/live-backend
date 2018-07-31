@@ -26,6 +26,44 @@ public class CashApplyConditionVO extends BaseConditionVO {
     private String paidUserName;
     private String nickName;
     private String mobile;
+    private Date beginTime;
+    private Date endTime;
+
+    private Long shopId;
+    private String shopName;
+
+
+    public Long getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(Long shopId) {
+        this.shopId = shopId;
+    }
+
+    public String getShopName() {
+        return shopName;
+    }
+
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
+    }
+
+    public Date getBeginTime() {
+        return beginTime;
+    }
+
+    public void setBeginTime(Date beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
 
     public String getNickName() {
         return nickName;

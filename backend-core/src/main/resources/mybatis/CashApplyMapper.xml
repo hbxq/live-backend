@@ -14,9 +14,14 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="paid_user_id" jdbcType="BIGINT" property="paidUserId" />
     <result column="paid_user_name" jdbcType="VARCHAR" property="paidUserName" />
+    <result column="begin_time" jdbcType="TIMESTAMP" property="beginTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
 
     <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
     <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+    <result column="shop_id" jdbcType="BIGINT" property="shopId" />
+    <result column="shop_name" jdbcType="VARCHAR" property="shopName"/>
+
   </resultMap>
   <sql id="Base_Column_List">
     id, user_id, user_name, account_id, account_name, cash_amount,
@@ -24,23 +29,27 @@
   </sql>
     <!--查询商家提现-->
     <select id="selectCashlist" parameterType="com.xq.live.backend.business.vo.CashApplyConditionVO" resultMap="BaseResultMap">
-          SELECT
-              ca.id,
-              ca.user_id,
-              ca.user_name,
-              ca.account_id,
-              ca.account_name,
-              ca.apply_status,
-              ca.create_time,
-              ca.paid_time,
-              ca.update_time,
-              ca.paid_user_id,
-              ca.paid_user_name,
-              a.nick_name,
-              a.mobile
-          FROM
-              cash_apply ca
-          INNER JOIN `user` a ON a.id = ca.user_id
+        SELECT
+            ca.id,
+            ca.user_id,
+            ca.user_name,
+            ca.account_id,
+            ca.cash_amount,
+            ca.account_name,
+            ca.apply_status,
+            ca.create_time,
+            ca.paid_time,
+            ca.update_time,
+            ca.paid_user_id,
+            ca.paid_user_name,
+            a.nick_name,
+            a.mobile,
+            a.shop_id,
+            s.shop_name
+        FROM
+        cash_apply ca
+        INNER JOIN `user` a ON a.id = ca.user_id
+        INNER JOIN `shop` s ON s.id = a.shop_id
           <where>
             1=1
             <if test="keywords != null and keywords != '' ">
@@ -56,6 +65,9 @@
             </if>
             <if test="id != null">
               AND  ca.id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="beginTime !=null and endTime != null">
+              and (ca.create_time BETWEEN #{beginTime} and #{endTime})
             </if>
           </where>
     </select>

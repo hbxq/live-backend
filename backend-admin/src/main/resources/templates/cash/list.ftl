@@ -154,7 +154,15 @@
                     checkbox: true
                 }, {
                     field: 'id',
+                    title: '主键id',
+                    editable: false
+                }, {
+                    field: 'shopId',
                     title: '商家id',
+                    editable: false
+                }, {
+                    field: 'shopName',
+                    title: '商家名',
                     editable: false
                 }, {
                     field: 'userName',
@@ -206,6 +214,24 @@
                     field: 'paidUserName',
                     title: '打款人姓名',
                     editable: true
+                }, {
+                    field: 'beginTime',
+                    title: '提现发起的开始时间',
+                    editable: true,
+                    sortable: true,
+                    //——修改——获取日期列的值进行转换
+                    formatter: function (value, row, index) {
+                        return changeDateFormat(value)
+                    }
+                }, {
+                    field: 'endTime',
+                    title: '提现发起的结束时间',
+                    editable: true,
+                    sortable: true,
+                    //——修改——获取日期列的值进行转换
+                    formatter: function (value, row, index) {
+                        return changeDateFormat(value)
+                    }
                 }, {
                     field: 'operate',
                     title: '操作',

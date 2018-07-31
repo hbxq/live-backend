@@ -138,4 +138,36 @@ public class CashApplyBo  extends AbstractBO {
     public void setMobile(String mobile) {
         this.cashApply.setMobile(mobile);
     }
+
+    public Date getBeginTime() {
+        return this.cashApply.getBeginTime();
+    }
+
+    public void setBeginTime(Date beginTime) {
+        this.cashApply.setBeginTime(beginTime);
+    }
+
+    public Date getEndTime() {
+        return this.cashApply.getEndTime();
+    }
+
+    public void setEndTime(Date endTime) {
+        this.cashApply.setEndTime(endTime);
+    }
+
+    public Long getShopId() {
+        return this.cashApply.getShopId();
+    }
+
+    public void setShopId(Long shopId) {
+        this.cashApply.setShopId(shopId);
+    }
+
+    public String getShopName() {
+        return this.cashApply.getShopName();
+    }
+
+    public void setShopName(String shopName) {
+        this.cashApply.setShopName(shopName);
+    }
 }

@@ -18,24 +18,29 @@ import java.util.Date;
 @Table(name = "cash_apply")
 public class CashApply  extends AbstractDO {
 
-
-    @NotNull(message = "userId必填")
     private Long userId;
-    @NotNull(message = "userName必填")
     private String userName;
     private Long accountId;
     private String accountName;
-    @NotNull(message = "cashAmount必填")
     private BigDecimal cashAmount;  //提现金额
     private Byte applyStatus;
     private Date paidTime;
     private Long paidUserId;
     private String paidUserName;
+    private Date beginTime;
+    private Date endTime;
+
 
     @Transient
     private String nickName;
     @Transient
     private String mobile;
+    @Transient
+    private Long shopId;
+    @Transient
+    private String shopName;
+
+
 
 
 }
